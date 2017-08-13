@@ -3,18 +3,20 @@ import { NavController, AlertController, IonicPage } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 @IonicPage()
+
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html',
 })
+
 export class RegisterPage {
   createSuccess = false;
-  registerCredentials = { email: '', password: '' };
+  registerCredentials = { fistName: '', lastName: '', email: '', password: '' };
 
   constructor(private navCtrl: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController) { }
 
   public register() {
-    AuthServiceProvider.register(this.registerCredentials).subscribe(success => {
+    this.auth.register(this.registerCredentials).subscribe(success => {
         if (success) {
           this.createSuccess = true;
           this.showPopup("Success", "Account created.");
