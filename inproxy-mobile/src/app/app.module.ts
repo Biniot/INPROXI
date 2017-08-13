@@ -15,6 +15,7 @@ import { LoginPage } from '../pages/login/login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { NativeStorage } from '@ionic-native/native-storage'
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
-    HttpRequestProvider
+    HttpRequestProvider,
+    NativeStorage
   ]
 })
 export class AppModule {}

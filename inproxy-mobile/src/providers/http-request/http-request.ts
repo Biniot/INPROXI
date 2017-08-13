@@ -50,15 +50,17 @@ export class HttpRequestProvider {
       body.set('email', params.email);
       body.set('password', params.password);
 
-      console.log(body);
-
       this.request
         .post(address, body, option)
         .map((res : Response) => res.json())
-        .subscribe(data => {
-          this.data = data;
-          resolve(this.data);
-        });
+        .subscribe(
+          data => {
+            this.data = data;
+            resolve(this.data);
+          },
+          err => {
+            resolve(err);
+          });
     })
   }
 

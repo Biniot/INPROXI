@@ -29,12 +29,13 @@ export class LoginPage {
 
   public login() {
     this.showLoading();
-    this.auth.login(this.registerCredentials).subscribe(allowed => {
-      if (allowed) {
-        this.navCtrl.setRoot(HomePage);
-      } else {
-        this.showError("Access Denied");
-      }
+    this.auth.login(this.registerCredentials).subscribe(
+      allowed => {
+        console.log(allowed);
+        if (allowed == true)
+          this.navCtrl.setRoot(HomePage);
+        else
+          this.showError(allowed.message);
       },
       error => {
         this.showError(error);
@@ -53,7 +54,7 @@ export class LoginPage {
     this.loading.dismiss();
 
     let alert = this.alertCtrl.create({
-      title: 'Fail',
+      title: 'Login Fail',
       subTitle: text,
       buttons: ['OK']
     });

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
-import {API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT} from '../constants/constants';
+import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT } from '../constants/constants';
+import { NativeStorage } from '@ionic-native/native-storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 
@@ -26,7 +27,6 @@ export class User {
 export class AuthServiceProvider {
   currentUser: User;
   isLoggedIn: boolean;
-  authToken: any;
 
   public login(credentials) {
     if (credentials.email === undefined || credentials.password === undefined) {
@@ -36,13 +36,22 @@ export class AuthServiceProvider {
         this.request.post(API_ADDRESS + VERSION + AUTH_ENDPOINT, {
           email: credentials.email,
           password: credentials.password
-        }).then(function (result) {
-          console.log(result);
+        }).then(result => {
+          this.isLoggedIn = result.token ? true : false;
+          if (this.isLoggedIn) {
+            this.storage.setItem("token", result.token).then(
+              () => console.log('Success'),
+              error =>  console.error('Error in storage', error)
+            );
+            observer.next(true);
+          } else
+            observer.next(JSON.parse(result._body));
+          observer.complete();
+        }).catch(error => {
+          console.error('error in login : ' + error);
+          observer.next(false);
+          observer.complete();
         });
-        let access = (credentials.password == 'pass' && credentials.email == 'email');
-        this.currentUser = new User('Obi', 'obi@jedi-order.crs');
-        observer.next(access);
-        observer.complete();
       })
     }
   }
@@ -82,9 +91,8 @@ export class AuthServiceProvider {
     })
   }
 
-  constructor(private request : HttpRequestProvider) {
+  constructor(private request : HttpRequestProvider, private storage : NativeStorage) {
     this.isLoggedIn = false;
-    this.authToken = null;
   }
 
 }
