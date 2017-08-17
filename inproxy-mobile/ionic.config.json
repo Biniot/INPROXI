@@ -1,5 +1,8 @@
 {
   "name": "inproxy",
   "app_id": "35ee7df5",
-  "type": "ionic-angular"
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

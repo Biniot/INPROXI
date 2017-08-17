@@ -6,18 +6,40 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="dark">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>user</ion-title>
+    <ion-title>User</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-  <div>
-    <h3>This will be the diplay of the user page & settings</h3>
-  </div>
+<ion-content class="user-content" padding>
+  <ion-grid class="user-grid">
+    <ion-row>
+      <ion-col col-12><img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatar_path}}"/></ion-col>
+    </ion-row>
+    <ion-row class="user-row">
+      <ion-col col-4>First name :</ion-col>
+      <ion-col col-8 >{{currentUser.firstName}}</ion-col>
+    </ion-row>
+    <ion-row class="user-row">
+      <ion-col col-4>last name :</ion-col>
+      <ion-col col-8 >{{currentUser.lastName}}</ion-col>
+    </ion-row>
+    <ion-row class="user-row">
+      <ion-col col-4>Email :</ion-col>
+      <ion-col col-8 >{{currentUser.email}}</ion-col>
+    </ion-row>
+    <ion-row class="user-row">
+      <ion-col col-4>Pseudo :</ion-col>
+      <ion-col col-8 >{{currentUser.pseudo}}</ion-col>
+    </ion-row>
+    <ion-row>
+      <button ion-button (click)="editUserNav()">Edit</button>
+      <button ion-button (click)="deleteUser()">Delete account</button>
+    </ion-row>
+  </ion-grid>
 </ion-content>
