@@ -15,7 +15,7 @@ import { LoginPage } from '../pages/login/login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { NativeStorage } from '@ionic-native/native-storage'
+import { IonicStorageModule } from '@ionic/storage'
 
 @NgModule({
   declarations: [
@@ -30,6 +30,7 @@ import { NativeStorage } from '@ionic-native/native-storage'
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -45,8 +46,7 @@ import { NativeStorage } from '@ionic-native/native-storage'
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
-    HttpRequestProvider,
-    NativeStorage
+    HttpRequestProvider
   ]
 })
 export class AppModule {}

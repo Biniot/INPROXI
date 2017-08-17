@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
 import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT } from '../constants/constants';
-import { NativeStorage } from '@ionic-native/native-storage';
+import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 
@@ -39,7 +39,7 @@ export class AuthServiceProvider {
         }).then(result => {
           this.isLoggedIn = result.token ? true : false;
           if (this.isLoggedIn) {
-            this.storage.setItem("token", result.token).then(
+            this.storage.set("token", result.token).then(
               () => console.log('Success'),
               error =>  console.error('Error in storage', error)
             );
@@ -91,8 +91,7 @@ export class AuthServiceProvider {
     })
   }
 
-  constructor(private request : HttpRequestProvider, private storage : NativeStorage) {
+  constructor(private request : HttpRequestProvider, private storage : Storage) {
     this.isLoggedIn = false;
   }
-
 }
