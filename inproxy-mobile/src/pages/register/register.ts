@@ -16,12 +16,13 @@ export class RegisterPage {
   constructor(private navCtrl: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController) { }
 
   public register() {
-    this.auth.register(this.registerCredentials).subscribe(success => {
-        if (success) {
+    this.auth.register(this.registerCredentials).subscribe(
+      success => {
+        if (success == true) {
           this.createSuccess = true;
           this.showPopup("Success", "Account created.");
         } else {
-          this.showPopup("Error", "Problem creating account.");
+          this.showPopup("Error", success.);
         }
       },
       error => {

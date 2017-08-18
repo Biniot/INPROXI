@@ -67,13 +67,17 @@ export class AuthServiceProvider {
           last_name: credentials.lastName,
           email: credentials.email,
           password: credentials.password
-        }).then(function (result) {
-          if (result.ok) {
+        }).then(result => {
+          console.log(result);
+          if (result.id) {
             observer.next(true);
-            observer.complete();
           } else {
-            return Observable.throw('Error with API');
+            observer.next(JSON.parse(result._body));
           }
+          observer.complete();
+        }).catch(err => {
+          console.error('error in register : ' + err);
+          observer.next = false;
         });
       });
     }
