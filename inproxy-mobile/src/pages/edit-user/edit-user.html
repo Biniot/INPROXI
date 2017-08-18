@@ -1,0 +1,61 @@
+<!--
+  Generated template for the EditUserPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>edit_user</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="edit-user-content" padding>
+  <div class="edit-user-box">
+    <form (ngSubmit)="editUser()" #registerForm="ngForm">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
+
+            <ion-item>
+              <ion-input type="text" placeholder="FirstName" name="firstname" [(ngModel)]="currentUser.firstName" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="text" placeholder="LastName" name="lastname" [(ngModel)]="currentUser.lastName" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="currentUser.email" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="text" placeholder="Pseudo" name="pseudo" [(ngModel)]="currentUser.pseudo" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="currentUser.password" required></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatar_path}}"/>
+              <ion-icon name="images" (click)="openGallery()"></ion-icon>
+              <p>Choose a Photo</p>
+            </ion-item>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="signup-col">
+          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Register</button>
+        </ion-col>
+      </ion-row>
+
+    </form>
+  </div>
+</ion-content>

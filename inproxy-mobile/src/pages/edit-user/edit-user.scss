@@ -1,29 +1,39 @@
-page-user {
-  .login-content {
+page-edit-user {
+  .edit-user-content {
     background: #56CA96;
 
-    .user-grid {
+    .edit-user-box {
       background: #509287;
       padding: 20px 20px 0px 20px;
       margin-top: 30px;
     }
 
-    .user-row {
+    ion-row {
       align-items: center;
       text-align: center;
-      border: 1px solid #ffffff;
-      margin: 2px;
-      border-radius: 30px !important;
     }
 
-    ion-col {
+    ion-item {
+      border-radius: 30px !important;
       padding-left: 30px !important;
       font-size: 0.9em;
       margin-bottom: 10px;
+      border: 1px solid #ffffff;
+      border-bottom: 0px !important;
       box-shadow: none !important;
     }
 
-    .link-btn {
+    .signup-col {
+      margin: 0px 16px 0px 16px;
+      padding-bottom: 20px;
+    }
+
+    .item-inner {
+      border-bottom-color: #ffffff !important;
+      box-shadow: none !important;
+    }
+
+    .submit-btn {
       background: #51CFB1;
       border-radius: 30px !important;
       border: 1px solid #ffffff;

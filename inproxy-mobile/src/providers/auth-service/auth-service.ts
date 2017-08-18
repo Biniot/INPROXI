@@ -14,11 +14,15 @@ import 'rxjs/Rx';
 */
 
 export class User {
-  name: string;
   email: string;
+  firstName: string;
+  lastName: string;
+  avatar_path: string;
+  pseudo: string;
+  password: string;
 
-  constructor(name: string, email: string) {
-    this.name = name;
+  constructor(lastName: string, email: string) {
+    this.lastName = lastName;
     this.email = email;
   }
 }
@@ -27,6 +31,7 @@ export class User {
 export class AuthServiceProvider {
   currentUser: User;
   isLoggedIn: boolean;
+  isUserLoad: boolean;
 
   public login(credentials) {
     if (credentials.email === undefined || credentials.password === undefined) {
@@ -83,8 +88,83 @@ export class AuthServiceProvider {
     }
   }
 
-  public getUserInfo() : User {
+  public getCurrentUser() : User {
     return this.currentUser;
+  }
+
+  public getUserInfo() {
+    return Observable.create(observer => {
+
+      if (this.isUserLoad) {
+        observer.next(true);
+        observer.complete();
+      }
+      else {
+        // TODO : mettre le bon chemin et arg
+        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT, {
+          email: this.currentUser.email,
+        }).then(function (result) {
+          if (result.ok) {
+            // TODO : A verifier ou son placer les donnees
+            this.currentUser.firstName = result.user.firstName;
+            this.currentUser.lastName = result.user.lastName;
+            this.currentUser.pseudo = result.user.pseudo;
+            this.currentUser.firstName = result.user.firstName;
+            this.isUserLoad = true;
+            // TODO : Return A verifier
+            observer.next(true);
+            observer.complete();
+          } else {
+            return Observable.throw('Error with API');
+          }
+        });
+      }
+    });
+  }
+
+  public editUser(user) {
+    // TODO : A voir undefined ou null
+    if (user.email === undefined && user.password === undefined
+      && user.firstName === undefined && user.lastName === undefined
+      && user.pseudo === undefined) {
+      return Observable.throw('Password and/or email required');
+    } else {
+      return Observable.create(observer => {
+        // TODO : mettre le bon chemin, update API pour stoquer les autres variables si elles ne sont pas null (forcement une non null)
+        this.request.post(API_ADDRESS + VERSION + USERS_ENDPOINT, {
+          first_name: user.first_name != null ? user.first_name : null,
+          last_name: user.last_name != null ? user.last_name : null,
+          email: user.email != null ? user.email : null,
+          password: user.password != null ? user.password : null,
+          pseudo: user.pseudo != null ? user.pseudo : null
+        }).then(function (result) {
+          if (result.ok) {
+            observer.next(true);
+            observer.complete();
+          } else {
+            return Observable.throw('Error with API');
+          }
+        });
+      });
+    }
+  }
+
+  public deleteUser() {
+    // TODO : Check si user connecter
+      return Observable.create(observer => {
+        // TODO : mettre le bon chemin, Est-ce qu'on redemande le mdp sur le delete ?
+        this.request.post(API_ADDRESS + VERSION + USERS_ENDPOINT, {
+          email: this.currentUser.email != null ? this.currentUser.email : null/*,
+          password: user.password != null ? user.password : null,*/
+        }).then(function (result) {
+          if (result.ok) {
+            observer.next(true);
+            observer.complete();
+          } else {
+            return Observable.throw('Error with API');
+          }
+        });
+      });
   }
 
   public logout() {
@@ -97,5 +177,11 @@ export class AuthServiceProvider {
 
   constructor(private request : HttpRequestProvider, private storage : Storage) {
     this.isLoggedIn = false;
+    this.isUserLoad = false;
+    // TODO : A voir undefined ou null
+    this.currentUser.password = null;
+    this.currentUser.pseudo = null;
+    // TODO : getLocal a faire
+    //this.currentUser.avatar_path = ;
   }
 }
