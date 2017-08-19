@@ -83,6 +83,7 @@ export class AuthServiceProvider {
         }).catch(err => {
           console.error('error in register : ' + err);
           observer.next = false;
+          observer.complete();
         });
       });
     }
@@ -178,6 +179,7 @@ export class AuthServiceProvider {
   constructor(private request : HttpRequestProvider, private storage : Storage) {
     this.isLoggedIn = false;
     this.isUserLoad = false;
+    this.currentUser = new User('', '');
     // TODO : A voir undefined ou null
     this.currentUser.password = null;
     this.currentUser.pseudo = null;

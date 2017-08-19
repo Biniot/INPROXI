@@ -12,10 +12,12 @@ import {HomePage} from "../home/home";
  */
 
 @IonicPage()
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
+
 export class LoginPage {
   loading: Loading;
   registerCredentials = {email : '', password: ''};
@@ -31,7 +33,6 @@ export class LoginPage {
     this.showLoading();
     this.auth.login(this.registerCredentials).subscribe(
       allowed => {
-        console.log(allowed);
         if (allowed == true)
           this.navCtrl.setRoot(HomePage);
         else

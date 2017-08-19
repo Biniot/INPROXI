@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../pages/home/home';
 import { RoomsPage } from '../pages/rooms/rooms';
@@ -17,12 +18,20 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  rootPage: any;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage : Storage) {
     this.initializeApp();
+
+    this.storage.get('token').then(res => {
+      console.log(res);
+      if (res != null)
+        this.rootPage = HomePage;
+      else
+        this.rootPage = LoginPage;
+    });
 
     this.pages = [
       { title: 'Home', component: HomePage },

@@ -51,13 +51,8 @@ import { IonicStorageModule } from '@ionic/storage'
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
-<<<<<<< HEAD
     Camera,
-    HttpRequestProvider,
-    NativeStorage
-=======
     HttpRequestProvider
->>>>>>> 2f2674afc083a4a10d4339fad4cc07ba64c5784c
   ]
 })
 export class AppModule {}

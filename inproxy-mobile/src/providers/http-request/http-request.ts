@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 
 /*
   Generated class for the HttpRequestProvider provider.
@@ -15,84 +16,48 @@ export class HttpRequestProvider {
   request : Http;
   data : any;
   private headers : Headers;
+  test = false;
 
-  constructor(public http:Http) {
+  constructor(public http : Http) {
     this.request = http;
   }
 
   public get(address : string, params : any = null) {
-    if (this.data) {
-      return Promise.resolve(this.data);
-    }
 
-    return new Promise(resolve => {
-      this.request
-        .get(address)
-        .map(res => res.json())
-        .subscribe(data => {
-          this.data = data;
-          resolve(this.data);
-        });
-    })
+    return this.request
+      .get(address)
+      .map(res => res.json())
+      .toPromise();
   }
 
   public post(address : string, params : any = null) {
-    if (this.data) {
-      return Promise.resolve(this.data);
-    }
 
-    return new Promise(resolve => {
-      this.headers = new Headers({'Content-Type' : 'application/x-www-form-urlencoded'});
-      let option = new RequestOptions({headers : this.headers});
-      let body = new URLSearchParams();
-      body.set('first_name', params.first_name);
-      body.set('last_name', params.last_name);
-      body.set('email', params.email);
-      body.set('password', params.password);
+    this.headers = new Headers({'Content-Type' : 'application/x-www-form-urlencoded'});
+    let option = new RequestOptions({headers : this.headers});
+    let body = new URLSearchParams();
+    body.set('first_name', params.first_name);
+    body.set('last_name', params.last_name);
+    body.set('email', params.email);
+    body.set('password', params.password);
 
-      this.request
-        .post(address, body, option)
-        .map((res : Response) => res.json())
-        .subscribe(
-          data => {
-            this.data = data;
-            resolve(this.data);
-          },
-          err => {
-            resolve(err);
-          });
-    })
+    return this.request
+      .post(address, body, option)
+      .map((res : Response) => res.json())
+      .toPromise();
   }
 
   public put(address : string, params : any = null) {
-    if (this.data) {
-      return Promise.resolve(this.data);
-    }
 
-    return new Promise(resolve => {
-      this.request
-        .put(address, params)
-        .map(res => res.json())
-        .subscribe(data => {
-          this.data = data;
-          resolve(this.data);
-        });
-    })
+    return this.request
+      .put(address, params)
+      .map(res => res.json())
+      .toPromise();
   }
 
   public del(address : string, params : any = null) {
-    if (this.data) {
-      return Promise.resolve(this.data);
-    }
-
-    return new Promise(resolve => {
-      this.request
-        .delete(address, params)
-        .map(res => res.json())
-        .subscribe(data => {
-          this.data = data;
-          resolve(this.data);
-        });
-    })
+    return this.request
+      .delete(address, params)
+      .map(res => res.json())
+      .toPromise();
   }
 }
