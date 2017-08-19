@@ -179,8 +179,8 @@ export class AuthServiceProvider {
     this.isLoggedIn = false;
     this.isUserLoad = false;
     // TODO : A voir undefined ou null
-    this.currentUser.password = null;
-    this.currentUser.pseudo = null;
+    //this.currentUser.password = null;
+    //this.currentUser.pseudo = null;
     // TODO : getLocal a faire
     //this.currentUser.avatar_path = ;
   }

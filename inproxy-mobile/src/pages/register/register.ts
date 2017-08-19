@@ -18,11 +18,11 @@ export class RegisterPage {
   public register() {
     this.auth.register(this.registerCredentials).subscribe(
       success => {
-        if (success == true) {
+        if (success === true) {
           this.createSuccess = true;
           this.showPopup("Success", "Account created.");
         } else {
-          this.showPopup("Error", success.);
+          this.showPopup("Error", success);
         }
       },
       error => {

@@ -18,6 +18,7 @@ import {EditUserPage} from "../pages/edit-user/edit-user";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage'
+import {NativeStorage} from "@ionic-native/native-storage";
 
 
 @NgModule({
@@ -51,13 +52,10 @@ import { IonicStorageModule } from '@ionic/storage'
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
-<<<<<<< HEAD
     Camera,
     HttpRequestProvider,
-    NativeStorage
-=======
+    NativeStorage,
     HttpRequestProvider
->>>>>>> 2f2674afc083a4a10d4339fad4cc07ba64c5784c
   ]
 })
 export class AppModule {}
