@@ -172,13 +172,8 @@ export class AuthServiceProvider {
   constructor(private request : HttpRequestProvider, private storage : Storage) {
     this.isLoggedIn = false;
     this.isUserLoad = false;
-<<<<<<< HEAD
-    this.currentUser = new User('', '');
-    // TODO : A voir undefined ou null
-=======
     this.currentUser = new User("toto@g.m", "Toto Bouh");
     this.currentUser.avatar_path = null;
->>>>>>> b59571a18e9f1a057d9f22e25c453c0e099413ea
     this.currentUser.password = null;
     // TODO : getLocal a faire avatarpath token id password email
   }
