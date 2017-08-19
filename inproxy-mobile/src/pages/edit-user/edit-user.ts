@@ -21,16 +21,17 @@ export class EditUserPage {
   imageSrc: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private auth: AuthServiceProvider, private alertCtrl: AlertController) {
-    this.auth.getUserInfo().subscribe(success => {
-        if (success) {
-          this.currentUser = this.auth.getCurrentUser();
-        } else {
-          this.showPopup("Error", "Problem retriving all profile's information.");
-        }
-      },
-      error => {
-        this.showPopup("Error", error);
-      });
+    // this.auth.getUserInfo().subscribe(success => {
+    //     if (success) {
+    //       this.currentUser = this.auth.getCurrentUser();
+    //     } else {
+    //       this.showPopup("Error", "Problem retriving all profile's information.");
+    //     }
+    //   },
+    //   error => {
+    //     this.showPopup("Error", error);
+    //   });
+    this.currentUser = this.auth.getCurrentUser();
     this.imageSrc = null;
   }
 

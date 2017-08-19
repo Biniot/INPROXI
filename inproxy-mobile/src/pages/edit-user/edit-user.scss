@@ -1,9 +1,27 @@
 page-edit-user {
   .edit-user-content {
-    background: #56CA96;
+
+    @keyframes animatedBackground {
+      0% { background-position: 0 0; }
+      50% { background-position: 100% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    @-webkit-keyframes animatedBackground {
+      0% { background-position: 0 0; }
+      50% { background-position: 100% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    background: url("../../assets/img/background.PNG") repeat-x 0 0;
+    background-size:cover;
+    -webkit-animation:animatedBackground 80s linear infinite;
+    -moz-animation:animatedBackground 80s linear infinite;
+    -ms-animation:animatedBackground 80s linear infinite;
+    -o-animation:animatedBackground 80s linear infinite;
+    animation:animatedBackground 80s linear infinite;
 
     .edit-user-box {
-      background: #509287;
       padding: 20px 20px 0px 20px;
       margin-top: 30px;
     }

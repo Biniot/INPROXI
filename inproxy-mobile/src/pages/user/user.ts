@@ -16,19 +16,20 @@ import {AuthServiceProvider, User} from "../../providers/auth-service/auth-servi
 export class UserPage {
   currentUser: User;
   deleteUserSucces = false;
-
+  // check home pour avatar_path
   constructor(public navCtrl: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController) {
-    // TODO : Check si c'est le user connecter; Si pas le user (le user regarde un profile d'amis).; Si pas le user retirer les btn de la view
-    this.auth.getUserInfo().subscribe(success => {
-        if (success) {
-          this.currentUser = this.auth.getCurrentUser();
-        } else {
-          this.showPopup("Error", "Problem retriving all profile's information.");
-        }
-      },
-      error => {
-        this.showPopup("Error", error);
-      });
+    // TODO : Check si c'est le user connecter; Si pas le user (le user regarde un profile d'amis).; Si pas le user retirer les btn de la view pour gerer le viez friend
+    // this.auth.getUserInfo().subscribe(success => {
+    //     if (success) {
+    //       this.currentUser = this.auth.getCurrentUser();
+    //     } else {
+    //       this.showPopup("Error", "Problem retriving all profile's information.");
+    //     }
+    //   },
+    //   error => {
+    //     this.showPopup("Error", error);
+    //   });
+    this.currentUser = auth.getCurrentUser();
   }
 
   public editUserNav() {

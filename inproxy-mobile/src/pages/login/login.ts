@@ -28,6 +28,7 @@ export class LoginPage {
   }
 
   public login() {
+    this.navCtrl.setRoot(HomePage);
     this.showLoading();
     this.auth.login(this.registerCredentials).subscribe(
       allowed => {
