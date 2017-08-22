@@ -1,5 +1,5 @@
 page-user {
-  .login-content {
+  .user-content  {
 
     @keyframes animatedBackground {
       0% { background-position: 0 0; }
@@ -21,23 +21,31 @@ page-user {
     -o-animation:animatedBackground 80s linear infinite;
     animation:animatedBackground 80s linear infinite;
 
-    .user-grid {
+    .user-box {
+      background-color: rgba(123, 67, 151, 0.8);
       padding: 20px 20px 0px 20px;
       margin-top: 30px;
     }
 
-    .user-row {
+    ion-row {
       align-items: center;
       text-align: center;
-      border: 1px solid #ffffff;
-      margin: 2px;
-      border-radius: 30px !important;
     }
 
-    ion-col {
+    ion-item {
       padding-left: 30px !important;
-      font-size: 0.9em;
       margin-bottom: 10px;
+      border-bottom: 0px !important;
+      box-shadow: black !important;
+    }
+
+    .action-col {
+      margin: 0px 16px 0px 16px;
+      padding-bottom: 20px;
+    }
+
+    .item-inner {
+      border-bottom-color: #7B4397 !important;
       box-shadow: none !important;
     }
 

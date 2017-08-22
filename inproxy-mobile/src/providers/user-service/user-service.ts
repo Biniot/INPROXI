@@ -1,0 +1,105 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { HttpRequestProvider } from '../http-request/http-request';
+import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT } from '../constants/constants';
+import { Storage } from '@ionic/storage';
+import 'rxjs/add/operator/map';
+import 'rxjs/Rx';
+//import {AuthServiceProvider} from "../auth-service/auth-service";
+/*
+  Generated class for the UserServiceProvider provider.
+
+  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
+  for more info on providers and Angular DI.
+*/
+
+export class User {
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatar_path: string;
+  //pseudo: string;
+  token: string;
+  password: string;
+  id: any;
+
+  constructor(lastName: string, email: string) {
+    this.lastName = lastName;
+    this.email = email;
+  }
+}
+
+@Injectable()
+export class UserServiceProvider {
+  isUserLoad: boolean;
+
+  constructor(private request : HttpRequestProvider, private storage : Storage, /*private auth: AuthServiceProvider*/) {
+    // TODO : utiliser le storage pour load avatar_path et autre a voir token id ???
+    // TODO : Refactoriser les providers
+    this.isUserLoad = false;
+  }
+
+  public getUserInfo() {
+    return Observable.create(observer => {
+      if (this.isUserLoad) {
+        observer.next(true);
+        observer.complete();
+      }
+      else {
+        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT, {
+          /*id: this.auth.currentUser.id,*/
+        }).then(function (result) {
+          if (result.ok) {
+            this.currentUser.firstName = result.user.first_name;
+            this.currentUser.lastName = result.user.last_name;
+            //this.currentUser.pseudo = result.user.pseudo;
+            this.currentUser.email = result.user.email;
+            this.currentUser.token = result.user.token;
+            this.isUserLoad = true;
+            observer.next(true);
+            observer.complete();
+          } else {
+            return Observable.throw('Error with API');
+          }
+        });
+      }
+    });
+  }
+
+  public editUser(user) {
+    return Observable.create(observer => {
+      this.request.put(API_ADDRESS + VERSION + USERS_ENDPOINT, {
+        /*password: this.auth.currentUser.password,
+        id: this.auth.currentUser.id,*/
+        first_name: user.first_name != null ? user.first_name : null,
+        last_name: user.last_name != null ? user.last_name : null,
+        email: user.email != null ? user.email : null,
+        newPassword: user.password != null ? user.password : null,
+        //pseudo: user.pseudo != null ? user.pseudo : null
+      }).then(function (result) {
+        if (result.ok) {
+          observer.next(true);
+          observer.complete();
+        } else {
+          return Observable.throw('Error with API');
+        }
+      });
+    });
+  }
+
+  public deleteUser() {
+    return Observable.create(observer => {
+      this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT, {
+        /*id: this.auth.currentUser.id,
+        password: this.auth.currentUser.password*/
+      }).then(function (result) {
+        if (result.ok) {
+          observer.next(true);
+          observer.complete();
+        } else {
+          return Observable.throw('Error with API');
+        }
+      });
+    });
+  }
+}

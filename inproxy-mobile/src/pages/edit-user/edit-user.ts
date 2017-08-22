@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
-import {AuthServiceProvider, User} from "../../providers/auth-service/auth-service";
+import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
+import {User, UserServiceProvider} from "../../providers/user-service/user-service";
 
 /**
  * Generated class for the EditUserPage page.
@@ -15,13 +16,15 @@ import {AuthServiceProvider, User} from "../../providers/auth-service/auth-servi
   providers: [Camera],
   templateUrl: 'edit-user.html',
 })
+
 export class EditUserPage {
   currentUser: User;
   editUserSucces = false;
   imageSrc: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private auth: AuthServiceProvider, private alertCtrl: AlertController) {
-    // this.auth.getUserInfo().subscribe(success => {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private auth: AuthServiceProvider,
+              private alertCtrl: AlertController, private userService: UserServiceProvider) {
+    // this.userService.getUserInfo().subscribe(success => {
     //     if (success) {
     //       this.currentUser = this.auth.getCurrentUser();
     //     } else {
@@ -40,7 +43,7 @@ export class EditUserPage {
       // TODO : save local a faire
       //this.currentUser.avatar_path = this.imageSrc;
     }
-    this.auth.editUser(this.currentUser).subscribe(success => {
+    this.userService.editUser(this.currentUser).subscribe(success => {
         if (success) {
           this.editUserSucces = true;
           this.showPopup("Success", "Profile edited.");

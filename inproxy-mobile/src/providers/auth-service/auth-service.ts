@@ -5,6 +5,7 @@ import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT } from '../constant
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
+import {User} from "../user-service/user-service";
 
 /*
   Generated class for the AuthServiceProvider provider.
@@ -13,27 +14,10 @@ import 'rxjs/Rx';
   for more info on providers and Angular DI.
 */
 
-export class User {
-  email: string;
-  firstName: string;
-  lastName: string;
-  avatar_path: string;
-  pseudo: string;
-  token: string;
-  password: string;
-  id: any;
-
-  constructor(lastName: string, email: string) {
-    this.lastName = lastName;
-    this.email = email;
-  }
-}
-
 @Injectable()
 export class AuthServiceProvider {
   currentUser: User;
   isLoggedIn: boolean;
-  isUserLoad: boolean;
 
   public login(credentials) {
     if (credentials.email === undefined || credentials.password === undefined) {
@@ -95,72 +79,6 @@ export class AuthServiceProvider {
     return this.currentUser;
   }
 
-  public getUserInfo() {
-    return Observable.create(observer => {
-
-      if (this.isUserLoad) {
-        observer.next(true);
-        observer.complete();
-      }
-      else {
-        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT, {
-          id: this.currentUser.id,
-        }).then(function (result) {
-          if (result.ok) {
-            this.currentUser.firstName = result.user.first_name;
-            this.currentUser.lastName = result.user.last_name;
-            //this.currentUser.pseudo = result.user.pseudo;
-            this.currentUser.email = result.user.email;
-            this.currentUser.token = result.user.token;
-            this.isUserLoad = true;
-            observer.next(true);
-            observer.complete();
-          } else {
-            return Observable.throw('Error with API');
-          }
-        });
-      }
-    });
-  }
-
-  public editUser(user) {
-    return Observable.create(observer => {
-      this.request.put(API_ADDRESS + VERSION + USERS_ENDPOINT, {
-        password: this.currentUser.password,
-        id: this.currentUser.id,
-        first_name: user.first_name != null ? user.first_name : null,
-        last_name: user.last_name != null ? user.last_name : null,
-        email: user.email != null ? user.email : null,
-        newPassword: user.password != null ? user.password : null,
-        //pseudo: user.pseudo != null ? user.pseudo : null
-      }).then(function (result) {
-        if (result.ok) {
-          observer.next(true);
-          observer.complete();
-        } else {
-          return Observable.throw('Error with API');
-        }
-      });
-    });
-  }
-
-  public deleteUser() {
-    // TODO : Check si user connecter
-      return Observable.create(observer => {
-        this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT, {
-          id: this.currentUser.id,
-          password: this.currentUser.password
-        }).then(function (result) {
-          if (result.ok) {
-            observer.next(true);
-            observer.complete();
-          } else {
-            return Observable.throw('Error with API');
-          }
-        });
-      });
-  }
-
   public logout() {
     return Observable.create(observer => {
       this.currentUser = null;
@@ -171,10 +89,7 @@ export class AuthServiceProvider {
 
   constructor(private request : HttpRequestProvider, private storage : Storage) {
     this.isLoggedIn = false;
-    this.isUserLoad = false;
     this.currentUser = new User("toto@g.m", "Toto Bouh");
-    this.currentUser.avatar_path = null;
-    this.currentUser.password = null;
     // TODO : getLocal a faire avatarpath token id password email
   }
 }

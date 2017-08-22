@@ -17,29 +17,40 @@
 
 
 <ion-content class="user-content" padding>
-  <ion-grid class="user-grid">
+  <div class="user-box">
+
+
     <ion-row>
-      <ion-col col-12><img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatar_path}}"/></ion-col>
-    </ion-row>
-    <ion-row class="user-row">
-      <ion-col col-4>First name :</ion-col>
-      <ion-col col-8 >{{currentUser.firstName}}</ion-col>
-    </ion-row>
-    <ion-row class="user-row">
-      <ion-col col-4>last name :</ion-col>
-      <ion-col col-8 >{{currentUser.lastName}}</ion-col>
-    </ion-row>
-    <ion-row class="user-row">
-      <ion-col col-4>Email :</ion-col>
-      <ion-col col-8 >{{currentUser.email}}</ion-col>
-    </ion-row>
-    <ion-row class="user-row">
-      <ion-col col-4>Pseudo :</ion-col>
-      <ion-col col-8 >{{currentUser.pseudo}}</ion-col>
+      <ion-col>
+        <ion-list inset>
+
+          <ion-item>
+            <ion-col col-12><img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatar_path}}"/></ion-col>
+          </ion-item>
+
+          <ion-item>
+            <ion-col col-4>First name :</ion-col>
+            <ion-col col-8 >{{currentUser.firstName}}</ion-col>
+          </ion-item>
+
+          <ion-item>
+            <ion-col col-4>last name :</ion-col>
+            <ion-col col-8 >{{currentUser.lastName}}</ion-col>
+          </ion-item>
+
+          <ion-item>
+            <ion-col col-4>Email :</ion-col>
+            <ion-col col-8 >{{currentUser.email}}</ion-col>
+          </ion-item>
+
+        </ion-list>
+      </ion-col>
     </ion-row>
     <ion-row>
-      <button ion-button (click)="editUserNav()">Edit</button>
-      <button ion-button (click)="deleteUser()">Delete account</button>
+      <ion-col class="action-col">
+        <button ion-button class="link-btn" (click)="editUserNav()">Edit</button>
+        <button ion-button class="link-btn" (click)="deleteUser()">Delete account</button>
+      </ion-col>
     </ion-row>
-  </ion-grid>
+  </div>
 </ion-content>

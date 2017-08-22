@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {AuthServiceProvider, User} from "../../providers/auth-service/auth-service";
+import {User, UserServiceProvider} from "../../providers/user-service/user-service";
+import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
+import { EditUserPage } from '../edit-user/edit-user';
 
 /**
  * Generated class for the UserPage page.
- *
+ * C:\Program Files\MongoDB\Server\3.4\bin
  * See http://ionicframework.com/docs/components/#navigation for more info
  * on Ionic pages and navigation.
  */
@@ -16,10 +18,11 @@ import {AuthServiceProvider, User} from "../../providers/auth-service/auth-servi
 export class UserPage {
   currentUser: User;
   deleteUserSucces = false;
-  // check home pour avatar_path
-  constructor(public navCtrl: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController) {
+
+  constructor(public navCtrl: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController,
+              private userService: UserServiceProvider) {
     // TODO : Check si c'est le user connecter; Si pas le user (le user regarde un profile d'amis).; Si pas le user retirer les btn de la view pour gerer le viez friend
-    // this.auth.getUserInfo().subscribe(success => {
+    // this.userService.getUserInfo().subscribe(success => {
     //     if (success) {
     //       this.currentUser = this.auth.getCurrentUser();
     //     } else {
@@ -38,10 +41,10 @@ export class UserPage {
 
   public deleteUser(){
     // TODO : pop-up de confirmation
-    this.auth.deleteUser().subscribe(success => {
+    this.userService.deleteUser().subscribe(success => {
         if (success) {
           this.deleteUserSucces = true;
-          // TODO : Clear currentUser ?
+          // TODO : Clear local data
           this.showPopup("Succes", "Succefully delete user.");
         } else {
           this.showPopup("Error", "Problem deleting user.");
@@ -61,7 +64,6 @@ export class UserPage {
           text: 'OK',
           handler: () => {
             if (this.deleteUserSucces) {
-              // TODO : verifier retour qu debut de lapp
               this.navCtrl.popToRoot();
             }
           }
