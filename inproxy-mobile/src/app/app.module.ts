@@ -19,6 +19,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage'
 import {NativeStorage} from "@ionic-native/native-storage";
+import { FriendServiceProvider } from '../providers/friend-service/friend-service';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import {NativeStorage} from "@ionic-native/native-storage";
     Camera,
     HttpRequestProvider,
     NativeStorage,
-    UserServiceProvider
+    UserServiceProvider,
+    FriendServiceProvider
   ]
 })
 export class AppModule {}
