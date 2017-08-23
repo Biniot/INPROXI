@@ -56,6 +56,7 @@ export class UserServiceProvider {
             this.currentUser.email = result.user.email;
             this.currentUser.token = result.user.token;
             this.isUserLoad = true;
+            // TODO : faut-il load ici les amis ou lors de l'accès à la page amis ?
             observer.next(true);
             observer.complete();
           } else {
@@ -63,6 +64,58 @@ export class UserServiceProvider {
           }
         });
       }
+    });
+  }
+  /* Potentiellement useless
+  public getUserInfoById(id) {
+    return Observable.create(observer => {
+        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT, {
+          /*id: id,*/
+        }).then(function (result) {
+          if (result.ok) {
+            // TODO : A réfléchir comment et quand stocker les amis
+            //result.user type : User
+            observer.next(true);
+            observer.complete();
+          } else {
+            return Observable.throw('Error with API');
+          }
+        });
+    });
+  }
+  */
+  // TODO : Si id est pas une string le convertir
+  public getFriendRequests() {
+    return Observable.create(observer => {
+        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + id + GET_FRIENDREQUEST_ENDPOINT, {
+          /*id: this.auth.currentUser.id,*/
+        }).then(function (result) {
+          if (result.ok) {
+            //result.frs.message ClassOf frs {message: string, from: Inconu(id), to: Inconu(id) }
+            observer.next(true);
+            observer.complete();
+          } else {
+            return Observable.throw('Error with API');
+          }
+        });
+    });
+  }
+  
+  // TODO : Si id est pas une string le convertir
+  public getFriends() {
+    return Observable.create(observer => {
+        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + id + FRIEND_ENDPOINT, {
+          /*id: this.auth.currentUser.id,*/
+        }).then(function (result) {
+          if (result.ok) {
+            // TODO : A réfléchir comment et quand stocker les amis
+            //result.friends type : ArrayOf { User }
+            observer.next(true);
+            observer.complete();
+          } else {
+            return Observable.throw('Error with API');
+          }
+        });
     });
   }
 
