@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
-import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT } from '../constants/constants';
+import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT, GET_FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT } from '../constants/constants';
 import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
@@ -33,7 +33,7 @@ export class User {
 export class UserServiceProvider {
   isUserLoad: boolean;
 
-  constructor(private request : HttpRequestProvider, private storage : Storage, /*private auth: AuthServiceProvider*/) {
+  constructor(private request : HttpRequestProvider, private storage : Storage/*, private auth: AuthServiceProvider*/) {
     // TODO : utiliser le storage pour load avatar_path et autre a voir token id ???
     // TODO : Refactoriser les providers
     this.isUserLoad = false;
@@ -71,21 +71,21 @@ export class UserServiceProvider {
     return Observable.create(observer => {
         this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT, {
           /*id: id,*/
-        }).then(function (result) {
-          if (result.ok) {
-            // TODO : A réfléchir comment et quand stocker les amis
-            //result.user type : User
-            observer.next(true);
-            observer.complete();
-          } else {
-            return Observable.throw('Error with API');
-          }
-        });
-    });
-  }
-  */
+  //       }).then(function (result) {
+  //         if (result.ok) {
+  //           // TODO : A réfléchir comment et quand stocker les amis
+  //           //result.user type : User
+  //           observer.next(true);
+  //           observer.complete();
+  //         } else {
+  //           return Observable.throw('Error with API');
+  //         }
+  //       });
+  //   });
+  // }
+  // */
   // TODO : Si id est pas une string le convertir
-  public getFriendRequests() {
+  public getFriendRequests(id : string) {
     return Observable.create(observer => {
         this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + id + GET_FRIENDREQUEST_ENDPOINT, {
           /*id: this.auth.currentUser.id,*/
@@ -100,9 +100,9 @@ export class UserServiceProvider {
         });
     });
   }
-  
+
   // TODO : Si id est pas une string le convertir
-  public getFriends() {
+  public getFriends(id : string) {
     return Observable.create(observer => {
         this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + id + FRIEND_ENDPOINT, {
           /*id: this.auth.currentUser.id,*/
