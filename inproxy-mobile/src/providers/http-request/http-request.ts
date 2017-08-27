@@ -35,10 +35,9 @@ export class HttpRequestProvider {
     this.headers = new Headers({'Content-Type' : 'application/x-www-form-urlencoded'});
     let option = new RequestOptions({headers : this.headers});
     let body = new URLSearchParams();
-    body.set('first_name', params.first_name);
-    body.set('last_name', params.last_name);
-    body.set('email', params.email);
-    body.set('password', params.password);
+    for (let key in params) {
+      body.set(key, params[key]);
+    }
 
     return this.request
       .post(address, body, option)

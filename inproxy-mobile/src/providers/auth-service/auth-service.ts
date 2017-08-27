@@ -46,6 +46,10 @@ export class AuthServiceProvider {
       })
     }
   }
+  
+  public anonymousLogin() {
+    
+  }
 
   public register(credentials) {
     if (credentials.email === undefined || credentials.password === undefined ||

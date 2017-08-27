@@ -43,6 +43,12 @@ export class LoginPage {
       });
   }
 
+  public anonymousLogin() {
+    this.showLoading();
+    this.auth.anonymousLogin();
+    this.navCtrl.setRoot(HomePage);
+  }
+
   showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Please wait...',
