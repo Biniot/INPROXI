@@ -30,7 +30,8 @@ export class LoginPage {
   }
 
   public login() {
-    this.showLoading();
+    this.navCtrl.setRoot(HomePage);
+    /*this.showLoading();
     this.auth.login(this.registerCredentials).subscribe(
       allowed => {
         if (allowed == true)
@@ -40,7 +41,7 @@ export class LoginPage {
       },
       error => {
         this.showError(error);
-      });
+      });*/
   }
 
   showLoading() {

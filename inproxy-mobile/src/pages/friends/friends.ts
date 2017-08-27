@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+//import {UserServiceProvider} from "../../providers/user-service/user-service";
+//import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 
 /**
  * Generated class for the FriendsPage page.
@@ -14,23 +16,64 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class FriendsPage {
 
-  friendsList: Array<{name: string, message: string}>;
+  friendsList: Array<{name: string}>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController/*, private userService: UserServiceProvider, private auth: AuthServiceProvider*/) {
     this.friendsList = [
-      {name: 'Obi', message: 'Hello there !'},
-      {name: 'Ani', message: "Don't under estimate my powers"},
-      {name: 'Padme', message: 'Its a path I cant follow you on'},
-      {name: 'Yoda', message: 'Party we must'},
-      {name: 'Luke', message: 'This fight with father went out of hand'},
-      {name: 'Han', message: 'I know'}
+      {name: 'Obi'},
+      {name: 'Ani'},
+      {name: 'Padme'},
+      {name: 'Yoda'},
+      {name: 'Luke'},
+      {name: 'Han'}
     ]
+    // userService.getFriends().subscribe(success => {
+    //     if (success) {
+    //       //let friendList = this.auth.currentUser.friends;
+    //       for (let friend in this.auth.currentUser.friends) {
+    //         var friendToList = {
+    //           name : friend.firstName + ' ' + friend.lastName,
+    //         }
+    //         this.friendsList.push(friendToList);
+    //       }
+    //
+    //     } else {
+    //       this.showPopup("Error", "Problem retriving friends.");
+    //     }
+    //   },
+    //   error => {
+    //     this.showPopup("Error", error);
+    //   });
+  }
+
+  public addFriendRequest() {
+    this.navCtrl.push('AddFriendRequestPage');
+  }
+
+  public checkFriendRequest() {
+    this.navCtrl.push('CheckFriendRequestPage');
+  }
+
+  showPopup(title, text) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: text,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            // if (this.deleteUserSucces) {
+            //   this.navCtrl.popToRoot();
+            // }
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FriendsPage');
   }
-
-
 
 }
