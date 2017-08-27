@@ -1,0 +1,37 @@
+/!\ la compilation est prevue pour faire une appli Android et iOS.
+cela ne peut pas marcher sur navigateur (cela utilise toute une autre serie de fonctions)
+
+CLEF API MAPS	= AIzaSyApH4lmeXaxqYDVxRreSaFdlF20Kdy8-6c
+(j'ai genere plusieurs clefs mais une seule suffit)
+
+je n'ai pas encore gere l'integration avec le reste du projet, pour l'instant pour tester il faut faire le suivant (creer un projet vide):
+
+
+
+
+$> ionic start [maps] blank
+
+$> cd [maps]
+
+$> ionic cordova plugin add https://github.com/mapsplugin/cordova-plugin-googlemaps#multiple_maps --variable API_KEY_FOR_ANDROID="AIzaSyApH4lmeXaxqYDVxRreSaFdlF20Kdy8-6c" --variable API_KEY_FOR_IOS="AIzaSyApH4lmeXaxqYDVxRreSaFdlF20Kdy8-6c"
+
+$> npm install --save @ionic-native/google-maps
+
+$> ionic cordova plugin add cordova-plugin-geolocation
+
+$> npm install --save @ionic-native/geolocation
+
+
+
+- placer le fichier "index.html" dans le dossier "./src/"
+
+- placer le "package.json" a la racine du projet
+
+- placer les fichiers "home/home.html", "home/home.scss", "home/home.ts" dans "./src/pages/home/" 
+
+
+
+$> npm install
+
+$> ionic cordova run android
+

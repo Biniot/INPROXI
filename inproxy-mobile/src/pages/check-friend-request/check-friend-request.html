@@ -1,5 +1,5 @@
 <!--
-  Generated template for the FriendsPage page.
+  Generated template for the CheckFriendRequestPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -10,26 +10,26 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Friends</ion-title>
+    <ion-title>Check request</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
   <ion-row>
     <ion-col class="action-col">
-      <button ion-button class="link-btn" (click)="addFriendRequest()">Add a friend</button>
-      <button ion-button class="link-btn" (click)="checkFriendRequest()">Check your request</button>
+
     </ion-col>
   </ion-row>
   <ion-list>
-    <ion-item *ngFor="let friend of friendsList">
+    <ion-item *ngFor="let friend of friendRequestList">
       <ion-avatar item-start>
         <img src="../../assets/img/avatar.png">
       </ion-avatar>
       <h2>{{friend.name}}</h2>
-      <!--<p>{{friend.message}}</p>-->
+      <p>{{friend.message}}</p>
+      <button ion-button color="danger" (click)="manageFriendRequest(friend.id, false)">Refuse</button>
+      <button ion-button color="primary" (click)="manageFriendRequest(friend.id, true)">Accept</button>
     </ion-item>
   </ion-list>
 </ion-content>

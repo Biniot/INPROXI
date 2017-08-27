@@ -41,18 +41,18 @@ export class UserPage {
 
   public deleteUser(){
     // TODO : pop-up de confirmation
-    this.userService.deleteUser().subscribe(success => {
-        if (success) {
-          this.deleteUserSucces = true;
-          // TODO : Clear local data
-          this.showPopup("Succes", "Succefully delete user.");
-        } else {
-          this.showPopup("Error", "Problem deleting user.");
-        }
-      },
-      error => {
-        this.showPopup("Error", error);
-      });
+    // this.userService.deleteUser().subscribe(success => {
+    //     if (success) {
+    //       this.deleteUserSucces = true;
+    //       // TODO : Clear local data
+    //       this.showPopup("Succes", "Succefully delete user.");
+    //     } else {
+    //       this.showPopup("Error", "Problem deleting user.");
+    //     }
+    //   },
+    //   error => {
+    //     this.showPopup("Error", error);
+    //   });
   }
 
   showPopup(title, text) {

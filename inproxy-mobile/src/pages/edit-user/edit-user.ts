@@ -39,21 +39,21 @@ export class EditUserPage {
   }
 
   public editUser() {
-    if (this.imageSrc != null) {
-      // TODO : save local a faire
-      //this.currentUser.avatar_path = this.imageSrc;
-    }
-    this.userService.editUser(this.currentUser).subscribe(success => {
-        if (success) {
-          this.editUserSucces = true;
-          this.showPopup("Success", "Profile edited.");
-        } else {
-          this.showPopup("Error", "Problem editing profile.");
-        }
-      },
-      error => {
-        this.showPopup("Error", error);
-      });
+    // if (this.imageSrc != null) {
+    //   // TODO : save local a faire
+    //   //this.currentUser.avatar_path = this.imageSrc;
+    // }
+    // this.userService.editUser(this.currentUser).subscribe(success => {
+    //     if (success) {
+    //       this.editUserSucces = true;
+    //       this.showPopup("Success", "Profile edited.");
+    //     } else {
+    //       this.showPopup("Error", "Problem editing profile.");
+    //     }
+    //   },
+    //   error => {
+    //     this.showPopup("Error", error);
+    //   });
   }
 
   cameraOptions = {
