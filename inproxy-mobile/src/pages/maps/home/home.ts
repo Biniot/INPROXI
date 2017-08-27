@@ -66,14 +66,14 @@ export class HomePage {
 
 
 //Moves the camera to any location
-  moveCamera(loc: LatLng){
-     let options: CameraPosition = {
-        //specify center of map
-        target: loc,
-        zoom: 15,
-        tilt: 10
-      }
-      this.map.moveCamera(options)
+  moveCamera(loc : LatLng){
+     // let options : CameraPosition = {
+     //    //specify center of map
+     //    target: loc,
+     //    zoom: 15,
+     //    tilt: 10
+     //  };
+     //  this.map.moveCamera(options)
   }
 
   //Adds a marker to the map
