@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { HomePage } from '../pages/home/home';
 import { RoomsPage } from '../pages/rooms/rooms';
 import { UserPage } from '../pages/user/user';
+import { MapsPage } from '../pages/maps/maps';
 import { FriendsPage } from '../pages/friends/friends';
 import { LoginPage } from '../pages/login/login';
 
@@ -36,6 +37,7 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'Rooms', component: RoomsPage },
+      { title: 'Maps', component: MapsPage },
       { title: 'Friends', component: FriendsPage },
       { title: 'User', component: UserPage }
     ];
@@ -54,6 +56,6 @@ export class MyApp {
   }
 
   logout() {
-    
+
   }
 }

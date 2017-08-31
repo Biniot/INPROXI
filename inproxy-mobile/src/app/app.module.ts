@@ -11,6 +11,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { RoomsPage } from '../pages/rooms/rooms';
+import { MapsPage } from '../pages/maps/maps';
 import { UserPage } from '../pages/user/user';
 import { FriendsPage } from '../pages/friends/friends';
 import { LoginPage } from '../pages/login/login';
@@ -28,6 +29,7 @@ import { FriendServiceProvider } from '../providers/friend-service/friend-servic
     HomePage,
     UserPage,
     RoomsPage,
+    MapsPage,
     FriendsPage,
     LoginPage
   ],
@@ -43,6 +45,7 @@ import { FriendServiceProvider } from '../providers/friend-service/friend-servic
     HomePage,
     UserPage,
     RoomsPage,
+    MapsPage,
     FriendsPage,
     LoginPage,
   ],
