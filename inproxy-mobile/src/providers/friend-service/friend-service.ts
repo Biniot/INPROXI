@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
 import {API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT, FRIENDREQUEST_ENDPOINT} from '../constants/constants';
-import { Storage } from '@ionic/storage';
+
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 //import {UserServiceProvider} from "../user-service/user-service";
@@ -17,7 +17,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class FriendServiceProvider {
   //friendList: any;
-  constructor(private request : HttpRequestProvider, private storage : Storage/*, private auth: AuthServiceProvider, private userService: UserServiceProvider*/) {
+  constructor(private request : HttpRequestProvider/*, private auth: AuthServiceProvider, private userService: UserServiceProvider*/) {
     //this.friendList = null;
   }
 

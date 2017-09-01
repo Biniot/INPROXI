@@ -1,13 +1,29 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
+import { HttpRequestProvider } from '../../providers/http-request/http-request';
+import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT } from '../../providers/constants/constants';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController) {
+  public testRequest() {
+
+    this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {password: 'plop'})
+      .then(
+        result => {
+          console.log('Success');
+          console.log(result);
+        },
+        err => {
+          console.log('Error');
+          console.error(err);
+        });
   }
 
+  constructor(public navCtrl: NavController, private request : HttpRequestProvider) {
+  }
 }

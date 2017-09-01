@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, AlertController, LoadingController
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import {HomePage} from "../home/home";
 
-
 /**
  * Generated class for the LoginPage page.
  *

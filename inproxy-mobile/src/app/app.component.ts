@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../pages/home/home';
 import { RoomsPage } from '../pages/rooms/rooms';
@@ -22,17 +21,14 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private storage : Storage) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
-    this.storage.get('token').then(res => {
-      console.log(res);
-      if (res != null)
-        this.rootPage = HomePage;
-      else
-        this.rootPage = LoginPage;
-    });
-
+    if (localStorage.getItem('token') != null)
+      this.rootPage = HomePage;
+    else
+      this.rootPage = LoginPage;
+    
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'Rooms', component: RoomsPage },
@@ -54,6 +50,6 @@ export class MyApp {
   }
 
   logout() {
-    
+
   }
 }

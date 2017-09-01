@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
 import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT, GET_FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT } from '../constants/constants';
-import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 //import {AuthServiceProvider} from "../auth-service/auth-service";
@@ -36,7 +35,7 @@ export class UserServiceProvider {
   isUserLoad: boolean;
   iSFriendLoad: boolean;
 
-  constructor(private request : HttpRequestProvider, private storage : Storage/*, private auth: AuthServiceProvider*/) {
+  constructor(private request : HttpRequestProvider/*, private auth: AuthServiceProvider*/) {
     // TODO : utiliser le storage pour load avatar_path et autre a voir token id ???
     // TODO : Refactoriser les providers
     this.isUserLoad = false;

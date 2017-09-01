@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
 import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT } from '../constants/constants';
-import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 import {User} from "../user-service/user-service";
@@ -30,10 +29,12 @@ export class AuthServiceProvider {
         }).then(result => {
           this.isLoggedIn = result.token ? true : false;
           if (this.isLoggedIn) {
-            this.storage.set("token", result.token).then(
-              () => console.log('Success'),
-              error =>  console.error('Error in storage', error)
-            );
+
+            console.log(result);
+
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('userId', result.id);
+
             observer.next(true);
           } else
             observer.next(JSON.parse(result._body));
@@ -46,9 +47,9 @@ export class AuthServiceProvider {
       })
     }
   }
-  
+
   public anonymousLogin() {
-    
+
   }
 
   public register(credentials) {
@@ -63,7 +64,6 @@ export class AuthServiceProvider {
           email: credentials.email,
           password: credentials.password
         }).then(result => {
-          console.log(result);
           if (result.id) {
             observer.next(true);
           } else {
@@ -91,7 +91,7 @@ export class AuthServiceProvider {
     })
   }
 
-  constructor(private request : HttpRequestProvider, private storage : Storage) {
+  constructor(private request : HttpRequestProvider) {
     this.isLoggedIn = false;
     this.currentUser = new User("toto@g.m", "Toto Bouh");
     // TODO : getLocal a faire avatarpath token id password email

@@ -14,49 +14,73 @@ import 'rxjs/add/operator/toPromise';
 export class HttpRequestProvider {
 
   request : Http;
-  data : any;
   private headers : Headers;
-  test = false;
+  private searchParams : URLSearchParams;
 
   constructor(public http : Http) {
     this.request = http;
   }
 
+  private createHeader() {
+    let token = localStorage.getItem('token');
+    this.headers = new Headers();
+    this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    if (token != null)
+      this.headers.append('Authorization', token);
+  }
+
+  private createSearchParams (params : any) {
+    this.searchParams = new URLSearchParams();
+    for (let key in params) {
+      this.searchParams.set(key, params[key]);
+    }
+  }
+
   public get(address : string, params : any = null) {
+    if (params != null)
+      this.createSearchParams(params);
+    this.createHeader();
+    let option = new RequestOptions({headers : this.headers, search: this.searchParams});
 
     return this.request
-      .get(address)
-      .map(res => res.json())
+      .get(address, option)
+      .map((res : Response) => res.json())
       .toPromise();
   }
 
   public post(address : string, params : any = null) {
-
-    this.headers = new Headers({'Content-Type' : 'application/x-www-form-urlencoded'});
+    this.createHeader();
+    if (params != null)
+      this.createSearchParams(params);
     let option = new RequestOptions({headers : this.headers});
-    let body = new URLSearchParams();
-    for (let key in params) {
-      body.set(key, params[key]);
-    }
 
     return this.request
-      .post(address, body, option)
+      .post(address, this.searchParams, option)
       .map((res : Response) => res.json())
       .toPromise();
   }
 
   public put(address : string, params : any = null) {
+    this.createHeader();
+    if (params != null)
+      this.createSearchParams(params);
+    let option = new RequestOptions({headers : this.headers});
 
     return this.request
-      .put(address, params)
-      .map(res => res.json())
+      .put(address, this.searchParams, option)
+      // .map((res : Response) => res.json())
       .toPromise();
   }
 
   public del(address : string, params : any = null) {
+    this.createHeader();
+    if (params != null)
+      this.createSearchParams(params);
+    let option = new RequestOptions({headers : this.headers, body: this.searchParams});
+
     return this.request
-      .delete(address, params)
-      .map(res => res.json())
+      .delete(address, option)
+      // .map((res : Response) => res.json())
       .toPromise();
   }
 }

@@ -19,8 +19,7 @@
 <ion-content padding>
   <ion-row>
     <ion-col class="action-col">
-      <button ion-button class="link-btn" (click)="addFriendRequest()">Add a friend</button>
-      <button ion-button class="link-btn" (click)="checkFriendRequest()">Check your request</button>
+      <!--<button ion-button class="link-btn" (click)="checkFriendRequest()">Check your request</button>-->
     </ion-col>
   </ion-row>
   <ion-list>
@@ -32,4 +31,7 @@
       <!--<p>{{friend.message}}</p>-->
     </ion-item>
   </ion-list>
+  <ion-fab right bottom>
+    <button ion-fab class="link-btn" (click)="addFriendRequest()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>
