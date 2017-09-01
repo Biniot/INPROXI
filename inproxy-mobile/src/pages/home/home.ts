@@ -12,8 +12,8 @@ export class HomePage {
 
   public testRequest() {
 
-    this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {password: 'plop'})
-      .then(
+    this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {password: 'lol2'})
+      .subscribe(
         result => {
           console.log('Success');
           console.log(result);

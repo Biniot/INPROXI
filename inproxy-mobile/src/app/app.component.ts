@@ -28,7 +28,7 @@ export class MyApp {
       this.rootPage = HomePage;
     else
       this.rootPage = LoginPage;
-    
+
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'Rooms', component: RoomsPage },
@@ -50,6 +50,7 @@ export class MyApp {
   }
 
   logout() {
-
+    localStorage.removeItem('token');
+    this.nav.setRoot(LoginPage);
   }
 }

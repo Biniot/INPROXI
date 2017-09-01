@@ -26,24 +26,16 @@ export class AuthServiceProvider {
         this.request.post(API_ADDRESS + VERSION + AUTH_ENDPOINT, {
           email: credentials.email,
           password: credentials.password
-        }).then(result => {
-          this.isLoggedIn = result.token ? true : false;
-          if (this.isLoggedIn) {
-
+        }).subscribe(
+          result => {
             console.log(result);
-
             localStorage.setItem('token', result.token);
-            localStorage.setItem('userId', result.id);
-
+            localStorage.setItem('userId', result.user_id);
             observer.next(true);
-          } else
-            observer.next(JSON.parse(result._body));
-          observer.complete();
-        }).catch(error => {
-          console.error('error in login : ' + error);
-          observer.next(false);
-          observer.complete();
-        });
+            observer.complete();
+          },
+          err => observer.error(err.message)
+        );
       })
     }
   }
@@ -63,17 +55,12 @@ export class AuthServiceProvider {
           last_name: credentials.lastName,
           email: credentials.email,
           password: credentials.password
-        }).then(result => {
-          if (result.id) {
+        }).subscribe(
+          result => {
             observer.next(true);
-          } else {
-            observer.next(JSON.parse(result._body));
-          }
-          observer.complete();
-        }).catch(err => {
-          console.error('error in register : ' + err);
-          observer.next = false;
-          observer.complete();
+            observer.complete();
+        }, err => {
+          observer.error(err.message);
         });
       });
     }

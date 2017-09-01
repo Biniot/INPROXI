@@ -29,18 +29,10 @@ export class LoginPage {
   }
 
   public login() {
-    //this.navCtrl.setRoot(HomePage);
     this.showLoading();
     this.auth.login(this.registerCredentials).subscribe(
-      allowed => {
-        if (allowed == true)
-          this.navCtrl.setRoot(HomePage);
-        else
-          this.showError(allowed.message);
-      },
-      error => {
-        this.showError(error);
-      });
+      allowed => this.navCtrl.setRoot(HomePage),
+      error => this.showError(error));
   }
 
   public anonymousLogin() {

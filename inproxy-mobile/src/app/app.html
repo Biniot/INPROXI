@@ -9,10 +9,8 @@
     <ion-list>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
-        <button menuClose ion-button icon-only *ngIf="p.title === 'Friend'" (click)="logout()" clear>
-          <ion-icon name="plus"></ion-icon>
-        </button>
       </button>
+      <button menuClose ion-item (click)="logout()">Logout</button>
     </ion-list>
   </ion-content>
 

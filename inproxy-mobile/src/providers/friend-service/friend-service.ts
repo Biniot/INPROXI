@@ -44,7 +44,7 @@ export class FriendServiceProvider {
       this.request.post(API_ADDRESS + VERSION + FRIENDREQUEST_ENDPOINT + idFriendRequest, {
         //idFriendRequest : idFriendRequest,
         status : isAccepted ? 'accept' : 'remove'
-      }).then(function (result) {
+      }).subscribe(function (result) {
         if (result.ok) {
           this.userService.iSFriendLoad = false;
           observer.next(true);

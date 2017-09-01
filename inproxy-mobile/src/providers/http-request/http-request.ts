@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response, URLSearchParams } from '@angular/http';
+import { Observable } from "rxjs/Rx"
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
-
 /*
   Generated class for the HttpRequestProvider provider.
 
@@ -45,7 +45,7 @@ export class HttpRequestProvider {
     return this.request
       .get(address, option)
       .map((res : Response) => res.json())
-      .toPromise();
+      .catch((err : any) => Observable.throw(err.json() || 'Server Error'));
   }
 
   public post(address : string, params : any = null) {
@@ -57,7 +57,7 @@ export class HttpRequestProvider {
     return this.request
       .post(address, this.searchParams, option)
       .map((res : Response) => res.json())
-      .toPromise();
+      .catch((err : any) => Observable.throw(err.json() || 'Server Error'));
   }
 
   public put(address : string, params : any = null) {
@@ -68,8 +68,8 @@ export class HttpRequestProvider {
 
     return this.request
       .put(address, this.searchParams, option)
-      // .map((res : Response) => res.json())
-      .toPromise();
+      .map((res : Response) => res.json())
+      .catch((err : any) => Observable.throw(err.json()|| 'Server Error'));
   }
 
   public del(address : string, params : any = null) {
@@ -80,7 +80,7 @@ export class HttpRequestProvider {
 
     return this.request
       .delete(address, option)
-      // .map((res : Response) => res.json())
-      .toPromise();
+      .map((res : Response) => res.json())
+      .catch((err : any) => Observable.throw(err.json()|| 'Server Error'));
   }
 }
