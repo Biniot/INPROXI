@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
+import {UserServiceProvider} from "../../providers/user-service/user-service";
 //import {UserServiceProvider} from "../../providers/user-service/user-service";
 //import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 
@@ -18,7 +20,7 @@ export class FriendsPage {
 
   friendsList: Array<{name: string}>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController/*, private userService: UserServiceProvider, private auth: AuthServiceProvider*/) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private userService: UserServiceProvider, private auth: AuthServiceProvider) {
     this.friendsList = [
       {name: 'Obi'},
       {name: 'Ani'},

@@ -25,7 +25,7 @@ export class EditUserPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera,
               private alertCtrl: AlertController, private userService: UserServiceProvider) {
     this.editUserSucces = false;
-    /*this.userService.getUserInfo().subscribe(success => {
+    this.userService.getUserInfo().subscribe(success => {
         if (success) {
           this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
           this.currentUser.firstName = localStorage.getItem('firstName');
@@ -36,12 +36,12 @@ export class EditUserPage {
       },
       error => {
         this.showPopup("Error", error);
-      });*/
+      });
     this.imageSrc = null;
   }
 
   public editUser() {
-    /*if (this.imageSrc != null) {
+    if (this.imageSrc != null) {
       localStorage.setItem('avatarPath', this.imageSrc);
     }
     this.userService.editUser(this.currentUser).subscribe(success => {
@@ -54,7 +54,7 @@ export class EditUserPage {
       },
       error => {
         this.showPopup("Error", error);
-      });*/
+      });
   }
 
   cameraOptions = {

@@ -18,6 +18,7 @@ export class User {
   friendRequests: Array<{name: string, message: string, id: string}>;
 
   constructor(lastName: string, email: string) {
+    console.log('User constructor lastName ' + lastName + '; email ' + email);
     this.lastName = lastName;
     this.email = email;
   }

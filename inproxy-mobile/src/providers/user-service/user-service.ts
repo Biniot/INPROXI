@@ -25,7 +25,7 @@ export class UserServiceProvider {
 
   // Recupere les information de lutilisateur connecter
   public getUserInfo() {
-    /*return Observable.create(observer => {
+    return Observable.create(observer => {
       if (this.isUserLoad) {
         observer.next(true);
         observer.complete();
@@ -42,31 +42,31 @@ export class UserServiceProvider {
             observer.next(true);
             observer.complete();
           }, err => {
-            return Observable.throw('Error with API');
+            observer.error(err.message)
           });
       }
-    });*/
+    });
   }
 
   // Recupere un user a partir dun idUser
   public getUserInfoById(id) {
-    /*return Observable.create(observer => {
+    return Observable.create(observer => {
       this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + id, {
       }).subscribe(
         result => {
           observer.next(result.user);
           observer.complete();
         }, err => {
-          return Observable.throw('Error with API');
+          observer.error(err.message)
         });
-    });*/
+    });
   }
 
   // TODO : Si id est pas une string le convertir
   // Recupere une liste de demande damis emise ou recu par le user connecter
   // TODO : fonction pas claire dans l'API je ne sais pas ce qu'il faut mettre en from / to, le userId connecter ? Faut-il faire 2 requete un pour from un pr to ?
   public getFriendRequests() {
-    /*return Observable.create(observer => {
+    return Observable.create(observer => {
         this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + GET_FRIENDREQUEST_ENDPOINT, {
         //from: localStorage.getItem('userId'),
         //to: localStorage.getItem('userId')
@@ -77,14 +77,14 @@ export class UserServiceProvider {
             observer.next(true);
             observer.complete();
           }, err => {
-            return Observable.throw('Error with API');
+            observer.error(err.message)
           });
-    });*/
+    });
   }
 
   // Recupere une liste damis a partir de lid du user connecter
   public getFriends() {
-    /*return Observable.create(observer => {
+    return Observable.create(observer => {
       if (this.iSFriendLoad) {
         observer.next(true);
         observer.complete();
@@ -100,14 +100,14 @@ export class UserServiceProvider {
               observer.next(true);
               observer.complete();
             }, err => {
-              return Observable.throw('Error with API');
+              observer.error(err.message)
             });
-      }});*/
+      }});
   }
 
   // Edit les informations du user connecter
   public editUser(user) {
-    /*return Observable.create(observer => {
+    return Observable.create(observer => {
       this.request.put(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {
         password: localStorage.getItem('password'),
         //id: this.auth.currentUser.id,
@@ -125,14 +125,14 @@ export class UserServiceProvider {
           observer.next(true);
           observer.complete();
         }, err => {
-          return Observable.throw('Error with API');
+          observer.error(err.message)
         });
-    });*/
+    });
   }
 
   // Supprime le user connecter
   public deleteUser() {
-    /*return Observable.create(observer => {
+    return Observable.create(observer => {
       this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {
         password: localStorage.getItem('password')
       }).subscribe(
@@ -140,8 +140,8 @@ export class UserServiceProvider {
             observer.next(true);
             observer.complete();
           }, err => {
-            return Observable.throw('Error with API');
+            observer.error(err.message)
           });
-    });*/
+    });
   }
 }

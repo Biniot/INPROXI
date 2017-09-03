@@ -25,8 +25,9 @@ export class HttpRequestProvider {
     let token = localStorage.getItem('token');
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    if (token != null)
+    if (token != null) {
       this.headers.append('Authorization', token);
+    }
   }
 
   private createSearchParams (params : any) {
