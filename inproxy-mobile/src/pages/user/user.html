@@ -24,7 +24,7 @@
       <ion-col>
         <ion-list inset>
 
-          <ion-item>
+          <ion-item *ngIf="isUser" >
             <ion-col col-12><img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatar_path}}"/></ion-col>
           </ion-item>
 
@@ -46,7 +46,7 @@
         </ion-list>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row  *ngIf="isUser" >
       <ion-col class="action-col">
         <button ion-button class="link-btn" (click)="editUserNav()">Edit</button>
         <button ion-button class="link-btn" (click)="deleteUser()">Delete account</button>

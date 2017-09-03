@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
-import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
-import {User, UserServiceProvider} from "../../providers/user-service/user-service";
+import { UserServiceProvider} from "../../providers/user-service/user-service";
+import {User} from "../../model/userModel";
 
 /**
  * Generated class for the EditUserPage page.
@@ -19,41 +19,42 @@ import {User, UserServiceProvider} from "../../providers/user-service/user-servi
 
 export class EditUserPage {
   currentUser: User;
-  editUserSucces = false;
+  editUserSucces: boolean;
   imageSrc: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera, private auth: AuthServiceProvider,
+  constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera,
               private alertCtrl: AlertController, private userService: UserServiceProvider) {
-    // this.userService.getUserInfo().subscribe(success => {
-    //     if (success) {
-    //       this.currentUser = this.auth.getCurrentUser();
-    //     } else {
-    //       this.showPopup("Error", "Problem retriving all profile's information.");
-    //     }
-    //   },
-    //   error => {
-    //     this.showPopup("Error", error);
-    //   });
-    this.currentUser = this.auth.getCurrentUser();
+    this.editUserSucces = false;
+    /*this.userService.getUserInfo().subscribe(success => {
+        if (success) {
+          this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
+          this.currentUser.firstName = localStorage.getItem('firstName');
+          this.currentUser.avatarPath = localStorage.getItem('avatarPath');
+        } else {
+          this.showPopup("Error", "Problem retriving all profile's information.");
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });*/
     this.imageSrc = null;
   }
 
   public editUser() {
-    // if (this.imageSrc != null) {
-    //   // TODO : save local a faire
-    //   //this.currentUser.avatar_path = this.imageSrc;
-    // }
-    // this.userService.editUser(this.currentUser).subscribe(success => {
-    //     if (success) {
-    //       this.editUserSucces = true;
-    //       this.showPopup("Success", "Profile edited.");
-    //     } else {
-    //       this.showPopup("Error", "Problem editing profile.");
-    //     }
-    //   },
-    //   error => {
-    //     this.showPopup("Error", error);
-    //   });
+    /*if (this.imageSrc != null) {
+      localStorage.setItem('avatarPath', this.imageSrc);
+    }
+    this.userService.editUser(this.currentUser).subscribe(success => {
+        if (success) {
+          this.editUserSucces = true;
+          this.showPopup("Success", "Profile edited.");
+        } else {
+          this.showPopup("Error", "Problem editing profile.");
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });*/
   }
 
   cameraOptions = {
@@ -70,8 +71,8 @@ export class EditUserPage {
     this.camera.getPicture(this.cameraOptions)
       .then(file_uri =>
         {
+          // TODO : Est-ce un path ou autre chose ? Si autre chose revoir pour recup un path sinon cest good
           this.imageSrc = file_uri;
-          // TODO : file_uri suffisant ?
         },
         err => console.log(err));
   }

@@ -7,12 +7,43 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>add-friend-request</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Add request</ion-title>
   </ion-navbar>
 
 </ion-header>
 
+<ion-content class="add-friend-content" padding>
+  <div class="add-friend-box">
+    <form (ngSubmit)="addFriend()" #registerForm="ngForm">
+      <ion-row>
+        <ion-col>
+          <ion-list inset>
 
-<ion-content padding>
+            <!--<ion-item>-->
+              <!--<ion-input type="text" placeholder="FirstName" name="firstname" [(ngModel)]="currentUser.firstName" required></ion-input>-->
+            <!--</ion-item>-->
 
+            <!--<ion-item>-->
+              <!--<ion-input type="text" placeholder="LastName" name="lastname" [(ngModel)]="currentUser.lastName" required></ion-input>-->
+            <!--</ion-item>-->
+
+            <!--<ion-item>-->
+              <!--<ion-input type="text" placeholder="Email" name="email" [(ngModel)]="currentUser.email" required></ion-input>-->
+            <!--</ion-item>-->
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="submit-col">
+          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Register</button>
+        </ion-col>
+      </ion-row>
+
+    </form>
+  </div>
 </ion-content>

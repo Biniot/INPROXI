@@ -40,7 +40,7 @@ export class FriendServiceProvider {
 
   // Repond a une demande damis 'accept' ou 'remove' status doit etre mis dans le body
   public answerFriendRequest(isAccepted : boolean, idFriendRequest: string) {
-    return Observable.create(observer => {
+    /*return Observable.create(observer => {
       this.request.post(API_ADDRESS + VERSION + FRIENDREQUEST_ENDPOINT + idFriendRequest, {
         //idFriendRequest : idFriendRequest,
         status : isAccepted ? 'accept' : 'remove'
@@ -53,7 +53,7 @@ export class FriendServiceProvider {
           return Observable.throw('Error with API');
         }
       });
-    });
+    });*/
   }
 
 }

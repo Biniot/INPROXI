@@ -4,7 +4,6 @@ import { HttpRequestProvider } from '../http-request/http-request';
 import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT } from '../constants/constants';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
-import {User} from "../user-service/user-service";
 
 /*
   Generated class for the AuthServiceProvider provider.
@@ -15,7 +14,6 @@ import {User} from "../user-service/user-service";
 
 @Injectable()
 export class AuthServiceProvider {
-  currentUser: User;
   isLoggedIn: boolean;
 
   public login(credentials) {
@@ -31,6 +29,7 @@ export class AuthServiceProvider {
             console.log(result);
             localStorage.setItem('token', result.token);
             localStorage.setItem('userId', result.user_id);
+            localStorage.setItem('email', credentials.email);
             observer.next(true);
             observer.complete();
           },
@@ -66,13 +65,8 @@ export class AuthServiceProvider {
     }
   }
 
-  public getCurrentUser() : User {
-    return this.currentUser;
-  }
-
   public logout() {
     return Observable.create(observer => {
-      this.currentUser = null;
       observer.next(true);
       observer.complete();
     })
@@ -80,7 +74,5 @@ export class AuthServiceProvider {
 
   constructor(private request : HttpRequestProvider) {
     this.isLoggedIn = false;
-    this.currentUser = new User("toto@g.m", "Toto Bouh");
-    // TODO : getLocal a faire avatarpath token id password email
   }
 }

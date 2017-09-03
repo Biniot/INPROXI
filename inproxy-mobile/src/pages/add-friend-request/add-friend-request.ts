@@ -21,4 +21,8 @@ export class AddFriendRequestPage {
     console.log('ionViewDidLoad AddFriendRequestPage');
   }
 
+  public addFriend() {
+
+  }
+
 }
