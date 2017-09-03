@@ -5,7 +5,6 @@ import {API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT, FRIENDREQUEST_ENDPO
 
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
-//import {UserServiceProvider} from "../user-service/user-service";
 
 /*
   Generated class for the FriendServiceProvider provider.
@@ -22,20 +21,20 @@ export class FriendServiceProvider {
   }
 
   public addFriendRequest(idFriend : string) {
-    // return Observable.create(observer => {
-    //     this.request.post(API_ADDRESS + VERSION + FRIENDREQUEST_ENDPOINT, {
-    //       to : idFriend,
-    //       from : this.auth.currentUser.id
-    //     }).then(function (result) {
-    //       if (result.ok) {
-    //         this.userService.iSFriendLoad = false;
-    //         observer.next(true);
-    //         observer.complete();
-    //       } else {
-    //         return Observable.throw('Error with API');
-    //       }
-    //     });
-    // });
+    return Observable.create(observer => {
+        this.request.post(API_ADDRESS + VERSION + FRIENDREQUEST_ENDPOINT, {
+          to : idFriend,
+          from : localStorage.getItem('userId')
+        }).subscribe(function (result) {
+          if (result.ok) {
+            this.userService.iSFriendLoad = false;
+            observer.next(true);
+            observer.complete();
+          } else {
+            return Observable.throw('Error with API');
+          }
+        });
+    });
   }
 
   // Repond a une demande damis 'accept' ou 'remove' status doit etre mis dans le body

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
+import { Storage } from '@ionic/storage';
 import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT, GET_FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT } from '../constants/constants';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
@@ -12,32 +13,12 @@ import 'rxjs/Rx';
   for more info on providers and Angular DI.
 */
 
-export class User {
-  email: string;
-  firstName: string;
-  lastName: string;
-  avatar_path: string;
-  //pseudo: string;
-  token: string;
-  password: string;
-  id: any;
-  friends: {User};
-  friendRequests: Array<{name: string, message: string, id: string}>;
-
-  constructor(lastName: string, email: string) {
-    this.lastName = lastName;
-    this.email = email;
-  }
-}
-
 @Injectable()
 export class UserServiceProvider {
   isUserLoad: boolean;
   iSFriendLoad: boolean;
 
-  constructor(private request : HttpRequestProvider/*, private auth: AuthServiceProvider*/) {
-    // TODO : utiliser le storage pour load avatar_path et autre a voir token id ???
-    // TODO : Refactoriser les providers
+  constructor(private request : HttpRequestProvider, private storage : Storage) {
     this.isUserLoad = false;
     this.iSFriendLoad = false;
   }
@@ -49,67 +30,58 @@ export class UserServiceProvider {
         observer.next(true);
         observer.complete();
       } else {
-        /*this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + this.auth.currentUser.id, {
+        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {
           //id: this.auth.currentUser.id
-        }).then(function (result) {
-          if (result.ok) {
-            this.currentUser.firstName = result.user.first_name;
-            this.currentUser.lastName = result.user.last_name;
-            //this.currentUser.pseudo = result.user.pseudo;
-            this.currentUser.email = result.user.email;
-            this.currentUser.token = result.user.token;
+        }).subscribe(
+          result => {
+            localStorage.setItem('firstName', result.user.firstName);
+            localStorage.setItem('lastName', result.user.lastName);
+            localStorage.setItem('email', result.user.email);
+            localStorage.setItem('token', result.user.token);
             this.isUserLoad = true;
-            // TODO : faut-il load ici les amis ou lors de l'accès à la page amis ?
             observer.next(true);
             observer.complete();
-          } else {
-            return Observable.throw('Error with API');
-          }
-        });*/
+          }, err => {
+            observer.error(err.message)
+          });
       }
     });
   }
-  /* Potentiellement useless
+
   // Recupere un user a partir dun idUser
   public getUserInfoById(id) {
     return Observable.create(observer => {
-        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT, {
-          id: id,
-        }).then(function (result) {
-          if (result.ok) {
-            // TODO : A réfléchir comment et quand stocker les amis
-            //result.user type : User
-            observer.next(true);
-            observer.complete();
-          } else {
-            return Observable.throw('Error with API');
-          }
+      this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + id, {
+      }).subscribe(
+        result => {
+          observer.next(result.user);
+          observer.complete();
+        }, err => {
+          observer.error(err.message)
         });
     });
-  }  */
-
-  // TODO : Si id est pas une string le convertir
-  // Recupere une liste de demande damis emise ou recu par le user connecter
-  // fonction pas claire dans l'API
-  public getFriendRequests() {
-    /*return Observable.create(observer => {
-        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + this.auth.currentUser.id + GET_FRIENDREQUEST_ENDPOINT, {
-        //from: this.auth.currentUser.id,
-        //to: this.auth.currentUser.id
-        }).then(function (result) {
-          if (result.ok) {
-            //result.frs.message ClassOf frs {message: string, from: Inconu(id), to: Inconu(id) }
-            // TODO : save dans le currentUser
-            observer.next(true);
-            observer.complete();
-          } else {
-            return Observable.throw('Error with API');
-          }
-        });
-    });*/
   }
 
   // TODO : Si id est pas une string le convertir
+  // Recupere une liste de demande damis emise ou recu par le user connecter
+  // TODO : fonction pas claire dans l'API je ne sais pas ce qu'il faut mettre en from / to, le userId connecter ? Faut-il faire 2 requete un pour from un pr to ?
+  public getFriendRequests() {
+    return Observable.create(observer => {
+        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + GET_FRIENDREQUEST_ENDPOINT, {
+        //from: localStorage.getItem('userId'),
+        //to: localStorage.getItem('userId')
+        }).subscribe(
+          result => {
+            //result.frs.message ClassOf frs {message: string, from: string(id), to: string(id) }
+            // TODO : a traiter
+            observer.next(true);
+            observer.complete();
+          }, err => {
+            observer.error(err.message)
+          });
+    });
+  }
+
   // Recupere une liste damis a partir de lid du user connecter
   public getFriends() {
     return Observable.create(observer => {
@@ -118,60 +90,58 @@ export class UserServiceProvider {
         observer.complete();
       }
       else {
-        //
-        //     this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + this.auth.currentUser.id + FRIEND_ENDPOINT, {
-        //     }).then(function (result) {
-        //       if (result.ok) {
-        //         // TODO : A réfléchir comment et quand stocker les amis
-        //         //result.friends type : ArrayOf { User }
-        //          // TODO : save dans le currentUser
-        //         this.iSFriendLoad = true;
-        //         observer.next(true);
-        //         observer.complete();
-        //       } else {
-        //         return Observable.throw('Error with API');
-        //       }
-        //     });
+          this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + FRIEND_ENDPOINT, {
+          }).subscribe(
+            result => {
+              // TODO : A réfléchir comment et quand stocker les amis
+              //result.friends type : ArrayOf { User }
+              // TODO : save dans le currentUser
+              this.iSFriendLoad = true;
+              observer.next(true);
+              observer.complete();
+            }, err => {
+              observer.error(err.message)
+            });
       }});
   }
 
   // Edit les informations du user connecter
   public editUser(user) {
-    /*return Observable.create(observer => {
-      this.request.put(API_ADDRESS + VERSION + USERS_ENDPOINT + this.auth.currentUser.id, {
-        password: this.auth.currentUser.password,
+    return Observable.create(observer => {
+      this.request.put(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {
+        password: localStorage.getItem('password'),
         //id: this.auth.currentUser.id,
-        first_name: user.first_name != null ? user.first_name : null,
-        last_name: user.last_name != null ? user.last_name : null,
+        first_name: user.firstName != null ? user.firstName : null,
+        last_name: user.lastName != null ? user.lastName : null,
         email: user.email != null ? user.email : null,
         newPassword: user.password != null ? user.password : null,
         //pseudo: user.pseudo != null ? user.pseudo : null
-      }).then(function (result) {
-        if (result.ok) {
-        // // TODO : save dans le currentUser
+      }).subscribe(
+        result => {
+          localStorage.setItem('password', user.password);
+          localStorage.setItem('firstName', user.firstName);
+          localStorage.setItem('lastName', user.lastName);
+          localStorage.setItem('email', user.email);
           observer.next(true);
           observer.complete();
-        } else {
-          return Observable.throw('Error with API');
-        }
-      });
-    });*/
+        }, err => {
+          observer.error(err.message)
+        });
+    });
   }
 
   // Supprime le user connecter
   public deleteUser() {
-    /*return Observable.create(observer => {
-      this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT + this.auth.currentUser.id, {
-        //id: this.auth.currentUser.id,
-        password: this.auth.currentUser.password
-      }).then(function (result) {
-        if (result.ok) {
-          observer.next(true);
-          observer.complete();
-        } else {
-          return Observable.throw('Error with API');
-        }
-      });
-    });*/
+    return Observable.create(observer => {
+      this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {
+        password: localStorage.getItem('password')
+      }).subscribe(
+          result => {
+            observer.next(true);
+            observer.complete();
+          }, err => {
+            observer.error(err.message)
+          });
+    });
   }
 }

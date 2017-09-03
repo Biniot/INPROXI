@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {User, UserServiceProvider} from "../../providers/user-service/user-service";
+import { UserServiceProvider} from "../../providers/user-service/user-service";
 import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 import { EditUserPage } from '../edit-user/edit-user';
+import {User} from "../../model/userModel";
+import {isUndefined} from "util";
 
 /**
  * Generated class for the UserPage page.
@@ -17,22 +19,48 @@ import { EditUserPage } from '../edit-user/edit-user';
 })
 export class UserPage {
   currentUser: User;
-  deleteUserSucces = false;
+  deleteUserSucces: boolean;
+  isUser: boolean;
 
   constructor(public navCtrl: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController,
-              private userService: UserServiceProvider) {
-    // TODO : Check si c'est le user connecter; Si pas le user (le user regarde un profile d'amis).; Si pas le user retirer les btn de la view pour gerer le viez friend
-    // this.userService.getUserInfo().subscribe(success => {
-    //     if (success) {
-    //       this.currentUser = this.auth.getCurrentUser();
-    //     } else {
-    //       this.showPopup("Error", "Problem retriving all profile's information.");
-    //     }
-    //   },
-    //   error => {
-    //     this.showPopup("Error", error);
-    //   });
-    this.currentUser = auth.getCurrentUser();
+              private userService: UserServiceProvider, private navParams: NavParams) {
+    this.deleteUserSucces = false;
+    if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
+      this.isUser = false;
+      this.userService.getUserInfoById(navParams.get('userId')).subscribe(success => {
+          // TODO : voir comment on recupere lavatar du user depuis lapi a repercuter dans la view
+          this.currentUser = new User(success.last_name, success.email);
+          this.currentUser.firstName = success.first_name;
+          //this.currentUser.avatarPath = localStorage.getItem('avatarPath');
+          this.showPopup("Succes", "Succefully retrieve user.");
+        },
+        error => {
+          this.showPopup("Error", error);
+        });
+    } else {
+      this.isUser = true;
+      this.userService.getUserInfo().subscribe(success => {
+          if (success) {
+            this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
+            this.currentUser.firstName = localStorage.getItem('firstName');
+            this.currentUser.avatarPath = localStorage.getItem('avatarPath');
+            this.showPopup("Succes", "Succefully retrieve user.");
+          } else {
+            this.showPopup("Error", "Problem retrieving user.");
+          }
+        },
+        error => {
+          this.showPopup("Error", error);
+        });
+    }
+    // TODO : API response "No token provided."
+    if (this.currentUser === undefined) {
+      console.log('UserPage currentUser undefined');
+      this.currentUser = new User("undefined", "undefined");
+    } else {
+      console.log('UserPage currentUser defined');
+    }
+
   }
 
   public editUserNav() {
@@ -40,19 +68,20 @@ export class UserPage {
   }
 
   public deleteUser(){
-    // TODO : pop-up de confirmation
-    // this.userService.deleteUser().subscribe(success => {
-    //     if (success) {
-    //       this.deleteUserSucces = true;
-    //       // TODO : Clear local data
-    //       this.showPopup("Succes", "Succefully delete user.");
-    //     } else {
-    //       this.showPopup("Error", "Problem deleting user.");
-    //     }
-    //   },
-    //   error => {
-    //     this.showPopup("Error", error);
-    //   });
+    // TODO : pop-up de confirmation  avec mdp
+    this.userService.deleteUser().subscribe(success => {
+        if (success) {
+          this.deleteUserSucces = true;
+          this.currentUser = null;
+          localStorage.clear();
+          this.showPopup("Succes", "Succefully delete user.");
+        } else {
+          this.showPopup("Error", "Problem deleting user.");
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });
   }
 
   showPopup(title, text) {
