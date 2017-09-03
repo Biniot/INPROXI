@@ -34,10 +34,10 @@ export class UserServiceProvider {
           //id: this.auth.currentUser.id
         }).subscribe(
           result => {
-            localStorage.setItem('firstName', result.user.firstName);
-            localStorage.setItem('lastName', result.user.lastName);
-            localStorage.setItem('email', result.user.email);
-            localStorage.setItem('token', result.user.token);
+            console.log(result);
+            localStorage.setItem('firstName', result.first_name);
+            localStorage.setItem('lastName', result.last_name);
+            localStorage.setItem('email', result.email);
             this.isUserLoad = true;
             observer.next(true);
             observer.complete();

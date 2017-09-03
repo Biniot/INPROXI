@@ -19,7 +19,7 @@ export class CheckFriendRequestPage {
   friendRequestList: Array<{name: string, message: string, idFriend: string}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
-              private friendService: FriendServiceProvider, private userService: UserServiceProvider, private auth: AuthServiceProvider) {
+              private friendService: FriendServiceProvider, private userService: UserServiceProvider) {
     this.friendRequestList = [
       {name: 'Obi', message: 'Hello there !', idFriend: '123'},
       {name: 'Ani', message: "Don't under estimate my powers", idFriend: '123'},
@@ -28,33 +28,31 @@ export class CheckFriendRequestPage {
       {name: 'Luke', message: 'This fight with father went out of hand', idFriend: '123'},
       {name: 'Han', message: 'I know', idFriend: '123'}
     ]
-    // userService.getFriendRequests().subscribe(success => {
-    //     if (success) {
-    //       this.friendRequestList = this.auth.currentUser.friendRequests;
-    //     } else {
-    //       this.showPopup("Error", "Problem retriving friend's request.");
-    //     }
-    //   },
-    //   error => {
-    //     this.showPopup("Error", error);
-    //   });
+    userService.getFriendRequests().subscribe(success => {
+        if (success) {
+
+        } else {
+          this.showPopup("Error", "Problem retriving friend's request.");
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });
   }
 
   public manageFriendRequest(idFriendRequest: string, isAccepted: boolean) {
-    if (isAccepted) {
-      this.friendService.answerFriendRequest(isAccepted, idFriendRequest).subscribe(
-        success => {
-            if (success) {
-              // TODO : Reload la list
-              this.showPopup("Succes", "Succefully respond request.");
-            } else {
-              this.showPopup("Error", "Problem responding request.");
-            }
-          },
-          error => {
-            this.showPopup("Error", error);
-          });
-    }
+    this.friendService.answerFriendRequest(isAccepted, idFriendRequest).subscribe(
+      success => {
+          if (success) {
+            // TODO : Reload la list
+            this.showPopup("Succes", "Succefully respond request.");
+          } else {
+            this.showPopup("Error", "Problem responding request.");
+          }
+        },
+        error => {
+          this.showPopup("Error", error);
+        });
   }
 
   showPopup(title, text) {
@@ -64,8 +62,8 @@ export class CheckFriendRequestPage {
       buttons: [
         {
           text: 'OK',
-          handler: () => {
-          }
+          // handler: () => {
+          // }
         }
       ]
     });

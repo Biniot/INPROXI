@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
-import {API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT, FRIENDREQUEST_ENDPOINT} from '../constants/constants';
+import {API_ADDRESS, VERSION, FRIENDREQUEST_ENDPOINT} from '../constants/constants';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
@@ -15,9 +15,7 @@ import 'rxjs/Rx';
 // TODO : renommer en friendRequestProvider
 @Injectable()
 export class FriendServiceProvider {
-  //friendList: any;
-  constructor(private request : HttpRequestProvider/*, private auth: AuthServiceProvider, private userService: UserServiceProvider*/) {
-    //this.friendList = null;
+  constructor(private request : HttpRequestProvider) {
   }
 
   public addFriendRequest(idFriend : string) {
@@ -25,15 +23,13 @@ export class FriendServiceProvider {
         this.request.post(API_ADDRESS + VERSION + FRIENDREQUEST_ENDPOINT, {
           to : idFriend,
           from : localStorage.getItem('userId')
-        }).subscribe(function (result) {
-          if (result.ok) {
-            this.userService.iSFriendLoad = false;
+        }).subscribe(
+          result => {
             observer.next(true);
             observer.complete();
-          } else {
-            return Observable.throw('Error with API');
-          }
-        });
+          }, err => {
+            observer.error(err.message)
+          });
     });
   }
 
@@ -43,15 +39,13 @@ export class FriendServiceProvider {
       this.request.post(API_ADDRESS + VERSION + FRIENDREQUEST_ENDPOINT + idFriendRequest, {
         //idFriendRequest : idFriendRequest,
         status : isAccepted ? 'accept' : 'remove'
-      }).subscribe(function (result) {
-        if (result.ok) {
-          this.userService.iSFriendLoad = false;
+      }).subscribe(
+        result => {
           observer.next(true);
           observer.complete();
-        } else {
-          return Observable.throw('Error with API');
-        }
-      });
+        }, err => {
+          observer.error(err.message)
+        });
     });
   }
 
