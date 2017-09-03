@@ -49,7 +49,7 @@
     <ion-row  *ngIf="isUser" >
       <ion-col class="action-col">
         <button ion-button class="link-btn" (click)="editUserNav()">Edit</button>
-        <button ion-button class="link-btn" (click)="deleteUser()">Delete account</button>
+        <button ion-button class="link-btn" *ngIf="friends" (click)="deleteUser()">Delete account</button>
       </ion-col>
     </ion-row>
   </div>

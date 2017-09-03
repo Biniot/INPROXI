@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 
 import { GoogleMaps,
          GoogleMap,
-         CameraPosition,
+//         CameraPosition,
          LatLng,
          GoogleMapsEvent,
          Marker,
@@ -12,10 +12,10 @@ import { GoogleMaps,
 import { Geolocation } from '@ionic-native/geolocation'
 
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-maps',
+  templateUrl: 'maps.html'
 })
-export class HomePage {
+export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
 

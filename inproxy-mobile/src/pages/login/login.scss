@@ -1,6 +1,5 @@
 page-login {
 
-
   .login-content {
 
     @keyframes animatedBackground {
@@ -15,13 +14,12 @@ page-login {
       100% { background-position: 0 0; }
     }
 
-    background: url("../../assets/img/background.PNG") repeat-x 0 0;
     background-size:cover;
-    -webkit-animation:animatedBackground 80s linear infinite;
-    -moz-animation:animatedBackground 80s linear infinite;
-    -ms-animation:animatedBackground 80s linear infinite;
-    -o-animation:animatedBackground 80s linear infinite;
-    animation:animatedBackground 80s linear infinite;
+    //-webkit-animation:animatedBackground 80s linear infinite;
+    //-moz-animation:animatedBackground 80s linear infinite;
+    //-ms-animation:animatedBackground 80s linear infinite;
+    //-o-animation:animatedBackground 80s linear infinite;
+    //animation:animatedBackground 80s linear infinite;
 
     .logo-row {
       padding-top: 50px;
@@ -66,5 +64,4 @@ page-login {
       font-size: 0.8em;
     }
   }
-
 }
