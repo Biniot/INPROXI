@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import { UserServiceProvider} from "../../providers/user-service/user-service";
-import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 import { EditUserPage } from '../edit-user/edit-user';
 import {User} from "../../model/userModel";
 import {isUndefined} from "util";
+import {LoginPage} from "../login/login";
+import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 
 /**
  * Generated class for the UserPage page.
@@ -22,17 +23,16 @@ export class UserPage {
   deleteUserSucces: boolean;
   isUser: boolean;
 
-  constructor(public navCtrl: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController,
-              private userService: UserServiceProvider, private navParams: NavParams) {
+  constructor(public navCtrl: NavController, private alertCtrl: AlertController,
+              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider) {
     this.deleteUserSucces = false;
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
       this.userService.getUserInfoById(navParams.get('userId')).subscribe(success => {
           // TODO : voir comment on recupere lavatar du user depuis lapi a repercuter dans la view
-          this.currentUser = new User(success.last_name, success.email);
-          this.currentUser.firstName = success.first_name;
+          this.reloadUser();
           //this.currentUser.avatarPath = localStorage.getItem('avatarPath');
-          this.showPopup("Succes", "Succefully retrieve user.");
+          //this.showPopup("Succes", "Succefully retrieve user.");
         },
         error => {
           this.showPopup("Error", error);
@@ -41,9 +41,7 @@ export class UserPage {
       this.isUser = true;
       this.userService.getUserInfo().subscribe(success => {
           if (success) {
-            this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
-            this.currentUser.firstName = localStorage.getItem('firstName');
-            this.currentUser.avatarPath = localStorage.getItem('avatarPath');
+            this.reloadUser();
             this.showPopup("Succes", "Succefully retrieve user.");
           } else {
             this.showPopup("Error", "Problem retrieving user.");
@@ -53,35 +51,86 @@ export class UserPage {
           this.showPopup("Error", error);
         });
     }
-    // TODO : API response "No token provided."
+
     if (this.currentUser === undefined) {
       console.log('UserPage currentUser undefined');
       this.currentUser = new User("undefined", "undefined");
     } else {
       console.log('UserPage currentUser defined');
     }
-
   }
 
   public editUserNav() {
-    this.navCtrl.push('EditUserPage');
+    this.navCtrl.push('EditUserPage', { "parentPage": this });
+  }
+
+  public reloadUser() {
+    this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
+    this.currentUser.firstName = localStorage.getItem('firstName');
+    this.currentUser.avatarPath = localStorage.getItem('avatarPath');
   }
 
   public deleteUser(){
-    // TODO : pop-up de confirmation  avec mdp
     this.userService.deleteUser().subscribe(success => {
         if (success) {
+          console.log('deleteUser success');
           this.deleteUserSucces = true;
           this.currentUser = null;
-          localStorage.clear();
-          this.showPopup("Succes", "Succefully delete user.");
         } else {
+          console.log('deleteUser else');
           this.showPopup("Error", "Problem deleting user.");
         }
       },
       error => {
-        this.showPopup("Error", error);
+      // TODO : je ne sais pas pourquoi c'est error qui est retourner
+        // console.log('deleteUser error');
+        // console.log(error);
+        // this.showPopup("Error", error);
       });
+    // TODO : retirer le ! quand le TODO du dessus est fix
+    if (!this.deleteUserSucces) {
+      this.showConfirmDelete();
+    }
+  }
+
+  showConfirmDelete() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm delete',
+      message: 'Do you want to delete this account?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            this.auth.logout(false).subscribe(success => {
+              let alert = this.alertCtrl.create({
+                title: 'User delete',
+                subTitle: 'User successfully delete.',
+                buttons: [{
+                  text: 'Ok',
+                  role: 'cancel',
+                  handler: () => {
+                    this.navCtrl.setRoot(LoginPage);
+                    console.log('Ok clicked');
+                  }
+                }]
+              });
+              alert.present();
+            }, error => {
+              this.showPopup("Error", "Error cleaning account");
+            });
+            console.log('Delete clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   showPopup(title, text) {
@@ -90,12 +139,7 @@ export class UserPage {
       subTitle: text,
       buttons: [
         {
-          text: 'OK',
-          handler: () => {
-            if (this.deleteUserSucces) {
-              this.navCtrl.popToRoot();
-            }
-          }
+          text: 'OK'
         }
       ]
     });

@@ -41,7 +41,7 @@
             </ion-item>
 
             <ion-item>
-              <img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatar_path}}"/>
+              <img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatarPath}}"/>
               <ion-icon name="images" (click)="openGallery()"></ion-icon>
               <p>Choose a Photo</p>
             </ion-item>
@@ -52,7 +52,7 @@
 
       <ion-row>
         <ion-col class="submit-col">
-          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Register</button>
+          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Edit user</button>
         </ion-col>
       </ion-row>
 
