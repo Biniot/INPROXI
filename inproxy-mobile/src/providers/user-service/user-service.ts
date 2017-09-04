@@ -110,15 +110,14 @@ export class UserServiceProvider {
     return Observable.create(observer => {
       this.request.put(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {
         password: localStorage.getItem('password'),
-        //id: this.auth.currentUser.id,
         first_name: user.firstName != null ? user.firstName : null,
         last_name: user.lastName != null ? user.lastName : null,
         email: user.email != null ? user.email : null,
-        newPassword: user.password != null ? user.password : null,
+        new_password: user.password != null ? user.password : null,
         //pseudo: user.pseudo != null ? user.pseudo : null
       }).subscribe(
         result => {
-          localStorage.setItem('password', user.password);
+          //localStorage.setItem('password', user.password);
           localStorage.setItem('firstName', user.firstName);
           localStorage.setItem('lastName', user.lastName);
           localStorage.setItem('email', user.email);

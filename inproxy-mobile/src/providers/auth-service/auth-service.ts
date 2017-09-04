@@ -30,6 +30,7 @@ export class AuthServiceProvider {
             localStorage.setItem('token', result.token);
             localStorage.setItem('userId', result.user_id);
             localStorage.setItem('email', credentials.email);
+            localStorage.setItem('password', credentials.password);
             observer.next(true);
             observer.complete();
           },
@@ -65,8 +66,15 @@ export class AuthServiceProvider {
     }
   }
 
-  public logout() {
+  public logout(isLogout: boolean) {
     return Observable.create(observer => {
+      if (isLogout) {
+        localStorage.removeItem('token');
+      } else {
+        localStorage.clear();
+      }
+      // TODO : Je pense que c'est mieux de faire le setRoot dans les pages qui utiliseront cette fonction
+      // this.nav.setRoot(LoginPage);
       observer.next(true);
       observer.complete();
     })
