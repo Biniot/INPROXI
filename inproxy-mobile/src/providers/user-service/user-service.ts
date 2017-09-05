@@ -17,10 +17,12 @@ import 'rxjs/Rx';
 export class UserServiceProvider {
   isUserLoad: boolean;
   iSFriendLoad: boolean;
+  isFriendRequestLoad: boolean;
 
   constructor(private request : HttpRequestProvider, private storage : Storage) {
     this.isUserLoad = false;
     this.iSFriendLoad = false;
+    this.isFriendRequestLoad = false;
   }
 
   // Recupere les information de lutilisateur connecter
@@ -62,24 +64,30 @@ export class UserServiceProvider {
     });
   }
 
-  // TODO : Si id est pas une string le convertir
   // Recupere une liste de demande damis emise ou recu par le user connecter
   // TODO : fonction pas claire dans l'API je ne sais pas ce qu'il faut mettre en from / to, le userId connecter ? Faut-il faire 2 requete un pour from un pr to ?
   public getFriendRequests() {
     return Observable.create(observer => {
+      if (this.isFriendRequestLoad) {
+        observer.next(true);
+        observer.complete();
+      }
+      else {
         this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + GET_FRIENDREQUEST_ENDPOINT, {
-        //from: localStorage.getItem('userId'),
-        //to: localStorage.getItem('userId')
+          //from: localStorage.getItem('userId'),
+          //to: localStorage.getItem('userId')
         }).subscribe(
           result => {
-            //result.frs.message ClassOf frs {message: string, from: string(id), to: string(id) }
-            // TODO : a traiter
+            if (result.length > 1) {
+              localStorage.setItem('friendRequests', JSON.stringify(result.frs));
+            }
+            this.isFriendRequestLoad = true;
             observer.next(true);
             observer.complete();
           }, err => {
             observer.error(err.message)
           });
-    });
+      }});
   }
 
   // Recupere une liste damis a partir de lid du user connecter
@@ -93,9 +101,8 @@ export class UserServiceProvider {
           this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + FRIEND_ENDPOINT, {
           }).subscribe(
             result => {
-              // TODO : A réfléchir comment et quand stocker les amis
-              //result.friends type : ArrayOf { User }
-              // TODO : save dans le currentUser
+              let test = JSON.stringify(result.friends);
+              localStorage.setItem('friends', test);
               this.iSFriendLoad = true;
               observer.next(true);
               observer.complete();
@@ -142,5 +149,23 @@ export class UserServiceProvider {
             observer.error(err.message)
           });
     });
+  }
+
+  public refreshFriend() {
+    this.iSFriendLoad = false;
+  }
+
+  public refreshUser() {
+    this.isUserLoad = false;
+  }
+
+  public refreshFriendRequests() {
+    this.isFriendRequestLoad = false;
+  }
+
+  public refreshProvider() {
+    this.isUserLoad = false;
+    this.iSFriendLoad = false;
+    this.isFriendRequestLoad = false;
   }
 }

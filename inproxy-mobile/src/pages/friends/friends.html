@@ -33,5 +33,6 @@
   </ion-list>
   <ion-fab right bottom>
     <button ion-fab class="link-btn" (click)="addFriendRequest()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab class="link-btn" *ngIf="haveRequest" (click)="checkFriendRequest()"><ion-icon name="alert"></ion-icon></button>
   </ion-fab>
 </ion-content>
