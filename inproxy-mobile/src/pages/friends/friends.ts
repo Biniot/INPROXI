@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
-import {isUndefined} from "util";
 
 /**
  * Generated class for the FriendsPage page.
@@ -17,31 +16,43 @@ import {isUndefined} from "util";
 })
 export class FriendsPage {
   haveRequest: boolean;
-  friendsList: Array<{name: string}>;
+  friendsList: Array<{id: string, first_name: string, last_name: string}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
               private userService: UserServiceProvider, private friendRequestService: FriendServiceProvider) {
-    this.friendsList = [
-      {name: 'Obi'},
-      {name: 'Ani'},
-      {name: 'Padme'},
-      {name: 'Yoda'},
-      {name: 'Luke'},
-      {name: 'Han'}
-    ]
+    // this.friendsList = [
+    //   {name: 'Obi'},
+    //   {name: 'Ani'},
+    //   {name: 'Padme'},
+    //   {name: 'Yoda'},
+    //   {name: 'Luke'},
+    //   {name: 'Han'}
+    // ]
     this.haveRequest = false;
-    // userService.getFriends().subscribe(success => {
-    //     if (success) {
-    //       let tab = JSON.parse(localStorage.getItem('friends'));
-    //       console.log(tab);
-    //       // TODO : link friendsList et tab
-    //     } else {
-    //       this.showPopup("Error", "Problem retriving friends.");
-    //     }
-    //   },
-    //   error => {
-    //     this.showPopup("Error", error);
-    //   });
+    userService.getFriends().subscribe(success => {
+        if (success) {
+          let tab = localStorage.getItem('friends');
+          if (tab === 'undefined') {
+            this.friendsList = [
+              // {name: 'Obi'},
+              // {name: 'Ani'},
+              // {name: 'Padme'},
+              // {name: 'Yoda'},
+              // {name: 'Luke'},
+              // {name: 'Han'}
+            ]
+          } else {
+            this.friendsList = JSON.parse(tab);
+          }
+          console.log(tab);
+          // TODO : link friendsList et tab
+        } else {
+          this.showPopup("Error", "Problem retriving friends.");
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });
     userService.getFriendRequests().subscribe(success => {
         if (success) {
           let stringRequest = localStorage.getItem('friendRequests');

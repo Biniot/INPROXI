@@ -6,6 +6,7 @@ import {User} from "../../model/userModel";
 import {isUndefined} from "util";
 import {LoginPage} from "../login/login";
 import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
+import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 
 /**
  * Generated class for the UserPage page.
@@ -24,7 +25,7 @@ export class UserPage {
   isUser: boolean;
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController,
-              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider) {
+              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider, private friendRequestService: FriendServiceProvider) {
     this.deleteUserSucces = false;
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
@@ -42,7 +43,7 @@ export class UserPage {
       this.userService.getUserInfo().subscribe(success => {
           if (success) {
             this.reloadUser();
-            this.showPopup("Succes", "Succefully retrieve user.");
+            //this.showPopup("Succes", "Succefully retrieve user.");
           } else {
             this.showPopup("Error", "Problem retrieving user.");
           }
@@ -52,11 +53,18 @@ export class UserPage {
         });
     }
 
+    // TODO : Gestion d'erreur fouaitter
     if (this.currentUser === undefined) {
-      console.log('UserPage currentUser undefined');
       this.currentUser = new User("undefined", "undefined");
-    } else {
-      console.log('UserPage currentUser defined');
+    }
+
+    console.log(localStorage.getItem('userId') !== '59aedcb1920f2a28bcc6bdf3');
+    if (localStorage.getItem('userId') !== '59aedcb1920f2a28bcc6bdf3') {
+      this.friendRequestService.addFriendRequest('59aedcb1920f2a28bcc6bdf3').subscribe(succes => {
+        this.showPopup('Titre', "friend request");
+      }, error => {
+        this.showPopup(error, "friend request fail");
+      });
     }
   }
 
@@ -82,7 +90,7 @@ export class UserPage {
         }
       },
       error => {
-      // TODO : je ne sais pas pourquoi c'est error qui est retourner
+      // TODO : je ne sais pas pourquoi c'est error qui est retourner sur le subscribe mais lapi renvoie ok
         // console.log('deleteUser error');
         // console.log(error);
         // this.showPopup("Error", error);

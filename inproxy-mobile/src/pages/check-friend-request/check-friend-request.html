@@ -26,7 +26,8 @@
       <ion-avatar item-start>
         <img src="../../assets/img/avatar.png">
       </ion-avatar>
-      <h2>{{friend.name}}</h2>
+      <h2>{{friend.from}}</h2>
+      <h2>{{friend.to}}</h2>
       <p>{{friend.message}}</p>
       <button ion-button color="danger" (click)="manageFriendRequest(friend.id, false)">Refuse</button>
       <button ion-button color="primary" (click)="manageFriendRequest(friend.id, true)">Accept</button>

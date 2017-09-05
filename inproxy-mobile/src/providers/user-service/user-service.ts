@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
 import { Storage } from '@ionic/storage';
-import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT, GET_FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT } from '../constants/constants';
+import { API_ADDRESS, VERSION, USERS_ENDPOINT, GET_FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT } from '../constants/constants';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 //import {AuthServiceProvider} from "../auth-service/auth-service";
@@ -65,7 +65,6 @@ export class UserServiceProvider {
   }
 
   // Recupere une liste de demande damis emise ou recu par le user connecter
-  // TODO : fonction pas claire dans l'API je ne sais pas ce qu'il faut mettre en from / to, le userId connecter ? Faut-il faire 2 requete un pour from un pr to ?
   public getFriendRequests() {
     return Observable.create(observer => {
       if (this.isFriendRequestLoad) {
@@ -78,8 +77,13 @@ export class UserServiceProvider {
           //to: localStorage.getItem('userId')
         }).subscribe(
           result => {
-            if (result.length > 1) {
-              localStorage.setItem('friendRequests', JSON.stringify(result.frs));
+            console.log(result);
+            console.log('Result size is');
+            console.log(result.length);
+            if (result.length >= 1) {
+              console.log('save friendRequests');
+              console.log(JSON.stringify(result));
+              localStorage.setItem('friendRequests', JSON.stringify(result));
             }
             this.isFriendRequestLoad = true;
             observer.next(true);
@@ -101,8 +105,12 @@ export class UserServiceProvider {
           this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + FRIEND_ENDPOINT, {
           }).subscribe(
             result => {
-              let test = JSON.stringify(result.friends);
-              localStorage.setItem('friends', test);
+              console.log(result);
+              if (result.length >= 1) {
+                console.log('save friends');
+                console.log(JSON.stringify(result));
+                localStorage.setItem('friends', JSON.stringify(result));
+              }
               this.iSFriendLoad = true;
               observer.next(true);
               observer.complete();

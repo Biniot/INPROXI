@@ -16,18 +16,38 @@ import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
   templateUrl: 'check-friend-request.html',
 })
 export class CheckFriendRequestPage {
-  friendRequestList: Array<{name: string, message: string, idFriend: string}>;
+  friendRequestList: Array<{id: string, from: string, to: string, message: string}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
               private friendService: FriendServiceProvider, private userService: UserServiceProvider) {
-    this.friendRequestList = [
-      {name: 'Obi', message: 'Hello there !', idFriend: '123'},
-      {name: 'Ani', message: "Don't under estimate my powers", idFriend: '123'},
-      {name: 'Padme', message: 'Its a path I cant follow you on', idFriend: '123'},
-      {name: 'Yoda', message: 'Party we must', idFriend: '123'},
-      {name: 'Luke', message: 'This fight with father went out of hand', idFriend: '123'},
-      {name: 'Han', message: 'I know', idFriend: '123'}
-    ]
+
+    this.userService.getFriendRequests().subscribe(success => {
+        if (success) {
+          let stringRequest = localStorage.getItem('friendRequests');
+          if (stringRequest === 'undefined') {
+            let alert = this.alertCtrl.create({
+              title: 'Error',
+              subTitle: 'Problem retrieving friend request.',
+              buttons: [{
+                text: 'Ok',
+                role: 'cancel',
+                handler: () => {
+                  this.userService.refreshFriendRequests();
+                  this.navCtrl.pop();
+                }
+              }]
+            });
+            alert.present();
+          } else {
+            this.friendRequestList = JSON.parse(localStorage.getItem('friendRequests'));
+          }
+        } else {
+          this.showPopup("Error", "Problem retriving friend request.");
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });
     userService.getFriendRequests().subscribe(success => {
         if (success) {
 
