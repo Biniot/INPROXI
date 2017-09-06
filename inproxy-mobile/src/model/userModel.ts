@@ -5,6 +5,13 @@
   for more info on providers and Angular DI.
 */
 
+export interface Friend {
+  userId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
 export class User {
   email: string;
   firstName: string;
@@ -14,7 +21,7 @@ export class User {
   token: string;
   password: string;
   userId: string;
-  friends: {User};
+  friends: {Friend};
   friendRequests: Array<{name: string, message: string, id: string}>;
 
   constructor(lastName: string, email: string) {

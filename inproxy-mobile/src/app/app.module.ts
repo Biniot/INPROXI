@@ -21,7 +21,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage'
 import {NativeStorage} from "@ionic-native/native-storage";
 import { FriendServiceProvider } from '../providers/friend-service/friend-service';
-
+import { GoogleMaps } from "@ionic-native/google-maps";
+import { Geolocation } from "@ionic-native/geolocation";
 
 @NgModule({
   declarations: [
@@ -58,6 +59,8 @@ import { FriendServiceProvider } from '../providers/friend-service/friend-servic
     HttpRequestProvider,
     NativeStorage,
     UserServiceProvider,
+    Geolocation,
+    GoogleMaps,
     FriendServiceProvider
   ]
 })

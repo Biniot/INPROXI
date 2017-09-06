@@ -16,20 +16,61 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-row>
-    <ion-col class="action-col">
 
-    </ion-col>
-  </ion-row>
-  <ion-list>
-    <ion-item *ngFor="let friend of friendRequestList">
-      <ion-avatar item-start>
-        <img src="../../assets/img/avatar.png">
-      </ion-avatar>
-      <h2>{{friend.name}}</h2>
-      <p>{{friend.message}}</p>
-      <button ion-button color="danger" (click)="manageFriendRequest(friend.id, false)">Refuse</button>
-      <button ion-button color="primary" (click)="manageFriendRequest(friend.id, true)">Accept</button>
-    </ion-item>
-  </ion-list>
+  <ion-card *ngIf="haveFriendRequest">
+    <ion-card-header>
+      Friend request pending
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let friendRequest of friendRequestList">
+          <ion-avatar item-start>
+            <img src="../../assets/img/avatar.png">
+          </ion-avatar>
+          <h2><h3>From : </h3>{{friendRequest.from}}</h2>
+          <h2><h3>To : </h3>{{friendRequest.to}}</h2>
+          <h2><h3>Message : </h3>{{friendRequest.message}}</h2>
+          <button ion-button color="danger" (click)="manageFriendRequest(friendRequest.id, false)">Refuse</button>
+          <button ion-button color="primary" (click)="manageFriendRequest(friendRequest.id, true)">Accept</button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!--<ion-card *ngIf="!haveFriendRequest">-->
+    <!--<ion-card-header>-->
+    <!--</ion-card-header>-->
+    <!--<ion-card-content>-->
+      <!--You have no friend request yet. Go talk to some people !-->
+    <!--</ion-card-content>-->
+  <!--</ion-card>-->
+
+  <!--<ion-card *ngIf="haveUserRequest">-->
+    <!--<ion-card-header>-->
+      <!--Your request-->
+    <!--</ion-card-header>-->
+    <!--<ion-card-content>-->
+      <!--<ion-list>-->
+        <!--<ion-item *ngFor="let userRequest of userRequestList">-->
+          <!--<ion-avatar item-start>-->
+            <!--<img src="../../assets/img/avatar.png">-->
+          <!--</ion-avatar>-->
+          <!--<h2><h3>From : </h3>{{localStorage.getItem('firstName')}} {{localStorage.getItem('lastName')}}</h2>-->
+          <!--<h2><h3>To : </h3>{{userRequest.to}}</h2>-->
+          <!--<p><h3>Message : </h3>{{userRequest.message}}</p>-->
+          <!--<button ion-button color="danger" (click)="manageFriendRequest(userRequest.id, false)">Refuse</button>-->
+          <!--<button ion-button color="primary" (click)="manageFriendRequest(userRequest.id, true)">Accept</button>-->
+        <!--</ion-item>-->
+      <!--</ion-list>-->
+    <!--</ion-card-content>-->
+  <!--</ion-card>-->
+
+  <!--<ion-card *ngIf="!haveUserRequest">-->
+    <!--<ion-card-header>-->
+    <!--</ion-card-header>-->
+    <!--<ion-card-content>-->
+      <!--You have done any friend request yet. Go talk to some people !-->
+    <!--</ion-card-content>-->
+  <!--</ion-card>-->
+
 </ion-content>

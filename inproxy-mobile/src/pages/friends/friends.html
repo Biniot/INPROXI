@@ -22,16 +22,24 @@
       <!--<button ion-button class="link-btn" (click)="checkFriendRequest()">Check your request</button>-->
     </ion-col>
   </ion-row>
-  <ion-list>
+  <ion-list *ngIf="haveFriend">
     <ion-item *ngFor="let friend of friendsList">
       <ion-avatar item-start>
         <img src="../../assets/img/avatar.png">
       </ion-avatar>
-      <h2>{{friend.name}}</h2>
-      <!--<p>{{friend.message}}</p>-->
+      <h2>{{friend.first_name}} {{friend.last_name}}</h2>
+      <p>{{friend.id}}</p>
     </ion-item>
   </ion-list>
+  <ion-card *ngIf="!haveFriend">
+    <ion-card-header>
+    </ion-card-header>
+    <ion-card-content>
+      You have no friend yet. Go talk to some people !
+    </ion-card-content>
+  </ion-card>
   <ion-fab right bottom>
     <button ion-fab class="link-btn" (click)="addFriendRequest()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab class="link-btn" *ngIf="haveRequest" (click)="checkFriendRequest()"><ion-icon name="alert"></ion-icon></button>
   </ion-fab>
 </ion-content>

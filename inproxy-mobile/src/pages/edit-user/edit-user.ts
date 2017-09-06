@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import { Camera } from '@ionic-native/camera';
 import { UserServiceProvider} from "../../providers/user-service/user-service";
 import {User} from "../../model/userModel";
+import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 
 /**
  * Generated class for the EditUserPage page.
@@ -19,12 +20,10 @@ import {User} from "../../model/userModel";
 
 export class EditUserPage {
   currentUser: User;
-  editUserSucces: boolean;
   imageSrc: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera,
-              private alertCtrl: AlertController, private userService: UserServiceProvider) {
-    this.editUserSucces = false;
+              private alertCtrl: AlertController, private userService: UserServiceProvider, private auth: AuthServiceProvider) {
     this.userService.getUserInfo().subscribe(success => {
         if (success) {
           this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
@@ -44,17 +43,7 @@ export class EditUserPage {
     if (this.imageSrc != null) {
       localStorage.setItem('avatarPath', this.imageSrc);
     }
-    this.userService.editUser(this.currentUser).subscribe(success => {
-        if (success) {
-          this.editUserSucces = true;
-          this.showPopup("Success", "Profile edited.");
-        } else {
-          this.showPopup("Error", "Problem editing profile.");
-        }
-      },
-      error => {
-        this.showPopup("Error", error);
-      });
+    this.showConfirmSave();
   }
 
   cameraOptions = {
@@ -67,14 +56,62 @@ export class EditUserPage {
     correctOrientation: true
   }
 
-  private openGallery(): void {
+  openGallery(): void {
     this.camera.getPicture(this.cameraOptions)
       .then(file_uri =>
         {
+          console.log(file_uri);
           // TODO : Est-ce un path ou autre chose ? Si autre chose revoir pour recup un path sinon cest good
           this.imageSrc = file_uri;
         },
         err => console.log(err));
+  }
+
+  showConfirmSave() {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm change',
+      message: 'Do you want to save those information?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: () => {
+            this.userService.editUser(this.currentUser).subscribe(success => {
+              if (success) {
+                if (this.imageSrc !== null) {
+                  localStorage.setItem('avatarPath', this.imageSrc);
+                }
+                let alert = this.alertCtrl.create({
+                  title: 'Save information',
+                  subTitle: 'Information successfully change.',
+                  buttons: [{
+                    text: 'Ok',
+                    role: 'cancel',
+                    handler: () => {
+                      this.navParams.get("parentPage").reloadUser();
+                      this.navCtrl.pop();
+                    }
+                  }]
+                });
+                alert.present();
+              } else {
+                this.showPopup("Error", "Problem editing profile.");
+              }
+            }, error => {
+              this.showPopup("Error", error);
+            });
+            console.log('Save clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   showPopup(title, text) {
@@ -84,11 +121,11 @@ export class EditUserPage {
       buttons: [
         {
           text: 'OK',
-          handler: () => {
-            if (this.editUserSucces) {
-              this.navCtrl.pop();
-            }
-          }
+          // handler: () => {
+          //   if (this.editUserSucces) {
+          //     this.navCtrl.pop();
+          //   }
+          // }
         }
       ]
     });
