@@ -66,6 +66,7 @@ export class HttpRequestProvider {
     if (params != null)
       this.createSearchParams(params);
     let option = new RequestOptions({headers : this.headers});
+    console.log(this.searchParams);
 
     return this.request
       .put(address, this.searchParams, option)

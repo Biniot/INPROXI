@@ -20,7 +20,7 @@ export class MyApp {
 
   rootPage: any;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title : string, icon : string, component : any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
@@ -31,11 +31,11 @@ export class MyApp {
       this.rootPage = LoginPage;
 
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'Rooms', component: RoomsPage },
-      { title: 'Maps', component: MapsPage },
-      { title: 'Friends', component: FriendsPage },
-      { title: 'User', component: UserPage }
+      { title: 'Home', icon: 'home', component: HomePage },
+      { title: 'Rooms', icon: 'chatboxes', component: RoomsPage },
+      { title: 'Maps', icon: 'map', component: MapsPage },
+      { title: 'Friends', icon: 'people', component: FriendsPage },
+      { title: 'User', icon: 'person', component: UserPage }
     ];
 
   }
