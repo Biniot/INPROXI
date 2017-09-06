@@ -56,10 +56,11 @@ export class EditUserPage {
     correctOrientation: true
   }
 
-  private openGallery(): void {
+  openGallery(): void {
     this.camera.getPicture(this.cameraOptions)
       .then(file_uri =>
         {
+          console.log(file_uri);
           // TODO : Est-ce un path ou autre chose ? Si autre chose revoir pour recup un path sinon cest good
           this.imageSrc = file_uri;
         },
@@ -83,6 +84,9 @@ export class EditUserPage {
           handler: () => {
             this.userService.editUser(this.currentUser).subscribe(success => {
               if (success) {
+                if (this.imageSrc !== null) {
+                  localStorage.setItem('avatarPath', this.imageSrc);
+                }
                 let alert = this.alertCtrl.create({
                   title: 'Save information',
                   subTitle: 'Information successfully change.',

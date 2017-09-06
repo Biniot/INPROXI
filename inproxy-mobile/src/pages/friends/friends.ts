@@ -16,6 +16,7 @@ import {FriendServiceProvider} from "../../providers/friend-service/friend-servi
 })
 export class FriendsPage {
   haveRequest: boolean;
+  haveFriend: boolean;
   friendsList: Array<{id: string, first_name: string, last_name: string}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
@@ -29,20 +30,16 @@ export class FriendsPage {
     //   {name: 'Han'}
     // ]
     this.haveRequest = false;
+    this.haveFriend = false;
     userService.getFriends().subscribe(success => {
         if (success) {
           let tab = localStorage.getItem('friends');
           if (tab === 'undefined') {
             this.friendsList = [
-              // {name: 'Obi'},
-              // {name: 'Ani'},
-              // {name: 'Padme'},
-              // {name: 'Yoda'},
-              // {name: 'Luke'},
-              // {name: 'Han'}
             ]
           } else {
             this.friendsList = JSON.parse(tab);
+            this.haveFriend = true;
           }
           console.log(tab);
           // TODO : link friendsList et tab

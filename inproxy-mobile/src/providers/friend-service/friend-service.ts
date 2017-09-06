@@ -36,7 +36,7 @@ export class FriendServiceProvider {
   // Repond a une demande damis 'accept' ou 'remove' status doit etre mis dans le body
   public answerFriendRequest(isAccepted : boolean, idFriendRequest: string) {
     return Observable.create(observer => {
-      this.request.post(API_ADDRESS + VERSION + FRIENDREQUEST_ENDPOINT + idFriendRequest, {
+      this.request.put(API_ADDRESS + VERSION + FRIENDREQUEST_ENDPOINT + idFriendRequest, {
         //idFriendRequest : idFriendRequest,
         status : isAccepted ? 'accept' : 'remove'
       }).subscribe(

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { HttpRequestProvider } from '../../providers/http-request/http-request';
-import { API_ADDRESS, VERSION, AUTH_ENDPOINT, USERS_ENDPOINT } from '../../providers/constants/constants';
+import { API_ADDRESS, VERSION, USERS_ENDPOINT } from '../../providers/constants/constants';
 
 @Component({
   selector: 'page-home',

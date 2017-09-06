@@ -81,11 +81,9 @@ export class UserPage {
   public deleteUser(){
     this.userService.deleteUser().subscribe(success => {
         if (success) {
-          console.log('deleteUser success');
           this.deleteUserSucces = true;
           this.currentUser = null;
         } else {
-          console.log('deleteUser else');
           this.showPopup("Error", "Problem deleting user.");
         }
       },
