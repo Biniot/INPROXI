@@ -18,22 +18,22 @@ import { Geolocation } from '@ionic-native/geolocation'
 export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
-
+  _loc: LatLng
   constructor(public navCtrl: NavController,
               private _googleMaps: GoogleMaps,
               private _geoLoc: Geolocation) {
   }
 
   ngAfterViewInit(){
-    let loc: LatLng;
+    // let loc: LatLng;
     this.initMap();
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       this.getLocation().then( res => {
-        loc = new LatLng(res.coords.latitude, res.coords.longitude);
-        this.moveCam(loc);
+        this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
+        this.moveCam(this._loc);
 
-        this.createMarker(loc, "COUCOU!").then((marker: Marker) => {
+        this.createMarker(this._loc, "COUCOU!").then((marker: Marker) => {
           marker.showInfoWindow();
         }).catch(err => {
           console.log(err);
@@ -73,4 +73,8 @@ export class MapsPage {
     return  this.map.addMarker(markerOptions);
   }
 
+  centerMap()
+  {
+    this.moveCam(this._loc);
+  }
 }
