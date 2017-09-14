@@ -9,9 +9,18 @@
 
 <ion-content padding>
   <div #map id="map" style="height:100%">
-    <button ion-button (click)="centerMap()" style="position:absolute; bottom: 0; right: 0">
-      <ion-icon name="locate"></ion-icon>
-    </button>
+    <ul style="list-style-type: none; position:absolute; top: 0; right: 0">
+      <li>
+        <button ion-button (click)="centerMap()">
+          <ion-icon name="locate"></ion-icon>
+        </button>
+      </li>
+      <li>
+        <button ion-button (click)="getClickPos()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </li>
+    </ul>
   </div>
 </ion-content>
 

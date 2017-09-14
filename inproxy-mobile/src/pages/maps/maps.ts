@@ -1,24 +1,27 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component, ViewChild, ElementRef} from '@angular/core';
+import {NavController} from 'ionic-angular';
 
-import { GoogleMaps,
-         GoogleMap,
-         CameraPosition,
-         LatLng,
-         GoogleMapsEvent,
-         Marker,
-         MarkerOptions } from '@ionic-native/google-maps';
+import {GoogleMaps,
+        GoogleMap,
+        CameraPosition,
+        LatLng,
+        GoogleMapsEvent,
+        Marker,
+        MarkerOptions,
+        Polygon,
+        PolygonOptions} from '@ionic-native/google-maps';
 
-import { Geolocation } from '@ionic-native/geolocation'
+import {Geolocation} from '@ionic-native/geolocation';
 
 @Component({
   selector: 'page-maps',
   templateUrl: 'maps.html'
 })
+
 export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
-  _loc: LatLng
+  _loc: LatLng;
   constructor(public navCtrl: NavController,
               private _googleMaps: GoogleMaps,
               private _geoLoc: Geolocation) {
@@ -33,15 +36,10 @@ export class MapsPage {
         this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
         this.moveCam(this._loc);
 
-        this.createMarker(this._loc, "COUCOU!").then((marker: Marker) => {
+        this.createMarker(this._loc).then((marker: Marker) => {
           marker.showInfoWindow();
-        }).catch(err => {
-          console.log(err);
-        });
-      }).catch( err => {
-        console.log(err);
-      });
-
+          },err => {console.log(err);});
+      }, err => {console.log(err);});
     });
   }
 
@@ -58,23 +56,55 @@ export class MapsPage {
   moveCam(loc : LatLng){
      let options : CameraPosition<any> = {
         target: loc,
-        zoom: 15,
+        zoom: 30,
         tilt: 10
       };
-    // this.map.setCameraTarget(loc);
-    this.map.moveCamera(options).then( res => {}, err => {})
+    this.map.moveCamera(options).then( res => {console.log(res);},
+        err => {console.log(err);})
   }
 
-  createMarker(loc: LatLng, title: string){
+  createMarker(loc: LatLng){
     let markerOptions: MarkerOptions = {
       position: loc,
-      title: title
+      icon: 'magenta'
     };
     return  this.map.addMarker(markerOptions);
   }
 
   centerMap()
   {
-    this.moveCam(this._loc);
+    this.getLocation().then( res => {
+      this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
+
+      this.map.clear().then(res => {
+        this.moveCam(this._loc);
+        console.log(res);
+
+        this.createMarker(this._loc).then((marker: Marker) => {
+          marker.hideInfoWindow();
+        }, err => { console.log(err); });
+
+      }, err=> {console.log(err);});
+    }, err => { console.log(err); });
+  }
+
+  getClickPos()
+  {
+    let _mpts : Array<LatLng>;
+    let _spt : LatLng;
+
+    this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
+      _spt = new LatLng(e.lat, e.lng);
+      // _mptt.this._googleMaps.;
+      // _mpts = this._googleMaps.setPoints(_mpts);
+      console.log("Lat: " + _spt.lat);
+      console.log("Lng: " + _spt.lng);
+      // this.map.addPolygon(_mpts).then((poly : Polygon) => {
+      //   console.log(poly);
+      },err => {
+        console.log(err);
+      });
+    console.log("test");
   }
 }
+
