@@ -1,15 +1,17 @@
 import {Component, ViewChild, ElementRef} from '@angular/core';
 import {NavController} from 'ionic-angular';
 
-import {GoogleMaps,
-        GoogleMap,
-        CameraPosition,
-        LatLng,
-        GoogleMapsEvent,
-        Marker,
-        MarkerOptions,
-        Polygon,
-        PolygonOptions} from '@ionic-native/google-maps';
+import {
+  GoogleMaps,
+  GoogleMap,
+  CameraPosition,
+  LatLng,
+  GoogleMapsEvent,
+  Marker,
+  MarkerOptions,
+  Polygon,
+  PolygonOptions,
+  ILatLng } from '@ionic-native/google-maps';
 
 import {Geolocation} from '@ionic-native/geolocation';
 
@@ -79,31 +81,48 @@ export class MapsPage {
       this.map.clear().then(res => {
         this.moveCam(this._loc);
         console.log(res);
-
         this.createMarker(this._loc).then((marker: Marker) => {
           marker.hideInfoWindow();
         }, err => { console.log(err); });
-
       }, err=> {console.log(err);});
     }, err => { console.log(err); });
   }
 
   getClickPos()
   {
-    let _mpts : Array<LatLng>;
+    let _mpts: ILatLng[];
     let _spt : LatLng;
+    let _counter = 0;
+    _mpts = [];
+
 
     this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
       _spt = new LatLng(e.lat, e.lng);
-      // _mptt.this._googleMaps.;
-      // _mpts = this._googleMaps.setPoints(_mpts);
+      _mpts.push(_spt);
       console.log("Lat: " + _spt.lat);
       console.log("Lng: " + _spt.lng);
-      // this.map.addPolygon(_mpts).then((poly : Polygon) => {
-      //   console.log(poly);
-      },err => {
-        console.log(err);
-      });
+
+      // this.createMarker(_spt).then((marker: Marker) => {
+      //   marker.hideInfoWindow();
+      // },err => { console.log(err); });
+
+      if (_counter > 1)
+      {
+        let polygOptions: PolygonOptions = {
+          points: _mpts,
+          strokeColor: '#e60000',
+          strokeWidth: 3,
+          visible: true
+        };
+
+        this.map.addPolygon(polygOptions).then( (_polyg : Polygon) => {
+          _polyg.setVisible(true);
+          _polyg.setClickable(false);
+        }, err => {console.log(err);});
+      }
+      _counter++;
+      console.log(_counter);
+    },err => { console.log(err); });
     console.log("test");
   }
 }
