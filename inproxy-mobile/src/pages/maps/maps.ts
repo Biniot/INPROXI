@@ -24,13 +24,13 @@ export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
   _loc: LatLng;
+
   constructor(public navCtrl: NavController,
               private _googleMaps: GoogleMaps,
               private _geoLoc: Geolocation) {
   }
 
   ngAfterViewInit(){
-    // let loc: LatLng;
     this.initMap();
 
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
@@ -106,7 +106,7 @@ export class MapsPage {
       //   marker.hideInfoWindow();
       // },err => { console.log(err); });
 
-      if (_counter > 1)
+      if (_counter > 0)
       {
         let polygOptions: PolygonOptions = {
           points: _mpts,
