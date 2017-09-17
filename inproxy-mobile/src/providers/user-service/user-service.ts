@@ -73,22 +73,15 @@ export class UserServiceProvider {
       }
       else {
         this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + GET_FRIENDREQUEST_ENDPOINT, {
-          //from: localStorage.getItem('userId'),
-          //to: localStorage.getItem('userId')
         }).subscribe(
           result => {
-            console.log(result);
-            console.log('Result size is');
-            console.log(result.length);
             if (result.length >= 1) {
-              console.log('save friendRequests');
-              console.log(JSON.stringify(result));
               localStorage.setItem('friendRequests', JSON.stringify(result));
             }
             this.isFriendRequestLoad = true;
             observer.next(true);
-            observer.complete();
-          }, err => {
+            observer.complete();},
+          err => {
             observer.error(err.message)
           });
       }});

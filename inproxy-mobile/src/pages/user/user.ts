@@ -25,7 +25,8 @@ export class UserPage {
   isUser: boolean;
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController,
-              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider, private friendRequestService: FriendServiceProvider) {
+              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider,
+              private friendRequestService: FriendServiceProvider) {
     this.deleteUserSucces = false;
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
@@ -60,11 +61,14 @@ export class UserPage {
 
     console.log(localStorage.getItem('userId') !== '59aedcb1920f2a28bcc6bdf3');
     if (localStorage.getItem('userId') !== '59aedcb1920f2a28bcc6bdf3') {
-      this.friendRequestService.addFriendRequest('59aedcb1920f2a28bcc6bdf3').subscribe(succes => {
+      this.friendRequestService.addFriendRequest('59aedcb1920f2a28bcc6bdf3', "c'est moi !!" + localStorage.getItem('firstName')).subscribe(succes => {
         this.showPopup('Titre', "friend request");
       }, error => {
         this.showPopup(error, "friend request fail");
       });
+    }
+    if (localStorage.getItem('userId') === '59aedcb1920f2a28bcc6bdf3') {
+      this.userService.refreshProvider();
     }
   }
 

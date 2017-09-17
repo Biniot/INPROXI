@@ -42,7 +42,6 @@ export class FriendsPage {
             this.haveFriend = true;
           }
           console.log(tab);
-          // TODO : link friendsList et tab
         } else {
           this.showPopup("Error", "Problem retriving friends.");
         }

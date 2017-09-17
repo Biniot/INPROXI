@@ -18,11 +18,12 @@ export class FriendServiceProvider {
   constructor(private request : HttpRequestProvider) {
   }
 
-  public addFriendRequest(idFriend : string) {
+  public addFriendRequest(idFriend : string, message: string) {
     return Observable.create(observer => {
         this.request.post(API_ADDRESS + VERSION + FRIENDREQUEST_ENDPOINT, {
           to : idFriend,
-          from : localStorage.getItem('userId')
+          from : localStorage.getItem('userId'),
+          message : message
         }).subscribe(
           result => {
             observer.next(true);
@@ -40,11 +41,12 @@ export class FriendServiceProvider {
         //idFriendRequest : idFriendRequest,
         status : isAccepted ? 'accept' : 'remove'
       }).subscribe(
-        result => {
-          observer.next(true);
+        data => {
+          console.log('cest un put donc osef');
+          observer.next(true);},
+        err => {observer.error(err)},
+        () => {
           observer.complete();
-        }, err => {
-          observer.error(err.message)
         });
     });
   }

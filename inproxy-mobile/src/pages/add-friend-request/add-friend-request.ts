@@ -14,7 +14,7 @@ import {FriendServiceProvider} from "../../providers/friend-service/friend-servi
   templateUrl: 'add-friend-request.html',
 })
 export class AddFriendRequestPage {
-  friendRequestCredentials = {email : '', firstName: '', lastName: ''};
+  friendRequestCredentials = {email : '', firstName: '', lastName: '', idFriend : '', message: ''};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private friendRequestProvider: FriendServiceProvider, private alertCtrl: AlertController) {
   }
@@ -25,7 +25,7 @@ export class AddFriendRequestPage {
 
   public addFriend() {
     // TODO : avoir l'id friend a partir des friendRequestCredentials
-    this.friendRequestProvider.addFriendRequest('').subscribe(success => {
+    this.friendRequestProvider.addFriendRequest(this.friendRequestCredentials.idFriend, this.friendRequestCredentials.message).subscribe(success => {
         this.showPopup("Succes", "Succefully add request friend.");
       },
       error => {

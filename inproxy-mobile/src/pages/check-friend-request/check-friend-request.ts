@@ -17,62 +17,18 @@ import {UserServiceProvider} from "../../providers/user-service/user-service";
 export class CheckFriendRequestPage {
   tempoList: Array<{id: string, from: string, to: string, message: string}>;
   friendRequestList: Array<{id: string, from: string, to: string, message: string}>;
-  userRequestList: Array<{id: string, from: string, to: string, message: string}>;
-  haveUserRequest: boolean;
+  //userRequestList: Array<{id: string, from: string, to: string, message: string}>;
+  //haveUserRequest: boolean;
   haveFriendRequest: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
               private friendService: FriendServiceProvider, private userService: UserServiceProvider) {
 
     this.haveFriendRequest = false;
-    this.haveUserRequest = false;
-    this.userRequestList = [];
     // TODO : trier la liste en deux et remettre la vu qui est commenter
-    this.userService.getFriendRequests().subscribe(success => {
-        if (success) {
-          let stringRequest = localStorage.getItem('friendRequests');
-          if (stringRequest === 'undefined') {
-            // TIPS TA PAS DAMIS
-            // let alert = this.alertCtrl.create({
-            //   title: 'Error',
-            //   subTitle: 'Problem retrieving friend request.',
-            //   buttons: [{
-            //     text: 'Ok',
-            //     role: 'cancel',
-            //     handler: () => {
-            //       this.userService.refreshFriendRequests();
-            //       this.navCtrl.pop();
-            //     }
-            //   }]
-            // });
-            // alert.present();
-          } else {
-            this.friendRequestList = JSON.parse(localStorage.getItem('friendRequests'));
-            this.haveFriendRequest = true;
-            // for (let request in this.tempoList) {
-            //   if (request.from === localStorage.getItem('userId')) {
-            //     this.userRequestList.push(request);
-            //   }
-            // }
-            //this.friendRequestList = JSON.parse(localStorage.getItem('friendRequests'));
-          }
-        } else {
-          this.showPopup("Error", "Problem retriving friend request.");
-        }
-      },
-      error => {
-        this.showPopup("Error", error);
-      });
-    userService.getFriendRequests().subscribe(success => {
-        if (success) {
-
-        } else {
-          this.showPopup("Error", "Problem retriving friend's request.");
-        }
-      },
-      error => {
-        this.showPopup("Error", error);
-      });
+    //this.haveUserRequest = false;
+    //this.userRequestList = [];
+    this.loadList();
   }
 
   checkIt(id1: string, id2: string) {
@@ -87,8 +43,8 @@ export class CheckFriendRequestPage {
     this.friendService.answerFriendRequest(isAccepted, idFriendRequest).subscribe(
       success => {
           if (success) {
-            // TODO : Reload la list
             this.showPopup("Succes", "Succefully respond request.");
+            this.loadList();
           } else {
             this.showPopup("Error", "Problem responding request.");
           }
@@ -96,6 +52,28 @@ export class CheckFriendRequestPage {
         error => {
           this.showPopup("Error", error);
         });
+  }
+
+  loadList() {
+    this.userService.refreshProvider();
+    this.userService.getFriendRequests().subscribe(
+      success => {
+        if (success) {
+          let stringRequest = localStorage.getItem('friendRequests');
+          if (stringRequest === 'undefined') {
+            // TODO : TIPS TA PAS DAMIS
+          } else {
+            // TODO : trier la liste en deux et remettre la vu qui est commenter
+            this.friendRequestList = JSON.parse(localStorage.getItem('friendRequests'));
+            console.log(this.friendRequestList);
+            this.haveFriendRequest = true;
+          }
+        } else {
+          this.showPopup("Error", "Problem retriving friend request.");
+        }},
+      error => {
+        this.showPopup("Error", error);
+      });
   }
 
   showPopup(title, text) {
@@ -111,10 +89,6 @@ export class CheckFriendRequestPage {
       ]
     });
     alert.present();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CheckFriendRequestPage');
   }
 
 }
