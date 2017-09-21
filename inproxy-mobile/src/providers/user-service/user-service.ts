@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
 import { Storage } from '@ionic/storage';
-import { API_ADDRESS, VERSION, USERS_ENDPOINT, GET_FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT } from '../constants/constants';
+import {
+  API_ADDRESS, VERSION, USERS_ENDPOINT, GET_FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT,
+  SEARCH_USER_ENDPOINT
+} from '../constants/constants';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
 //import {AuthServiceProvider} from "../auth-service/auth-service";
@@ -100,7 +103,7 @@ export class UserServiceProvider {
             result => {
               console.log(result);
               if (result.length >= 1) {
-                console.log('save friends');
+                console.log('saved friends');
                 console.log(JSON.stringify(result));
                 localStorage.setItem('friends', JSON.stringify(result));
               }
@@ -129,6 +132,28 @@ export class UserServiceProvider {
           localStorage.setItem('firstName', user.firstName);
           localStorage.setItem('lastName', user.lastName);
           localStorage.setItem('email', user.email);
+          observer.next(true);
+          observer.complete();
+        }, err => {
+          observer.error(err.message)
+        });
+    });
+  }
+
+  public searchUser(firstName: string, lastName: string) {
+    localStorage.removeItem('searchList');
+    return Observable.create(observer => {
+      this.request.get(API_ADDRESS + VERSION + SEARCH_USER_ENDPOINT, {
+        first_name: firstName,
+        lastName: lastName
+      }).subscribe(
+        result => {
+          console.log(result);
+          if (result.length >= 1) {
+            console.log('searchList');
+            console.log(JSON.stringify(result));
+            localStorage.setItem('searchList', JSON.stringify(result));
+          }
           observer.next(true);
           observer.complete();
         }, err => {
@@ -168,5 +193,7 @@ export class UserServiceProvider {
     this.isUserLoad = false;
     this.iSFriendLoad = false;
     this.isFriendRequestLoad = false;
+    localStorage.removeItem('friends');
+    localStorage.removeItem('friendRequests');
   }
 }

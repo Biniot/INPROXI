@@ -23,16 +23,20 @@
           <ion-list inset>
 
             <ion-item>
-              <ion-input type="text" placeholder="FirstName" name="firstname" [(ngModel)]="friendRequestCredentials.firstName" required></ion-input>
+              <ion-input type="text" placeholder="Firstname Lastname" name="name" [(ngModel)]="friendRequestCredentials.name" (input)="searchForIt($event)" required></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-input type="text" placeholder="LastName" name="lastname" [(ngModel)]="friendRequestCredentials.lastName" required></ion-input>
+              <ion-input type="text" placeholder="Message" name="message" [(ngModel)]="friendRequestCredentials.message" required></ion-input>
             </ion-item>
 
-            <ion-item>
-              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="friendRequestCredentials.email" required></ion-input>
-            </ion-item>
+            <!--<ion-item>-->
+              <!--<ion-input type="hidden" [(ngModel)]="friendRequestCredentials.idFriend" required></ion-input>-->
+            <!--</ion-item>-->
+
+            <!--<ion-item>-->
+              <!--<ion-input type="text" placeholder="Email" name="email" [(ngModel)]="friendRequestCredentials.email" required></ion-input>-->
+            <!--</ion-item>-->
 
           </ion-list>
         </ion-col>
@@ -43,7 +47,11 @@
           <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Submit</button>
         </ion-col>
       </ion-row>
-
     </form>
+    <ion-list *ngIf="showList">
+      <ion-item *ngFor="let friend of friendList" >
+        <h2 (click)="updateForm(friend.id)">{{friend.first_name}} {{friend.last_name}}</h2>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
