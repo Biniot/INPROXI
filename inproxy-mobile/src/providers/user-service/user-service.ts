@@ -145,7 +145,7 @@ export class UserServiceProvider {
     return Observable.create(observer => {
       this.request.get(API_ADDRESS + VERSION + SEARCH_USER_ENDPOINT, {
         first_name: firstName,
-        lastName: lastName
+        last_name: lastName
       }).subscribe(
         result => {
           console.log(result);

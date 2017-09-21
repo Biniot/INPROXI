@@ -37,7 +37,7 @@ export class AddFriendRequestPage {
     let value = ev.target.value;
     if (value.length >= 3) {
       let firstName = '';
-      let lastName = null;
+      let lastName = '';
       if (value.search(' ') !== -1) {
         let tab = value.split(' ');
         firstName = tab[0];
