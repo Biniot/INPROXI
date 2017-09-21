@@ -73,7 +73,7 @@ export class MapsPage {
   moveCam(loc : LatLng){
     let options : CameraPosition<any> = {
       target: loc,
-      zoom: 30,
+      zoom: 15,
       tilt: 10
     };
     this.map.moveCamera(options).then( res => {console.log(res);},

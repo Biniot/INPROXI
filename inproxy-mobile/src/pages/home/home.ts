@@ -1,19 +1,21 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component, ViewChild, ElementRef} from '@angular/core';
+import {NavController} from 'ionic-angular';
 
-import { HttpRequestProvider } from '../../providers/http-request/http-request';
-import { API_ADDRESS, VERSION, USERS_ENDPOINT } from '../../providers/constants/constants';
-
-import { GoogleMaps,
+import {
+  GoogleMaps,
   GoogleMap,
   CameraPosition,
   LatLng,
   GoogleMapsEvent,
   Marker,
-  MarkerOptions } from '@ionic-native/google-maps';
+  MarkerOptions,
+  Polygon,
+  PolygonOptions,
+  ILatLng
+  // MyLocation
+} from '@ionic-native/google-maps';
 
-import { Geolocation } from '@ionic-native/geolocation'
-
+import {Geolocation} from '@ionic-native/geolocation';
 
 @Component({
   selector: 'page-home',
@@ -26,32 +28,24 @@ export class HomePage {
   _loc: LatLng;
 
   constructor(public navCtrl: NavController,
-              private request : HttpRequestProvider,
               private _googleMaps: GoogleMaps,
               private _geoLoc: Geolocation) {
   }
 
   ngAfterViewInit(){
-    // let loc: LatLng;
     this.initMap();
-
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
-      this.getLocation().then( res => {
-        this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
+      this.map.setMyLocationEnabled(true);
+      this.map.getMyLocation().then( location => {
+
+        this._loc = location.latLng;
         this.moveCam(this._loc);
-
-        this.createMarker(this._loc, "blue").then((marker: Marker) => {
-          marker.showInfoWindow();
-        }).catch(err => {
-          console.log(err);
-        });
-      }).catch( err => {
-        console.log(err);
-      });
-
+      }, err => {console.error(err);});
     });
+
   }
 
+  //Load the map
   initMap(){
     let element = this.mapElement.nativeElement;
     this.map = this._googleMaps.create(element)
@@ -67,36 +61,44 @@ export class HomePage {
       zoom: 15,
       tilt: 10
     };
-    // this.map.setCameraTarget(loc);
-    this.map.moveCamera(options).then( res => {}, err => {})
+    this.map.moveCamera(options).then( res => {console.log(res);},
+      err => {console.error(err);})
   }
 
-  createMarker(loc: LatLng, icn: string){
+  createMarker(loc: LatLng){
     let markerOptions: MarkerOptions = {
       position: loc,
-      icon: icn
+      icon: 'magenta'
     };
     return  this.map.addMarker(markerOptions);
   }
 
-  centerMap()
-  {
-    this.moveCam(this._loc);
+  createPolygon(_mpts: ILatLng[]){
+    let polygOptions: PolygonOptions = {
+      points: _mpts,
+      strokeColor: '#e60000',
+      strokeWidth: 3,
+      visible: true
+    };
+
+    this.map.addPolygon(polygOptions).then( (_polyg : Polygon) => {
+      _polyg.setVisible(true);
+      _polyg.setClickable(false);
+    }, err => {console.error(err);});
   }
 
-  // public testRequest() {
-  //
-  //   this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {password: 'lol2'})
-  //     .subscribe(
-  //       result => {
-  //         console.log('Success');
-  //         console.log(result);
-  //       },
-  //       err => {
-  //         console.log('Error');
-  //         console.error(err);
-  //       });
-  // }
+  centerMap()
+  {
+    this.getLocation().then( res => {
+      this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
 
-
+      this.map.clear().then(res => {
+        this.moveCam(this._loc);
+        console.log(res);
+        this.createMarker(this._loc).then((marker: Marker) => {
+          marker.hideInfoWindow();
+        }, err => { console.error(err); });
+      }, err=> {console.error(err);});
+    }, err => { console.error(err); });
+  }
 }
