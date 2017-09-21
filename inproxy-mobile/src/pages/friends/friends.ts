@@ -34,14 +34,14 @@ export class FriendsPage {
     userService.getFriends().subscribe(success => {
         if (success) {
           let tab = localStorage.getItem('friends');
-          if (tab === 'undefined') {
+          if (tab === 'undefined' || tab === null) {
             this.friendsList = [
             ]
           } else {
             this.friendsList = JSON.parse(tab);
             this.haveFriend = true;
+            console.log('FriendListLoad');
           }
-          console.log(tab);
         } else {
           this.showPopup("Error", "Problem retriving friends.");
         }
@@ -52,7 +52,7 @@ export class FriendsPage {
     userService.getFriendRequests().subscribe(success => {
         if (success) {
           let stringRequest = localStorage.getItem('friendRequests');
-          if (stringRequest === 'undefined') {
+          if (stringRequest === 'undefined' || stringRequest === null) {
             this.haveRequest = false;
           } else {
             this.haveRequest = true;

@@ -59,14 +59,14 @@ export class UserPage {
       this.currentUser = new User("undefined", "undefined");
     }
 
-    console.log(localStorage.getItem('userId') !== '59c3a9de58a33b067c4f189b');
-    if (localStorage.getItem('userId') !== '59c3a9de58a33b067c4f189b') {
-      this.friendRequestService.addFriendRequest('59c3a9de58a33b067c4f189b', "c'est moi !!" + localStorage.getItem('firstName')).subscribe(succes => {
-        this.showPopup('Titre', "friend request");
-      }, error => {
-        this.showPopup(error, "friend request fail");
-      });
-    }
+    // console.log(localStorage.getItem('userId') !== '59c3a9de58a33b067c4f189b');
+    // if (localStorage.getItem('userId') !== '59c3a9de58a33b067c4f189b') {
+    //   this.friendRequestService.addFriendRequest('59c3a9de58a33b067c4f189b', "c'est moi !!" + localStorage.getItem('firstName')).subscribe(succes => {
+    //     this.showPopup('Titre', "friend request");
+    //   }, error => {
+    //     this.showPopup(error, "friend request fail");
+    //   });
+    // }
   }
 
   public editUserNav() {
