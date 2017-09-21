@@ -11,7 +11,9 @@ import {
   MarkerOptions,
   Polygon,
   PolygonOptions,
-  ILatLng } from '@ionic-native/google-maps';
+  ILatLng
+  // MyLocation
+} from '@ionic-native/google-maps';
 
 import {Geolocation} from '@ionic-native/geolocation';
 
@@ -31,18 +33,32 @@ export class MapsPage {
   }
 
   ngAfterViewInit(){
+    // let _div = document.getElementById("map");
+    // let _button = _div.getElementsByTagName('_btn_polygon')[0];
+    // let _isEnabled = true;
+
     this.initMap();
-
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
-      this.getLocation().then( res => {
-        this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
-        this.moveCam(this._loc);
+      this.map.setMyLocationEnabled(true);
+      this.map.getMyLocation().then( location => {
 
-        this.createMarker(this._loc).then((marker: Marker) => {
-          marker.showInfoWindow();
-          },err => {console.log(err);});
-      }, err => {console.log(err);});
-    });
+        this._loc = location.latLng;
+        this.moveCam(this._loc);
+        // this.createMarker(this._loc).then((marker: Marker) => {
+        //   marker.showInfoWindow();
+        // },err => {console.error(err);});
+
+      }, err => {console.error(err);});
+
+      // _button.addEventListener('click', function () ).then(res =>{
+      //   _isEnabled = !_isEnabled;
+      //   _button.innerHTML = "<ion-icon name='remove'></ion-icon>";
+      //   this.getClickPos(_isEnabled);
+      //   }, err => {console.error(err);});
+
+
+      });
+
   }
 
   //Load the map
@@ -62,7 +78,7 @@ export class MapsPage {
         tilt: 10
       };
     this.map.moveCamera(options).then( res => {console.log(res);},
-        err => {console.log(err);})
+        err => {console.error(err);})
   }
 
   createMarker(loc: LatLng){
@@ -71,6 +87,20 @@ export class MapsPage {
       icon: 'magenta'
     };
     return  this.map.addMarker(markerOptions);
+  }
+
+  createPolygon(_mpts: ILatLng[]){
+    let polygOptions: PolygonOptions = {
+      points: _mpts,
+      strokeColor: '#e60000',
+      strokeWidth: 3,
+      visible: true
+    };
+
+    this.map.addPolygon(polygOptions).then( (_polyg : Polygon) => {
+      _polyg.setVisible(true);
+      _polyg.setClickable(false);
+    }, err => {console.error(err);});
   }
 
   centerMap()
@@ -83,18 +113,17 @@ export class MapsPage {
         console.log(res);
         this.createMarker(this._loc).then((marker: Marker) => {
           marker.hideInfoWindow();
-        }, err => { console.log(err); });
-      }, err=> {console.log(err);});
-    }, err => { console.log(err); });
+        }, err => { console.error(err); });
+      }, err=> {console.error(err);});
+    }, err => { console.error(err); });
   }
 
-  getClickPos()
+  getClickPos(_isEnabled : Boolean)
   {
     let _mpts: ILatLng[];
     let _spt : LatLng;
     let _counter = 0;
     _mpts = [];
-
 
     this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
       _spt = new LatLng(e.lat, e.lng);
@@ -102,28 +131,14 @@ export class MapsPage {
       console.log("Lat: " + _spt.lat);
       console.log("Lng: " + _spt.lng);
 
-      // this.createMarker(_spt).then((marker: Marker) => {
-      //   marker.hideInfoWindow();
-      // },err => { console.log(err); });
-
-      if (_counter > 0)
-      {
-        let polygOptions: PolygonOptions = {
-          points: _mpts,
-          strokeColor: '#e60000',
-          strokeWidth: 3,
-          visible: true
-        };
-
-        this.map.addPolygon(polygOptions).then( (_polyg : Polygon) => {
-          _polyg.setVisible(true);
-          _polyg.setClickable(false);
-        }, err => {console.log(err);});
+      if (_counter > 0) {
+        this.createPolygon(_mpts);
       }
       _counter++;
       console.log(_counter);
-    },err => { console.log(err); });
-    console.log("test");
+
+    },err => { console.error(err); });
   }
+
 }
 
