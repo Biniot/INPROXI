@@ -88,6 +88,16 @@ export class MapsPage {
     return  this.map.addMarker(markerOptions);
   }
 
+  createPolygMarkers(_mpts: ILatLng[]){
+    for (let i = 0; i < _mpts.length; i++){
+     let _spt = new LatLng(_mpts[i].lat, _mpts[i].lng);
+
+      this.createMarker(_spt).then((marker: Marker) => {
+          marker.showInfoWindow();
+        },err => {console.error(err);});
+    }
+  }
+
   createPolygon(_mpts: ILatLng[]){
     let polygOptions: PolygonOptions = {
       points: _mpts,
@@ -101,6 +111,7 @@ export class MapsPage {
       _polyg.setClickable(false);
     }, err => {console.error(err);});
   }
+
   centerMap()
   {
     this.getLocation().then( res => {
@@ -130,7 +141,12 @@ export class MapsPage {
       console.log("Lng: " + _spt.lng);
 
       if (_counter > 0) {
-        this.createPolygon(_mpts);
+        // console.log(_mpts[0]);
+        this.map.clear().then(res => {
+          this.createPolygMarkers(_mpts);
+          this.createPolygon(_mpts);
+          console.log(res);
+        },err => {console.error(err);});
       }
       _counter++;
       console.log(_counter);
