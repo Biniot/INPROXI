@@ -139,6 +139,7 @@ export class MapsPage {
       _mpts.push(_spt);
       console.log("Lat: " + _spt.lat);
       console.log("Lng: " + _spt.lng);
+      this.createPolygMarkers(_mpts);
 
       if (_counter > 0) {
         // console.log(_mpts[0]);
