@@ -26,16 +26,17 @@ export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
   _loc: LatLng;
+  _record: Boolean;
+  _icon: String;
 
   constructor(public navCtrl: NavController,
               private _googleMaps: GoogleMaps,
               private _geoLoc: Geolocation) {
   }
 
-  ngAfterViewInit(){
-    // let _div = document.getElementById("map");
-    // let _button = _div.getElementsByTagName('_btn_polygon')[0];
-    // let _isEnabled = true;
+  ngAfterViewInit() {
+    this._record = false;
+    this._icon = "add";
 
     this.initMap();
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
@@ -44,43 +45,30 @@ export class MapsPage {
 
         this._loc = location.latLng;
         this.moveCam(this._loc);
-        // this.createMarker(this._loc).then((marker: Marker) => {
-        //   marker.showInfoWindow();
-        // },err => e{console.error(err);});
-
       }, err => {console.error(err);});
-      // _button.addEventListener('click', function () ).then(res =>{
-      //   _isEnabled = !_isEnabled;
-      //   _button.innerHTML = "<ion-icon name='remove'></ion-icon>";
-      //   this.getClickPos(_isEnabled);
-      //   }, err => {console.error(err);});
-
-
     });
-
   }
 
   //Load the map
-  initMap(){
+  initMap() {
     let element = this.mapElement.nativeElement;
     this.map = this._googleMaps.create(element)
   }
 
-  getLocation(){
+  getLocation() {
     return this._geoLoc.getCurrentPosition();
   }
 
-  moveCam(loc : LatLng){
+  moveCam(loc : LatLng) {
     let options : CameraPosition<any> = {
       target: loc,
       zoom: 15,
       tilt: 10
     };
-    this.map.moveCamera(options).then( res => {console.log(res);},
-      err => {console.error(err);})
+    this.map.moveCamera(options).then( () => {}, err => {console.error(err);})
   }
 
-  createMarker(loc: LatLng){
+  createMarker(loc: LatLng) {
     let markerOptions: MarkerOptions = {
       position: loc,
       icon: 'magenta'
@@ -88,17 +76,17 @@ export class MapsPage {
     return  this.map.addMarker(markerOptions);
   }
 
-  createPolygMarkers(_mpts: ILatLng[]){
-    for (let i = 0; i < _mpts.length; i++){
+  createPolygMarkers(_mpts: ILatLng[]) {
+    for (let i = 0; i < _mpts.length; i++) {
      let _spt = new LatLng(_mpts[i].lat, _mpts[i].lng);
 
       this.createMarker(_spt).then((marker: Marker) => {
           marker.showInfoWindow();
-        },err => {console.error(err);});
+        },err => { console.error(err); });
     }
   }
 
-  createPolygon(_mpts: ILatLng[]){
+  createPolygon(_mpts: ILatLng[]) {
     let polygOptions: PolygonOptions = {
       points: _mpts,
       strokeColor: '#e60000',
@@ -112,46 +100,59 @@ export class MapsPage {
     }, err => {console.error(err);});
   }
 
-  centerMap()
-  {
-    this.getLocation().then( res => {
-      this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
+  // centerMap()
+  // {
+  //   this.getLocation().then( res => {
+  //     this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
+  //
+  //     this.map.clear().then(() => {
+  //       this.moveCam(this._loc);
+  //       this.createMarker(this._loc).then((marker: Marker) => {
+  //         marker.hideInfoWindow();
+  //       }, err => { console.error(err); });
+  //     }, err=> {console.error(err);});
+  //   }, err => { console.error(err); });
+  // }
 
-      this.map.clear().then(res => {
-        this.moveCam(this._loc);
-        console.log(res);
-        this.createMarker(this._loc).then((marker: Marker) => {
-          marker.hideInfoWindow();
-        }, err => { console.error(err); });
-      }, err=> {console.error(err);});
-    }, err => { console.error(err); });
-  }
-
-  getClickPos()
+  getClickPos(_rec: Boolean)
   {
     let _mpts: ILatLng[];
     let _spt : LatLng;
+
     let _counter = 0;
     _mpts = [];
+    this._record = !_rec;
 
-    this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
-      _spt = new LatLng(e.lat, e.lng);
-      _mpts.push(_spt);
-      console.log("Lat: " + _spt.lat);
-      console.log("Lng: " + _spt.lng);
-      this.createPolygMarkers(_mpts);
+    if (this._record == true) {
+      this._icon = "square";
+    }
+    else {
+      this._icon ="add";
+    }
 
-      if (_counter > 0) {
-        // console.log(_mpts[0]);
-        this.map.clear().then(res => {
-          this.createPolygMarkers(_mpts);
-          this.createPolygon(_mpts);
-          console.log(res);
-        },err => {console.error(err);});
+    let _sub = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
+      if (this._record == false) {
+        // _counter = 0;
+        // _mpts = [];
+        //TODO: push _mpts in an array of IlatLng
+        _sub.unsubscribe();
       }
-      _counter++;
-      console.log(_counter);
 
+      if (this._record == true) {
+        _spt = new LatLng(e.lat, e.lng);
+        _mpts.push(_spt);
+        this.createPolygMarkers(_mpts);
+
+        if (_counter > 0) {
+          this.map.clear().then(() => {
+            this.createPolygMarkers(_mpts);
+            this.createPolygon(_mpts);
+            }, err => { console.error(err); });
+        }
+
+        _counter++;
+        console.log(_counter);
+      }
     },err => { console.error(err); });
   }
 
