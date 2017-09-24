@@ -46,7 +46,7 @@ export class MapsPage {
         this.moveCam(this._loc);
         // this.createMarker(this._loc).then((marker: Marker) => {
         //   marker.showInfoWindow();
-        // },err => {console.error(err);});
+        // },err => e{console.error(err);});
 
       }, err => {console.error(err);});
       // _button.addEventListener('click', function () ).then(res =>{
