@@ -17,7 +17,12 @@
 
 
 <ion-content padding>
-  <div>
-    <h3>This will be the diplay of the rooms available</h3>
-  </div>
+  <ion-list> <!--*ngIf="haveFriend"-->
+    <ion-item *ngFor="let room of roomList">
+      <ion-avatar item-start>
+        <img src="../../assets/img/avatar.png">
+      </ion-avatar>
+      <h2>{{room.name}} {{room.owner}}</h2>
+    </ion-item>
+  </ion-list>
 </ion-content>

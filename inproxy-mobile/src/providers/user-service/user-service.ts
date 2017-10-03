@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
-import { Storage } from '@ionic/storage';
+
 import {
   API_ADDRESS, VERSION, USERS_ENDPOINT, GET_FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT,
   SEARCH_USER_ENDPOINT
@@ -22,7 +22,7 @@ export class UserServiceProvider {
   iSFriendLoad: boolean;
   isFriendRequestLoad: boolean;
 
-  constructor(private request : HttpRequestProvider, private storage : Storage) {
+  constructor(private request : HttpRequestProvider) {
     this.isUserLoad = false;
     this.iSFriendLoad = false;
     this.isFriendRequestLoad = false;

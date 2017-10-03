@@ -26,6 +26,7 @@ export class AuthServiceProvider {
           password: credentials.password
         }).subscribe(
           result => {
+            console.log('login result');
             console.log(result);
             localStorage.setItem('token', result.token);
             localStorage.setItem('userId', result.user_id);

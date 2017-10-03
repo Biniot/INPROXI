@@ -61,16 +61,6 @@ export class UserPage {
   }
 
   public editUserNav() {
-    if (localStorage.getItem('userId') !== '59d3c7c88fc60f1c0cf620ec') {
-      this.friendRequestService.addFriendRequest('59d3c7c88fc60f1c0cf620ec', "c'est moi !!" + localStorage.getItem('firstName')).subscribe(succes => {
-        this.showPopup('Titre', "friend request");
-      }, error => {
-        this.showPopup(error, "friend request fail");
-      });
-    } else {
-      this.userService.refreshProvider();
-      this.userService.getUserInfo();
-    }
     this.navCtrl.push('EditUserPage', { "parentPage": this });
   }
 

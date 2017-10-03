@@ -10,6 +10,7 @@ export let VERSION = 'v1/';
 
 export let AUTH_ENDPOINT = "auth/";
 export let USERS_ENDPOINT = "users/";
+export let ROOMS_ENDPOINT = "rooms/";
 export let FRIENDREQUEST_ENDPOINT = "friendrequest/";
 export let GET_FRIENDREQUEST_ENDPOINT = "/friendrequests";
 export let SEARCH_USER_ENDPOINT = "search_user/";

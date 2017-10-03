@@ -23,6 +23,7 @@ import {NativeStorage} from "@ionic-native/native-storage";
 import { FriendServiceProvider } from '../providers/friend-service/friend-service';
 import { GoogleMaps } from "@ionic-native/google-maps";
 import { Geolocation } from "@ionic-native/geolocation";
+import { RoomServiceProvider } from '../providers/room-service/room-service';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { Geolocation } from "@ionic-native/geolocation";
     UserServiceProvider,
     Geolocation,
     GoogleMaps,
-    FriendServiceProvider
+    FriendServiceProvider,
+    RoomServiceProvider
   ]
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage} from 'ionic-angular';
 import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 
@@ -19,12 +19,11 @@ export class AddFriendRequestPage {
   friendList: any;
   showList: boolean;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private friendRequestProvider: FriendServiceProvider, private userService: UserServiceProvider, private alertCtrl: AlertController) {
+  constructor(private friendRequestProvider: FriendServiceProvider, private userService: UserServiceProvider, private alertCtrl: AlertController) {
     this.showList = false;
   }
 
   public addFriend() {
-    // TODO : avoir l'id friend a partir des friendRequestCredentials
     this.friendRequestProvider.addFriendRequest(this.friendRequestCredentials.idFriend, this.friendRequestCredentials.message).subscribe(success => {
         this.showPopup("Succes", "Succefully add request friend.");
       },
@@ -45,8 +44,8 @@ export class AddFriendRequestPage {
       } else {
         firstName = value;
       }
-      console.log('firstName'+ firstName);
-      console.log('lastName'+ lastName);
+      console.log('firstName '+ firstName);
+      console.log('lastName '+ lastName);
       this.userService.searchUser(firstName, lastName).subscribe(success => {
           this.friendList = JSON.parse(localStorage.getItem('searchList'));
           console.log(this.friendList);
@@ -73,7 +72,6 @@ export class AddFriendRequestPage {
         break;
       }
     }
-    // TODO : reload le form
   }
 
   showPopup(title, text) {

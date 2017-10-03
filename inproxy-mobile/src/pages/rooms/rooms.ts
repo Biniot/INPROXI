@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {RoomServiceProvider} from "../../providers/room-service/room-service";
 
 /**
  * Generated class for the RoomsPage page.
@@ -13,8 +14,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'rooms.html',
 })
 export class RoomsPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private roomList: any;
+  constructor(private roomService: RoomServiceProvider) {
   }
 
   ionViewDidLoad() {
