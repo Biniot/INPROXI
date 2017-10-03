@@ -71,16 +71,19 @@ export class UserServiceProvider {
   public getFriendRequests() {
     return Observable.create(observer => {
       if (this.isFriendRequestLoad) {
+        console.log('getFriendRequests already load');
         observer.next(true);
         observer.complete();
-      }
-      else {
+      } else {
         this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + GET_FRIENDREQUEST_ENDPOINT, {
         }).subscribe(
           result => {
             if (result.length >= 1) {
+              console.log('getFriendRequests got sth');
+              console.log(result);
               localStorage.setItem('friendRequests', JSON.stringify(result));
             }
+            console.log('getFriendRequests outside');
             this.isFriendRequestLoad = true;
             observer.next(true);
             observer.complete();},
@@ -141,13 +144,14 @@ export class UserServiceProvider {
   }
 
   public searchUser(firstName: string, lastName: string) {
-    localStorage.removeItem('searchList');
     return Observable.create(observer => {
       this.request.get(API_ADDRESS + VERSION + SEARCH_USER_ENDPOINT, {
         first_name: firstName,
         last_name: lastName
       }).subscribe(
         result => {
+          localStorage.removeItem('searchList');
+          console.log('Result search_user');
           console.log(result);
           if (result.length >= 1) {
             console.log('searchList');

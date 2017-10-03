@@ -45,8 +45,11 @@ export class AddFriendRequestPage {
       } else {
         firstName = value;
       }
+      console.log('firstName'+ firstName);
+      console.log('lastName'+ lastName);
       this.userService.searchUser(firstName, lastName).subscribe(success => {
           this.friendList = JSON.parse(localStorage.getItem('searchList'));
+          console.log(this.friendList);
           if (!this.showList) {
             this.showList = true;
           } else {
@@ -66,7 +69,7 @@ export class AddFriendRequestPage {
         this.friendRequestCredentials.firstName = friend.first_name;
         this.friendRequestCredentials.lastName = friend.last_name;
         this.friendRequestCredentials.idFriend = friend.id;
-        this.friendRequestCredentials.message = "Salut c'est " + friend.first_name + ' ' + friend.last_name + ", viens discuter !";
+        this.friendRequestCredentials.message = "Salut c'est " + localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName') + ", viens discuter !";
         break;
       }
     }
