@@ -24,6 +24,7 @@ import { FriendServiceProvider } from '../providers/friend-service/friend-servic
 import { GoogleMaps } from "@ionic-native/google-maps";
 import { Geolocation } from "@ionic-native/geolocation";
 import { RoomServiceProvider } from '../providers/room-service/room-service';
+import { IoServiceProvider } from '../providers/io-service/io-service';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { RoomServiceProvider } from '../providers/room-service/room-service';
     Geolocation,
     GoogleMaps,
     FriendServiceProvider,
-    RoomServiceProvider
+    RoomServiceProvider,
+    IoServiceProvider
   ]
 })
 export class AppModule {}

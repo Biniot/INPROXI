@@ -25,8 +25,7 @@ export class UserPage {
   isUser: boolean;
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController,
-              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider,
-              private friendRequestService: FriendServiceProvider) {
+              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider) {
     this.deleteUserSucces = false;
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
