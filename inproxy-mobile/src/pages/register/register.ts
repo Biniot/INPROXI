@@ -32,7 +32,7 @@ export class RegisterPage {
       buttons: [
         {
           text: 'OK',
-          handler: () => {
+          handler: () => {  
             if (this.createSuccess) {
               this.navCtrl.popToRoot();
             }

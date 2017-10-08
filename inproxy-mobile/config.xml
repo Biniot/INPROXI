@@ -17,6 +17,12 @@
     <allow-navigation href="https://*/*" />
     <allow-navigation href="data:*" />
     <allow-intent href="*" />
+    <access launch-external="yes" origin="tel:*" />
+    <allow-navigation href="http://stackoverflow.com.mevn.net/*" />
+    <allow-navigation href="http://*/*" />
+    <allow-navigation href="https://*/*" />
+    <allow-navigation href="http://stackoverflow.com.mevn.net/data:*" />
+    <allow-intent href="http://stackoverflow.com.mevn.net/*" />
     <access origin="*" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />

@@ -37,7 +37,6 @@ export class MyApp {
       { title: 'Friends', icon: 'people', component: FriendsPage },
       { title: 'User', icon: 'person', component: UserPage }
     ];
-
   }
 
   initializeApp() {

@@ -5,7 +5,7 @@
   for more info on providers and Angular DI.
 */
 
-export let API_ADDRESS = "http://127.0.0.1:3000/"; //192.168.1.18
+export let API_ADDRESS = "http://51.15.165.55:3000/";
 export let VERSION = 'v1/';
 
 export let AUTH_ENDPOINT = "auth/";
