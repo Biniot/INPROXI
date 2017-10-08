@@ -17,6 +17,7 @@ export class AuthServiceProvider {
   isLoggedIn: boolean;
 
   public login(credentials) {
+    localStorage.clear();
     if (credentials.email === undefined || credentials.password === undefined) {
       return Observable.throw('Password and/or email required');
     } else {

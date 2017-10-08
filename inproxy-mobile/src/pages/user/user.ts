@@ -31,7 +31,7 @@ export class UserPage {
       this.isUser = false;
       this.userService.getUserInfoById(navParams.get('userId')).subscribe(success => {
           // TODO : voir comment on recupere lavatar du user depuis lapi a repercuter dans la view
-          this.reloadUser();
+          //this.reloadUser();
           //this.currentUser.avatarPath = localStorage.getItem('avatarPath');
           //this.showPopup("Succes", "Succefully retrieve user.");
         },
