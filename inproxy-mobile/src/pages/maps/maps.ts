@@ -1,5 +1,5 @@
 import {Component, ViewChild, ElementRef} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {Button, NavController} from 'ionic-angular';
 
 import {
   GoogleMaps,
@@ -32,6 +32,8 @@ export class MapsPage {
   _recordEdit: Boolean;
   _iconAddPolyg: String;
   _iconEditPolyg: String;
+  _polyg: ILatLng[];
+  _cncl: HTMLElement;
 
   constructor(public navCtrl: NavController,
               private _googleMaps: GoogleMaps,
@@ -44,6 +46,9 @@ export class MapsPage {
     this._recordEdit = false;
     this._iconAddPolyg = "add";
     this._iconEditPolyg = "construct";
+    this._polyg = [];
+    this._cncl = document.getElementById("cancelEdit");
+    this._cncl.style.display = "none";
 
     this.initMap();
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
@@ -85,6 +90,7 @@ export class MapsPage {
       flat: true,
       icon: 'magenta'
     };
+
     return  this.map.addMarker(markerOptions);
   }
 
@@ -94,8 +100,11 @@ export class MapsPage {
      let _spt = new LatLng(_mpts[i].lat, _mpts[i].lng);
 
       this.createMarker(_spt).then((marker: Marker) => {
-          marker.showInfoWindow();
-        },err => { console.error(err); });
+          // marker.showInfoWindow();
+          this._recordEdit == true ? marker.setDraggable(true): marker.setDraggable(false);
+
+
+      },err => { console.error(err); });
     }
   }
 
@@ -115,6 +124,7 @@ export class MapsPage {
   }
 
 
+
   addPolyPoints(_rec: Boolean) {
     let _mpts: ILatLng[];
     let _spt : LatLng;
@@ -123,7 +133,7 @@ export class MapsPage {
     let _counter = 0;
     _mpts = [];
 
-    if (this._recordPolyg == true) {
+    if (!_rec == true) {
       this._iconAddPolyg = "square";
     }
     else {
@@ -134,6 +144,7 @@ export class MapsPage {
       if (this._recordPolyg == false) {
         // _counter = 0;
         // _mpts = [];
+        this._polyg = _mpts;
         //TODO: push _mpts in an array of IlatLng
         _sub.unsubscribe();
       }
@@ -147,6 +158,7 @@ export class MapsPage {
           this.map.clear().then(() => {
             this.createPolygMarkers(_mpts);
             this.createPolygon(_mpts);
+            this._polyg = _mpts;
             }, err => { console.error(err); });
         }
         _counter++;
@@ -156,46 +168,27 @@ export class MapsPage {
 
   }
 
-
   editPolyPoints(_rec: Boolean) {
-    // let _mpts: ILatLng[];
-    let _spt : LatLng;
+    let _oldpts = this._polyg;
 
     this._recordEdit = !_rec;
-    // let _counter = 0;
-    // _mpts = [];
 
-    if (this._recordEdit == true) {
+    if (!_rec == true) {
       this._iconEditPolyg = "checkmark-circle";
+      // let _cncl = document.getElementById("cancelEdit");
+      this._cncl.style.display = "block";
     }
     else {
       this._iconEditPolyg ="construct";
+      // let _cncl = document.getElementById("cancelEdit");
+      this._cncl.style.display = "none"
     }
 
-    let _sub = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
-      if (this._recordEdit == false) {
-        // _counter = 0;
-        // _mpts = [];
-        //TODO: push _mpts in an array of IlatLng
-        _sub.unsubscribe();
-      }
-
-      if (this._recordEdit == true) {
-        _spt = new LatLng(e.lat, e.lng);
-        console.log(_spt);
-        // _mpts.push(_spt);
-        // this.createPolygMarkers(_mpts);
-
-        // if (_counter > 0) {
-        //   this.map.clear().then(() => {
-        //     this.createPolygMarkers(_mpts);
-        //     this.createPolygon(_mpts);
-        //   }, err => { console.error(err); });
-        // }
-        // _counter++;
-        // console.log(_counter);
-      }
-    },err => { console.error(err); });
+    this.map.clear().then(() => {
+      this.createPolygMarkers(_oldpts);
+      this.createPolygon(_oldpts);
+      // this._polyg = _oldpts;
+    }, err => { console.error(err); });
 
   }
 
