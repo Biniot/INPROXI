@@ -17,26 +17,33 @@ import {
 
 import {Geolocation} from '@ionic-native/geolocation';
 
+
 @Component({
   selector: 'page-maps',
   templateUrl: 'maps.html'
 })
 
+
 export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
   _loc: LatLng;
-  _record: Boolean;
-  _icon: String;
+  _recordPolyg: Boolean;
+  _recordEdit: Boolean;
+  _iconAddPolyg: String;
+  _iconEditPolyg: String;
 
   constructor(public navCtrl: NavController,
               private _googleMaps: GoogleMaps,
               private _geoLoc: Geolocation) {
   }
 
+
   ngAfterViewInit() {
-    this._record = false;
-    this._icon = "add";
+    this._recordPolyg = false;
+    this._recordEdit = false;
+    this._iconAddPolyg = "add";
+    this._iconEditPolyg = "construct";
 
     this.initMap();
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
@@ -49,15 +56,18 @@ export class MapsPage {
     });
   }
 
+
   //Load the map
   initMap() {
     let element = this.mapElement.nativeElement;
     this.map = this._googleMaps.create(element)
   }
 
+
   getLocation() {
     return this._geoLoc.getCurrentPosition();
   }
+
 
   moveCam(loc : LatLng) {
     let options : CameraPosition<any> = {
@@ -68,13 +78,16 @@ export class MapsPage {
     this.map.moveCamera(options).then( () => {}, err => {console.error(err);})
   }
 
+
   createMarker(loc: LatLng) {
     let markerOptions: MarkerOptions = {
       position: loc,
+      flat: true,
       icon: 'magenta'
     };
     return  this.map.addMarker(markerOptions);
   }
+
 
   createPolygMarkers(_mpts: ILatLng[]) {
     for (let i = 0; i < _mpts.length; i++) {
@@ -85,6 +98,7 @@ export class MapsPage {
         },err => { console.error(err); });
     }
   }
+
 
   createPolygon(_mpts: ILatLng[]) {
     let polygOptions: PolygonOptions = {
@@ -100,45 +114,31 @@ export class MapsPage {
     }, err => {console.error(err);});
   }
 
-  // centerMap()
-  // {
-  //   this.getLocation().then( res => {
-  //     this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
-  //
-  //     this.map.clear().then(() => {
-  //       this.moveCam(this._loc);
-  //       this.createMarker(this._loc).then((marker: Marker) => {
-  //         marker.hideInfoWindow();
-  //       }, err => { console.error(err); });
-  //     }, err=> {console.error(err);});
-  //   }, err => { console.error(err); });
-  // }
 
-  getClickPos(_rec: Boolean)
-  {
+  addPolyPoints(_rec: Boolean) {
     let _mpts: ILatLng[];
     let _spt : LatLng;
 
+    this._recordPolyg = !_rec;
     let _counter = 0;
     _mpts = [];
-    this._record = !_rec;
 
-    if (this._record == true) {
-      this._icon = "square";
+    if (this._recordPolyg == true) {
+      this._iconAddPolyg = "square";
     }
     else {
-      this._icon ="add";
+      this._iconAddPolyg ="add";
     }
 
     let _sub = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
-      if (this._record == false) {
+      if (this._recordPolyg == false) {
         // _counter = 0;
         // _mpts = [];
         //TODO: push _mpts in an array of IlatLng
         _sub.unsubscribe();
       }
 
-      if (this._record == true) {
+      if (this._recordPolyg == true) {
         _spt = new LatLng(e.lat, e.lng);
         _mpts.push(_spt);
         this.createPolygMarkers(_mpts);
@@ -149,11 +149,55 @@ export class MapsPage {
             this.createPolygon(_mpts);
             }, err => { console.error(err); });
         }
-
         _counter++;
         console.log(_counter);
       }
     },err => { console.error(err); });
+
   }
+
+
+  editPolyPoints(_rec: Boolean) {
+    // let _mpts: ILatLng[];
+    let _spt : LatLng;
+
+    this._recordEdit = !_rec;
+    // let _counter = 0;
+    // _mpts = [];
+
+    if (this._recordEdit == true) {
+      this._iconEditPolyg = "checkmark-circle";
+    }
+    else {
+      this._iconEditPolyg ="construct";
+    }
+
+    let _sub = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
+      if (this._recordEdit == false) {
+        // _counter = 0;
+        // _mpts = [];
+        //TODO: push _mpts in an array of IlatLng
+        _sub.unsubscribe();
+      }
+
+      if (this._recordEdit == true) {
+        _spt = new LatLng(e.lat, e.lng);
+        console.log(_spt);
+        // _mpts.push(_spt);
+        // this.createPolygMarkers(_mpts);
+
+        // if (_counter > 0) {
+        //   this.map.clear().then(() => {
+        //     this.createPolygMarkers(_mpts);
+        //     this.createPolygon(_mpts);
+        //   }, err => { console.error(err); });
+        // }
+        // _counter++;
+        // console.log(_counter);
+      }
+    },err => { console.error(err); });
+
+  }
+
 
 }

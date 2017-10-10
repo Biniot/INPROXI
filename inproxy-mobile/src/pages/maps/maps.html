@@ -16,11 +16,13 @@
         <!--</button>-->
       <!--</li>-->
       <li>
-        <!--<button ion-button (click)="getClickPos()">-->
-          <!--<ion-icon name="add" ></ion-icon>-->
-        <!--</button>-->
-        <button ion-button (click)="getClickPos(this._record)">
-          <ion-icon [name]=this._icon ></ion-icon>
+        <button ion-button (click)="addPolyPoints(this._recordPolyg)">
+          <ion-icon [name]=this._iconAddPolyg ></ion-icon>
+        </button>
+      </li>
+      <li>
+        <button ion-button (click)="editPolyPoints(this._recordEdit)">
+          <ion-icon [name]=this._iconEditPolyg ></ion-icon>
         </button>
       </li>
     </ul>
