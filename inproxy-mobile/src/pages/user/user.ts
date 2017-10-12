@@ -31,16 +31,16 @@ export class UserPage {
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
       this.userService.getUserInfoById(navParams.get('userId')).subscribe(success => {
-          this.currentUser = new User(success.last_name, success.email);
-          this.currentUser.firstName = success.first_name;
-        },
+        this.currentUser = new User(success.last_name, success.email);
+        this.currentUser.firstName = success.first_name;
+      },
         error => {
           this.showPopup("Error", error);
         });
     } else {
       this.isUser = true;
       this.userService.getUserInfo().subscribe(success => {
-          if (success) {
+        if (success) {
             this.reloadUser();
             //this.showPopup("Succes", "Succefully retrieve user.");
           } else {

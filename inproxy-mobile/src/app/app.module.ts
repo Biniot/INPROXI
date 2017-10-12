@@ -31,7 +31,6 @@ import { PrivateMessageStorageProvider } from '../providers/private-message-stor
   declarations: [
     MyApp,
     HomePage,
-    UserPage,
     RoomsPage,
     MapsPage,
     FriendsPage,
@@ -47,7 +46,6 @@ import { PrivateMessageStorageProvider } from '../providers/private-message-stor
   entryComponents: [
     MyApp,
     HomePage,
-    UserPage,
     RoomsPage,
     MapsPage,
     FriendsPage,

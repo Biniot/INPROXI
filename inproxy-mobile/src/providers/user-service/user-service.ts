@@ -59,7 +59,7 @@ export class UserServiceProvider {
       this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + id, {
       }).subscribe(
         result => {
-          observer.next(result.user);
+          observer.next(result);
           observer.complete();
         }, err => {
           observer.error(err.message)
