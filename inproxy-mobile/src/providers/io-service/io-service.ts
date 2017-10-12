@@ -8,46 +8,54 @@ import {API_ADDRESS} from "../constants/constants";
   See https://angular.io/docs/ts/latest/guide/dependency-injection.html
   for more info on providers and Angular DI.
 */
+var sock = io(API_ADDRESS, {
+  reconnection: true,
+  //autoConnect: false
+  //query : {token: localStorage.getItem('token')},
+});
+
 @Injectable()
 export class IoServiceProvider {
   socket:any;
 
   constructor() {
     // TODO : je sais pas trop si ca suffit pour nos histoire de token
-    this.socket = io(API_ADDRESS, {
-      reconnection: true,
-      //autoConnect: false
-      //query : {token: localStorage.getItem('token')},
-    });
-    this.socket.emit('auth', localStorage.getItem('token'));
+    // this.
+    //   socket = io(API_ADDRESS, {
+    //   reconnection: true,
+    //   //autoConnect: false
+    //   //query : {token: localStorage.getItem('token')},
+    // });
+    sock.emit('auth', localStorage.getItem('token'));
 
-    this.socket.on('connect', this.sendAuth);
-    this.socket.on('disconnect', () => {
+    sock.on('connect', this.sendAuth);
+    sock.on('disconnect', () => {
       console.log("disconnect");
+      //sock
     });
-    //this.socket.on('reconnect', this.sendAuth);
-    console.log(this.socket);
+    //sock.on('reconnect', this.sendAuth);
+    console.log(sock);
   }
 
   sendAuth() {
-    console.log(this.socket);
-    //this.socket.emit('auth', localStorage.getItem('token'));
+    console.log(sock);
+    sock.emit('auth', localStorage.getItem('token'));
   }
 
   public setPrivateMessageCallback(functionPrivateMessage: any) {
-    this.socket.on('private_message', functionPrivateMessage);
+    sock.on('private_message', functionPrivateMessage);
   }
 
   public sendMessage(from: string, to: string, message: string) {
-    this.socket.emit('private_message', {from: from, to: to, message: message});
+    sock.emit('private_message', {from: from, to: to, message: message});
   }
 
   public connectSocket() {
-    this.socket.open();
+    sock.open();
   }
 
   public disconnectSocket() {
-    this.socket.close();
+    sock.close();
   }
 
 }
