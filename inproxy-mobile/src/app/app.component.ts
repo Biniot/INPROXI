@@ -5,7 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { RoomsPage } from '../pages/rooms/rooms';
-import { UserPage } from '../pages/user/user';
 import { MapsPage } from '../pages/maps/maps';
 import { FriendsPage } from '../pages/friends/friends';
 import { LoginPage } from '../pages/login/login';
@@ -35,7 +34,7 @@ export class MyApp {
       { title: 'Rooms', icon: 'chatboxes', component: RoomsPage },
       { title: 'Maps', icon: 'map', component: MapsPage },
       { title: 'Friends', icon: 'people', component: FriendsPage },
-      { title: 'User', icon: 'person', component: UserPage }
+      { title: 'User', icon: 'person', component: 'UserPage' }
     ];
   }
 
