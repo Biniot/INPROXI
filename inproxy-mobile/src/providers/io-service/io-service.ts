@@ -35,7 +35,7 @@ export class IoServiceProvider {
   }
 
   receiveMessage(data: any) {
-    // TODO : provider sqlite mis en place dune map
+    // TODO : provider sqlite mis en place dune messageMap
   }
 
   // function(){}

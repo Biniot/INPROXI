@@ -74,6 +74,14 @@ export class FriendsPage {
     this.navCtrl.push('CheckFriendRequestPage');
   }
 
+  public friendInfo(idFriend: string) {
+    this.navCtrl.push('UserPage', {userId: idFriend});
+  }
+
+  public friendChat(idFriend: string) {
+
+  }
+
   showPopup(title, text) {
     let alert = this.alertCtrl.create({
       title: title,

@@ -25,6 +25,7 @@ import { GoogleMaps } from "@ionic-native/google-maps";
 import { Geolocation } from "@ionic-native/geolocation";
 import { RoomServiceProvider } from '../providers/room-service/room-service';
 import { IoServiceProvider } from '../providers/io-service/io-service';
+import { PrivateMessageStorageProvider } from '../providers/private-message-storage/private-message-storage';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { IoServiceProvider } from '../providers/io-service/io-service';
     GoogleMaps,
     FriendServiceProvider,
     RoomServiceProvider,
-    IoServiceProvider
+    IoServiceProvider,
+    PrivateMessageStorageProvider
   ]
 })
 export class AppModule {}

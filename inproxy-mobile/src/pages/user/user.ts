@@ -7,6 +7,7 @@ import {isUndefined} from "util";
 import {LoginPage} from "../login/login";
 import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
+import {PrivateMessageStorageProvider} from "../../providers/private-message-storage/private-message-storage";
 
 /**
  * Generated class for the UserPage page.
@@ -25,15 +26,13 @@ export class UserPage {
   isUser: boolean;
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController,
-              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider) {
+              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider, private pm: PrivateMessageStorageProvider) {
     this.deleteUserSucces = false;
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
       this.userService.getUserInfoById(navParams.get('userId')).subscribe(success => {
-          // TODO : voir comment on recupere lavatar du user depuis lapi a repercuter dans la view
-          //this.reloadUser();
-          //this.currentUser.avatarPath = localStorage.getItem('avatarPath');
-          //this.showPopup("Succes", "Succefully retrieve user.");
+          this.currentUser = new User(success.last_name, success.email);
+          this.currentUser.firstName = success.first_name;
         },
         error => {
           this.showPopup("Error", error);

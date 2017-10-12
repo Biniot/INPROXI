@@ -5,9 +5,12 @@
   for more info on providers and Angular DI.
 */
 
-export let API_ADDRESS = "http://51.15.165.55:3000/";
+export let API_ADDRESS = "http://51.15.165.55:3001/";
+
 export let VERSION = 'v1/';
 
+export let API_ADDRESS_DEV = "http://51.15.165.55:3001/";
+export let API_ADDRESS_PROD = "http://51.15.165.55:3000/";
 export let AUTH_ENDPOINT = "auth/";
 export let USERS_ENDPOINT = "users/";
 export let ROOMS_ENDPOINT = "rooms/";

@@ -1,3 +1,66 @@
 page-check-friend-request {
+  .check-friend-content {
 
+    @keyframes animatedBackground {
+      0% { background-position: 0 0; }
+      50% { background-position: 100% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    @-webkit-keyframes animatedBackground {
+      0% { background-position: 0 0; }
+      50% { background-position: 100% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    background-size:cover;
+    -webkit-animation:animatedBackground 80s linear infinite;
+    -moz-animation:animatedBackground 80s linear infinite;
+    -ms-animation:animatedBackground 80s linear infinite;
+    -o-animation:animatedBackground 80s linear infinite;
+    animation:animatedBackground 80s linear infinite;
+
+    .logo-row {
+      padding-top: 50px;
+      padding-bottom: 20px;
+    }
+
+    .login-box {
+      background-color: rgba(123, 67, 151, 0.8);
+      padding: 20px 20px 0px 20px;
+      margin-top: 30px;
+    }
+
+    ion-row {
+      align-items: center;
+      text-align: center;
+    }
+
+    ion-item {
+      padding-left: 30px !important;
+      margin-bottom: 10px;
+      //border: 1px solid #ffffff;
+      border-bottom: 0px !important;
+      box-shadow: black !important;
+    }
+
+    .signup-col {
+      margin: 0px 16px 0px 16px;
+      padding-bottom: 20px;
+    }
+
+    .item-inner {
+      border-bottom-color: #7B4397 !important;
+      box-shadow: none !important;
+    }
+
+    .submit-btn {
+      border: 1px solid #ffffff;
+    }
+
+    .register-btn {
+      color: #ffffff;
+      font-size: 0.8em;
+    }
+  }
 }

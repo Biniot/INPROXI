@@ -45,7 +45,7 @@ export class HomePage {
 
   }
 
-  //Load the map
+  //Load the messageMap
   initMap(){
     let element = this.mapElement.nativeElement;
     this.map = this._googleMaps.create(element)
