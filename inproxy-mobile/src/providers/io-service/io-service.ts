@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import * as io from 'socket.io-client';
+import * as io from 'socket.c';
 import {API_ADDRESS} from "../constants/constants";
 import {isUndefined} from "ionic-angular/util/util";
 

@@ -21,6 +21,15 @@ export class AddFriendRequestPage {
 
   constructor(private friendRequestProvider: FriendServiceProvider, private userService: UserServiceProvider, private alertCtrl: AlertController) {
     this.showList = false;
+    this.userService.getUserInfo().subscribe(success => {
+        if (success) {
+        } else {
+          this.showPopup("Error", "Problem retrieving user.");
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });
   }
 
   public addFriend() {
