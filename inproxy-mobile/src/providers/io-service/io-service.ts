@@ -11,12 +11,8 @@ import {isUndefined} from "ionic-angular/util/util";
 */
 @Injectable()
 export class IoServiceProvider {
-
   socket:any;
 
-  // Vous trouverez les prototypes des callback au dessus des fonctions correspondante
-  // Normalement la connection est automatique lors de lappel du constructeur utiliser uniquement disconnect
-  // les argument sur le .on pour le premier c'est un nom d'event.
   constructor() {
     // TODO : je sais pas trop si ca suffit pour nos histoire de token
     this.socket = io(API_ADDRESS, {
@@ -26,15 +22,10 @@ export class IoServiceProvider {
     });
     this.socket.on('connect', this.sendAuth);
     this.socket.on('reconnect', this.sendAuth);
-    //this.socket.on('private_message', this.receiveMessage);
   }
 
   sendAuth() {
     this.socket.emit('auth', localStorage.getItem('token'));
-  }
-
-  receiveMessage(data: any) {
-    // TODO : provider sqlite mis en place dune messageMap
   }
 
   public setPrivateMessageCallback(functionPrivateMessage: any) {
