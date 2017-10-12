@@ -80,7 +80,7 @@ export class FriendsPage {
   }
 
   public friendChat(idFriend: string) {
-    this.navCtrl.push('UserPage', {idFriend: idFriend});
+    this.navCtrl.push('ChatPage', {idFriend: idFriend});
   }
 
   showPopup(title, text) {

@@ -12,13 +12,14 @@
 
 </ion-header>
 
-
+<!--[attr.ion-start]="message.htmlClass == 'isUserClass'" [attr.ion-end]="message.htmlClass == 'isNotUserClass'"-->
 <ion-content class="chat-content" style="background: url('assets/img/background.PNG') repeat-x 0 0" padding>
   <h1>{{currentFriend.firstName}} {{currentFriend.lastName}}</h1>
+  <ion-label *ngIf="!haveMessage" floating>No message</ion-label>
   <div *ngIf="haveMessage">
     <ion-list>
-      <ion-item *ngFor="let message of messageList">
-        <h2 class="{{message.htmlClass}}">{{message.message}}</h2>
+      <ion-item *ngFor="let message of messageList" class="{{message.htmlClass}}" >
+        <h2>{{message.message}}</h2>
       </ion-item>
     </ion-list>
   </div>
@@ -26,5 +27,4 @@
     <ion-col col-10><ion-input type="text" placeholder="Message" [(ngModel)]="messageToSend"></ion-input></ion-col>
     <ion-col col-2 ><ion-icon name="send" (click)="sendMessage()" style="zoom:3.0;"></ion-icon></ion-col>
   </div>
-  <ion-label *ngIf="!haveMessage" floating>No message</ion-label>
 </ion-content>

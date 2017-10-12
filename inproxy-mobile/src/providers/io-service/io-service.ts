@@ -20,7 +20,6 @@ export class IoServiceProvider {
   constructor() {
     // TODO : je sais pas trop si ca suffit pour nos histoire de token
     this.socket = io(API_ADDRESS, {
-      path: '',
       reconnection: true,
       autoConnect: false
       //query : {token: localStorage.getItem('token')},
@@ -38,9 +37,8 @@ export class IoServiceProvider {
     // TODO : provider sqlite mis en place dune messageMap
   }
 
-  // function(){}
-  public setDisconnectCallback(functionDisconnect: any) {
-    this.socket.on('disconnect', functionDisconnect);
+  public setPrivateMessageCallback(functionPrivateMessage: any) {
+    this.socket.on('private_message', functionPrivateMessage);
   }
 
   public sendMessage(from: string, to: string, message: string) {

@@ -33,15 +33,15 @@ export class HomePage {
   }
 
   ngAfterViewInit(){
-    this.initMap();
-    this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
-      this.map.setMyLocationEnabled(true);
-      this.map.getMyLocation().then( location => {
-
-        this._loc = location.latLng;
-        this.moveCam(this._loc);
-      }, err => {console.error(err);});
-    });
+    // this.initMap();
+    // this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+    //   this.map.setMyLocationEnabled(true);
+    //   this.map.getMyLocation().then( location => {
+    //
+    //     this._loc = location.latLng;
+    //     this.moveCam(this._loc);
+    //   }, err => {console.error(err);});
+    // });
 
   }
 

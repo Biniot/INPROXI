@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {User} from "../../model/userModel";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {PrivateMessageStorageProvider} from "../../providers/private-message-storage/private-message-storage";
+import {IoServiceProvider} from "../../providers/io-service/io-service";
 
 /**
  * Generated class for the ChatPage page.
@@ -23,9 +24,13 @@ export class ChatPage {
   haveMessage: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserServiceProvider,
-              private alertCtrl: AlertController, private privateMessage: PrivateMessageStorageProvider) {
+              private alertCtrl: AlertController, private privateMessage: PrivateMessageStorageProvider,
+              private ioService: IoServiceProvider) {
+    this.currentFriend = new User("", "");
     this.friendId = navParams.get('idFriend');
-    this.userService.getUserInfoById(navParams.get('idFriend')).subscribe(success => {
+    this.userService.getUserInfoById(this.friendId).subscribe(success => {
+        console.log("ChatPage success");
+        console.log(success);
         this.currentFriend = new User(success.last_name, success.email);
         this.currentFriend.firstName = success.first_name;
       },
@@ -34,10 +39,20 @@ export class ChatPage {
         this.navCtrl.pop();
       });
     this.loadMessageList();
+    this.ioService.connectSocket();
+    this.ioService.setPrivateMessageCallback(this.receiveMessage);
+  }
+
+  public receiveMessage(message: any) {
+    this.privateMessage.addMessage({from: message.from, to: message.to, message: message.message});
+    this.loadMessageList();
   }
 
   public sendMessage() {
-
+    this.ioService.sendMessage(localStorage.getItem('userId'), this.friendId, this.messageToSend);
+    this.privateMessage.addMessage({from: localStorage.getItem('userId'), to: this.friendId, message: this.messageToSend});
+    this.messageToSend = null;
+    this.loadMessageList();
   }
 
   public loadMessageList() {
