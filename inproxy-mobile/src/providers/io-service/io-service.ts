@@ -10,7 +10,7 @@ import {API_ADDRESS} from "../constants/constants";
 */
 var sock = io(API_ADDRESS, {
   reconnection: true,
-  //autoConnect: false
+  autoConnect: false
   //query : {token: localStorage.getItem('token')},
 });
 
