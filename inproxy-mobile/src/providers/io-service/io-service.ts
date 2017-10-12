@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {API_ADDRESS} from "../constants/constants";
-import {isUndefined} from "ionic-angular/util/util";
 
 /*
   Generated class for the IoServiceProvider provider.
@@ -17,15 +16,22 @@ export class IoServiceProvider {
     // TODO : je sais pas trop si ca suffit pour nos histoire de token
     this.socket = io(API_ADDRESS, {
       reconnection: true,
-      autoConnect: false
+      //autoConnect: false
       //query : {token: localStorage.getItem('token')},
     });
+    this.socket.emit('auth', localStorage.getItem('token'));
+
     this.socket.on('connect', this.sendAuth);
-    this.socket.on('reconnect', this.sendAuth);
+    this.socket.on('disconnect', () => {
+      console.log("disconnect");
+    });
+    //this.socket.on('reconnect', this.sendAuth);
+    console.log(this.socket);
   }
 
   sendAuth() {
-    this.socket.emit('auth', localStorage.getItem('token'));
+    console.log(this.socket);
+    //this.socket.emit('auth', localStorage.getItem('token'));
   }
 
   public setPrivateMessageCallback(functionPrivateMessage: any) {
