@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
+import { UserPage } from '../user/user';
 
 /**
  * Generated class for the FriendsPage page.
@@ -79,7 +80,7 @@ export class FriendsPage {
   }
 
   public friendChat(idFriend: string) {
-
+    this.navCtrl.push('UserPage', {idFriend: idFriend});
   }
 
   showPopup(title, text) {
