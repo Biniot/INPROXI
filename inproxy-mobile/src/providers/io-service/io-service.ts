@@ -16,10 +16,10 @@ var sock = io(API_ADDRESS, {
 
 @Injectable()
 export class IoServiceProvider {
-  socket:any;
+  _isConnected: boolean;
 
   constructor() {
-    // TODO : je sais pas trop si ca suffit pour nos histoire de token
+    this._isConnected = false;
     // this.
     //   socket = io(API_ADDRESS, {
     //   reconnection: true,
@@ -29,17 +29,33 @@ export class IoServiceProvider {
     sock.emit('auth', localStorage.getItem('token'));
 
     sock.on('connect', this.sendAuth);
-    sock.on('disconnect', () => {
-      console.log("disconnect");
-      //sock
-    });
+    sock.on('disconnect', this.onDisconnect);
     //sock.on('reconnect', this.sendAuth);
     console.log(sock);
   }
 
   sendAuth() {
     console.log(sock);
+    this._isConnected = true;
     sock.emit('auth', localStorage.getItem('token'));
+  }
+
+  onDisconnect() {
+    console.log(sock);
+    console.log("disconnect");
+    this._isConnected = false;
+  }
+
+  public isConnected() {
+    return this._isConnected;
+  }
+
+  public emitEvent(event: string, data: any) {
+    sock.emit(event, data);
+  }
+
+  public receiveEventCallBack(event: string, functionEventCallback: any) {
+    sock.on(event, functionEventCallback);
   }
 
   public setPrivateMessageCallback(functionPrivateMessage: any) {
@@ -52,6 +68,7 @@ export class IoServiceProvider {
 
   public connectSocket() {
     sock.open();
+    this.sendAuth();
   }
 
   public disconnectSocket() {

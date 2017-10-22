@@ -16,6 +16,8 @@ import {
 } from '@ionic-native/google-maps';
 
 import {Geolocation} from '@ionic-native/geolocation';
+import {IoServiceProvider} from "../../providers/io-service/io-service";
+import {PrivateMessageStorageProvider} from "../../providers/private-message-storage/private-message-storage";
 
 @Component({
   selector: 'page-home',
@@ -29,7 +31,16 @@ export class HomePage {
 
   constructor(public navCtrl: NavController,
               private _googleMaps: GoogleMaps,
-              private _geoLoc: Geolocation) {
+              private _geoLoc: Geolocation, private _ioService: IoServiceProvider,
+              private _PMStorage: PrivateMessageStorageProvider) {
+    if (!this._ioService.isConnected()) {
+      this._ioService.connectSocket();
+    }
+    this._ioService.setPrivateMessageCallback(this.onPrivateMessage);
+  }
+
+  onPrivateMessage(data: any) {
+    this._PMStorage.addMessage(data);
   }
 
   ngAfterViewInit(){
