@@ -17,7 +17,7 @@ import {
 
 import {Geolocation} from '@ionic-native/geolocation';
 import {IoServiceProvider} from "../../providers/io-service/io-service";
-import {PrivateMessageStorageProvider} from "../../providers/private-message-storage/private-message-storage";
+import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 
 @Component({
   selector: 'page-home',

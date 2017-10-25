@@ -7,7 +7,7 @@ import {isUndefined} from "util";
 import {LoginPage} from "../login/login";
 import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
-import {PrivateMessageStorageProvider} from "../../providers/private-message-storage/private-message-storage";
+import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 
 /**
  * Generated class for the UserPage page.

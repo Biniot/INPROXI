@@ -34,6 +34,7 @@ export class IoServiceProvider {
     console.log(sock);
   }
 
+  /* Socket utiliy */
   sendAuth() {
     console.log(sock);
     this._isConnected = true;
@@ -50,14 +51,33 @@ export class IoServiceProvider {
     return this._isConnected;
   }
 
-  public emitEvent(event: string, data: any) {
-    sock.emit(event, data);
+  public connectSocket() {
+    sock.open();
+    this.sendAuth();
   }
 
-  public receiveEventCallBack(event: string, functionEventCallback: any) {
-    sock.on(event, functionEventCallback);
+  public disconnectSocket() {
+    sock.close();
   }
 
+  /* Room function */
+  public joinRoom(idRoom: string) {
+    sock.emit('join_room', {room_id: idRoom});
+  }
+
+  public leaveRoom(idRoom: string) {
+    sock.emit('leave_room', {room_id: idRoom})
+  }
+
+  public sendRoomMessage(idRoom: string, from: string, message: string, firstName: string, lastName: string) {
+    sock.emit('room_message', {room_id: idRoom, from: from, message: message, first_name: firstName, last_name: lastName})
+  }
+
+  public setRoomMessageCallback(functionRoomMessage: any) {
+    sock.on('room_message', functionRoomMessage);
+  }
+
+  /* PrivateMessage function */
   public setPrivateMessageCallback(functionPrivateMessage: any) {
     sock.on('private_message', functionPrivateMessage);
   }
@@ -66,13 +86,13 @@ export class IoServiceProvider {
     sock.emit('private_message', {from: from, to: to, message: message});
   }
 
-  public connectSocket() {
-    sock.open();
-    this.sendAuth();
+  /* Generic event function */
+  public emitEvent(event: string, data: any) {
+    sock.emit(event, data);
   }
 
-  public disconnectSocket() {
-    sock.close();
+  public receiveEventCallBack(event: string, functionEventCallback: any) {
+    sock.on(event, functionEventCallback);
   }
 
 }

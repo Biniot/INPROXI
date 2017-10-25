@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {User} from "../../model/userModel";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
-import {PrivateMessageStorageProvider} from "../../providers/private-message-storage/private-message-storage";
+import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 import {IoServiceProvider} from "../../providers/io-service/io-service";
 
 /**

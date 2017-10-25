@@ -19,41 +19,41 @@ export class RoomServiceProvider {
     this.isRoomLoad = false;
   }
 
-  public getRoom(idRoom: string) {
-    return Observable.create(observer => {
-      if (this.isRoomLoad) {
-        observer.next(true);
-        observer.complete();
-      } else {
-        this.request.get(API_ADDRESS + VERSION + ROOMS_ENDPOINT + idRoom, {
-        }).subscribe(
-          result => {
-            console.log(result);
-            //this.isRoomLoad = true;
-            observer.next(true);
-            observer.complete();
-          }, err => {
-            observer.error(err.message)
-          });
-      }
-    });
-  }
-
-  public postRoom(name: string, owner: string) {
-    return Observable.create(observer => {
-      this.request.post(API_ADDRESS + VERSION + ROOMS_ENDPOINT + localStorage.getItem('userId'), {
-        name: name,
-        owner: owner
-      }).subscribe(
-        result => {
-          console.log('postRoom result');
-          console.log(result);
-          observer.next(true);
-          observer.complete();
-        }, err => {
-          observer.error(err.message)
-        });
-    });
-  }
+  // public getRoom(idRoom: string) {
+  //   return Observable.create(observer => {
+  //     if (this.isRoomLoad) {
+  //       observer.next(true);
+  //       observer.complete();
+  //     } else {
+  //       this.request.get(API_ADDRESS + VERSION + ROOMS_ENDPOINT + idRoom, {
+  //       }).subscribe(
+  //         result => {
+  //           console.log(result);
+  //           //this.isRoomLoad = true;
+  //           observer.next(true);
+  //           observer.complete();
+  //         }, err => {
+  //           observer.error(err.message)
+  //         });
+  //     }
+  //   });
+  // }
+  //
+  // public postRoom(name: string, owner: string) {
+  //   return Observable.create(observer => {
+  //     this.request.post(API_ADDRESS + VERSION + ROOMS_ENDPOINT + localStorage.getItem('userId'), {
+  //       name: name,
+  //       owner: owner
+  //     }).subscribe(
+  //       result => {
+  //         console.log('postRoom result');
+  //         console.log(result);
+  //         observer.next(true);
+  //         observer.complete();
+  //       }, err => {
+  //         observer.error(err.message)
+  //       });
+  //   });
+  // }
 
 }
