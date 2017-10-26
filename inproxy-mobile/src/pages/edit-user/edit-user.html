@@ -40,9 +40,9 @@
               <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="currentUser.password" required></ion-input>
             </ion-item>
 
-            <ion-item>
+            <ion-item (click)="openGallery()">
               <img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatarPath}}"/>
-              <ion-icon name="images" (click)="openGallery()"></ion-icon>
+              <ion-icon name="images" ></ion-icon>
               <p>Choose a Photo</p>
             </ion-item>
 

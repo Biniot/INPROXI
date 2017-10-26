@@ -10,19 +10,18 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Rooms</ion-title>
+    <ion-title>Group</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
   <ion-list> <!--*ngIf="haveFriend"-->
-    <ion-item *ngFor="let room of roomList">
+    <ion-item *ngFor="let group of groupList" (click)="toDetail(group.idGroup)">
       <ion-avatar item-start>
         <img src="../../assets/img/avatar.png">
       </ion-avatar>
-      <h2>{{room.name}} {{room.owner}}</h2>
+      <h2>{{group.name}}</h2>
     </ion-item>
   </ion-list>
 </ion-content>

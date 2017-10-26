@@ -44,13 +44,13 @@ export class ChatPage {
   }
 
   public receiveMessage(message: any) {
-    this.privateMessage.addMessage({from: message.from, to: message.to, message: message.message});
+    this.privateMessage.addElem({from: message.from, to: message.to, message: message.message});
     this.loadMessageList();
   }
 
   public sendMessage() {
     this.ioService.sendMessage(localStorage.getItem('userId'), this.friendId, this.messageToSend);
-    this.privateMessage.addMessage({from: localStorage.getItem('userId'), to: this.friendId, message: this.messageToSend});
+    this.privateMessage.addElem({from: localStorage.getItem('userId'), to: this.friendId, message: this.messageToSend});
     this.messageToSend = null;
     this.loadMessageList();
   }

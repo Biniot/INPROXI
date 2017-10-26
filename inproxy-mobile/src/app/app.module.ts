@@ -10,7 +10,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { RoomsPage } from '../pages/rooms/rooms';
+import { GroupPage } from '../pages/group/group';
 import { MapsPage } from '../pages/maps/maps';
 import { UserPage } from '../pages/user/user';
 import { FriendsPage } from '../pages/friends/friends';
@@ -26,12 +26,13 @@ import { Geolocation } from "@ionic-native/geolocation";
 import { RoomServiceProvider } from '../providers/room-service/room-service';
 import { IoServiceProvider } from '../providers/io-service/io-service';
 import { PrivateMessageStorageProvider } from '../providers/custom-storage/private-message-storage';
+import {GroupStorageProvider} from "../providers/custom-storage/group-storage";
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    RoomsPage,
+    GroupPage,
     MapsPage,
     FriendsPage,
     LoginPage
@@ -46,7 +47,7 @@ import { PrivateMessageStorageProvider } from '../providers/custom-storage/priva
   entryComponents: [
     MyApp,
     HomePage,
-    RoomsPage,
+    GroupPage,
     MapsPage,
     FriendsPage,
     LoginPage,
@@ -65,7 +66,8 @@ import { PrivateMessageStorageProvider } from '../providers/custom-storage/priva
     FriendServiceProvider,
     RoomServiceProvider,
     IoServiceProvider,
-    PrivateMessageStorageProvider
+    PrivateMessageStorageProvider,
+    GroupStorageProvider
   ]
 })
 export class AppModule {}

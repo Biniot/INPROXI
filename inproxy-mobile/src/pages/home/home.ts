@@ -40,7 +40,7 @@ export class HomePage {
   }
 
   onPrivateMessage(data: any) {
-    this._PMStorage.addMessage(data);
+    this._PMStorage.addElem(data);
   }
 
   ngAfterViewInit(){
@@ -56,7 +56,7 @@ export class HomePage {
 
   }
 
-  //Load the messageMap
+  //Load the groupMap
   initMap(){
     let element = this.mapElement.nativeElement;
     this.map = this._googleMaps.create(element)

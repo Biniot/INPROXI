@@ -33,7 +33,7 @@ export class MapsPage {
   }
 
   ngAfterViewInit(){
-    // let _div = document.getElementById("messageMap");
+    // let _div = document.getElementById("groupMap");
     // let _button = _div.getElementsByTagName('_btn_polygon')[0];
     // let _isEnabled = true;
 
@@ -60,7 +60,7 @@ export class MapsPage {
 
   }
 
-  //Load the messageMap
+  //Load the groupMap
   initMap(){
     let element = this.mapElement.nativeElement;
     this.map = this._googleMaps.create(element)

@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { RoomsPage } from '../pages/rooms/rooms';
+import { GroupPage } from '../pages/group/group';
 import { MapsPage } from '../pages/maps/maps';
 import { FriendsPage } from '../pages/friends/friends';
 import { LoginPage } from '../pages/login/login';
@@ -31,7 +31,7 @@ export class MyApp {
 
     this.pages = [
       { title: 'Home', icon: 'home', component: HomePage },
-      { title: 'Rooms', icon: 'chatboxes', component: RoomsPage },
+      { title: 'Group', icon: 'chatboxes', component: GroupPage },
       { title: 'Maps', icon: 'map', component: MapsPage },
       { title: 'Friends', icon: 'people', component: FriendsPage },
       { title: 'User', icon: 'person', component: 'UserPage' }
