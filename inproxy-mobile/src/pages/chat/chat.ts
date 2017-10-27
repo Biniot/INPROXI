@@ -53,13 +53,21 @@ export class ChatPage {
   }
 
   public sendMessage() {
-    if (!this.ioService.isConnected()) {
-      this.ioService.connectSocket();
+    try {
+      if (!this.ioService.isConnected()) {
+        this.ioService.connectSocket();
+      }
+      this.ioService.sendMessage(localStorage.getItem('userId'), this.friendId, this.messageToSend);
+      this.privateMessage.addElem({
+        from: localStorage.getItem('userId'),
+        to: this.friendId,
+        message: this.messageToSend
+      });
+      this.messageToSend = null;
+      this.loadMessageList();
+    } catch (exception) {
+      console.log(exception);
     }
-    this.ioService.sendMessage(localStorage.getItem('userId'), this.friendId, this.messageToSend);
-    this.privateMessage.addElem({from: localStorage.getItem('userId'), to: this.friendId, message: this.messageToSend});
-    this.messageToSend = null;
-    this.loadMessageList();
   }
 
   public loadMessageList() {

@@ -62,6 +62,10 @@ export class PrivateMessageStorageProvider {
         if (this.keyList === null) {
           this.keyList = [];
         }
+        console.log('addElem keyList');
+        console.log(this.keyList);
+        console.log('addElem message');
+        console.log(message);
         this.keyList.push(message.to);
       } else {
         // console.log("not from user");
