@@ -87,7 +87,7 @@ export class IoServiceProvider {
 
   public sendMessage(from: string, to: string, message: string) {
     console.log("sendMessage");
-    sock.emit('private_message', {from: from, to: to, message: message}, function(){console.log("sendMessage success")});
+    sock.emit('private_message', JSON.stringify({from: from, to: to, message: message}), function(){console.log("sendMessage success")});
   }
 
   /* Generic event function */
