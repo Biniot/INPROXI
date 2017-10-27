@@ -39,8 +39,9 @@ export class PrivateMessageStorageProvider {
 
   addElem(message:any) {
     let isAdd = false;
-    // console.log("addElem");
-    // console.log(message);
+
+    console.log("addElem");
+    console.log(message);
     for (let key in this.keyList) {
       if (key.localeCompare(message.from) === 0) {
         // console.log("key === message.from");
