@@ -40,6 +40,8 @@ export class HomePage {
   }
 
   onPrivateMessage(data: any) {
+    console.log("onPrivateMessage");
+    console.log(data);
     this._PMStorage.addElem(data);
   }
 

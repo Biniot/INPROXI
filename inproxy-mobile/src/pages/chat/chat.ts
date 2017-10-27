@@ -39,16 +39,23 @@ export class ChatPage {
         this.navCtrl.pop();
       });
     this.loadMessageList();
-    this.ioService.connectSocket();
+    if (!this.ioService.isConnected()) {
+      this.ioService.connectSocket();
+    }
     this.ioService.setPrivateMessageCallback(this.receiveMessage);
   }
 
   public receiveMessage(message: any) {
-    this.privateMessage.addElem({from: message.from, to: message.to, message: message.message});
+    console.log("receiveMessage");
+    console.log(message);
+    this.privateMessage.addElem(message);
     this.loadMessageList();
   }
 
   public sendMessage() {
+    if (!this.ioService.isConnected()) {
+      this.ioService.connectSocket();
+    }
     this.ioService.sendMessage(localStorage.getItem('userId'), this.friendId, this.messageToSend);
     this.privateMessage.addElem({from: localStorage.getItem('userId'), to: this.friendId, message: this.messageToSend});
     this.messageToSend = null;

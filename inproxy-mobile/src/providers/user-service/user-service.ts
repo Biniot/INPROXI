@@ -55,6 +55,7 @@ export class UserServiceProvider {
 
   // Recupere un user a partir dun idUser
   public getUserInfoById(id) {
+    console.log('getUserInfoById [' + id + ']');
     return Observable.create(observer => {
       this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + id, {
       }).subscribe(
