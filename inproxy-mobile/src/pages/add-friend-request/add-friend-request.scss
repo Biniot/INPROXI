@@ -58,9 +58,9 @@ page-add-friend-request {
 
     .submit-btn {
         box-shadow: 2px 2px 2px #212121;
-        margin-top: 270px;
-        margin-bottom: 1px;
+        margin-bottom: 1px; 
         height: 50px;
+        position:fixed;
     }
 
     .register-btn {
@@ -79,6 +79,11 @@ page-add-friend-request {
           font-weight: 900;
           font-size: 1.2em;
           color: #7B4397;
+      }
+      
+      .searchRes {
+          height: 270px;
+          margin-bottom: 10px;
       }
   }
 }
