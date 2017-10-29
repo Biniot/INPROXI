@@ -96,10 +96,10 @@
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-geofence" spec="^0.7.0" />
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3" />
-    <plugin name="cordova-plugin-googlemaps" spec="git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps">
+<!--    <plugin name="cordova-plugin-googlemaps" spec="git+https://github.com/mapsplugin/cordova-plugin-googlemaps.git#multiple_maps">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyCH05DXUpmchzbD4gaO4xGJxVbhRPXyErM" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyCH05DXUpmchzbD4gaO4xGJxVbhRPXyErM" />
-    </plugin>
+    </plugin>-->
     <plugin name="cordova-plugin-nativestorage" spec="^2.2.2" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />

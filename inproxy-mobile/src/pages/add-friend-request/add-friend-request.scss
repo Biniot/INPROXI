@@ -20,6 +20,7 @@ page-add-friend-request {
     -o-animation:animatedBackground 80s linear infinite;
     animation:animatedBackground 80s linear infinite;
 
+      
     .logo-row {
       padding-top: 50px;
       padding-bottom: 20px;
@@ -37,6 +38,7 @@ page-add-friend-request {
     }
 
     ion-item {
+        
       padding-left: 30px !important;
       margin-bottom: 10px;
       //border: 1px solid #ffffff;
@@ -55,12 +57,28 @@ page-add-friend-request {
     }
 
     .submit-btn {
-      border: 1px solid #ffffff;
+        box-shadow: 2px 2px 2px #212121;
+        margin-top: 270px;
+        margin-bottom: 1px;
+        height: 50px;
     }
 
     .register-btn {
       color: #ffffff;
       font-size: 0.8em;
     }
+    
+      .item {
+          
+          font-weight:700 ;
+          margin-bottom: 5px;
+      }
+    
+      p {
+          text-align: center;
+          font-weight: 900;
+          font-size: 1.2em;
+          color: #7B4397;
+      }
   }
 }
