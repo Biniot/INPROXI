@@ -37,11 +37,38 @@ page-friends {
     }
 
     ion-item {
-      padding-left: 30px !important;
-      margin-bottom: 10px;
+      padding-left: 15px !important;
+      margin-bottom: 10px;       
+    vertical-align: middle;
+
       //border: 1px solid #ffffff;
       border-bottom: 0px !important;
       box-shadow: black !important;
+        margin: 0 0 0 0;
+    }
+    
+    .name {
+      height: 0px;
+        display: inline-block;
+        line-height: normal;
+        vertical-align: middle;
+    }
+    
+    h2 {
+      margin-bottom: 10px;
+      margin-bottom: 10px;
+    }
+      
+    ion-icon {
+        float: right;
+    }
+
+    .information {
+        margin-left: 5px;
+    }
+      
+    .chat {
+        margin-right: 5px;
     }
 
     .signup-col {
