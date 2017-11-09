@@ -27,6 +27,7 @@ import { RoomServiceProvider } from '../providers/room-service/room-service';
 import { IoServiceProvider } from '../providers/io-service/io-service';
 import { PrivateMessageStorageProvider } from '../providers/custom-storage/private-message-storage';
 import {GroupStorageProvider} from "../providers/custom-storage/group-storage";
+import { ConversationServiceProvider } from '../providers/conversation-service/conversation-service';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {GroupStorageProvider} from "../providers/custom-storage/group-storage";
     RoomServiceProvider,
     IoServiceProvider,
     PrivateMessageStorageProvider,
-    GroupStorageProvider
+    GroupStorageProvider,
+    ConversationServiceProvider
   ]
 })
 export class AppModule {}

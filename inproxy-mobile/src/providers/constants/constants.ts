@@ -19,3 +19,7 @@ export let GET_FRIENDREQUEST_ENDPOINT = "/friendrequests";
 export let GET_USER_CONVERSATION = "/conversations";
 export let SEARCH_USER_ENDPOINT = "search_user/";
 export let FRIEND_ENDPOINT = "/friends";
+export let CONVERSATION_ENDPOINT = "conversation/";
+export let CONVERSATION_ENDPOINT_POST = "conversation";
+export let MESSAGES_ENDPOINT = "/messages";
+export let MESSAGE_ENDPOINT = "/message";

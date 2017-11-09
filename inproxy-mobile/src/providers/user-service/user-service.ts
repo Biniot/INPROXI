@@ -194,7 +194,7 @@ export class UserServiceProvider {
           observer.next(true);
           observer.complete();
         }, err => {
-          observer.error(err.message)
+          observer.error(err.message);
         });
     });
   }
@@ -209,7 +209,7 @@ export class UserServiceProvider {
             observer.next(true);
             observer.complete();
           }, err => {
-            observer.error(err.message)
+            observer.error(err.message);
           });
     });
   }

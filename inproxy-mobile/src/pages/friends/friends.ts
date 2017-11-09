@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angula
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 import { UserPage } from '../user/user';
+import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
 
 /**
  * Generated class for the FriendsPage page.
@@ -21,7 +22,8 @@ export class FriendsPage {
   friendsList: Array<{id: string, first_name: string, last_name: string}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
-              private userService: UserServiceProvider, private friendRequestService: FriendServiceProvider) {
+              private userService: UserServiceProvider, private friendRequestService: FriendServiceProvider,
+              private conversationService: ConversationServiceProvider) {
     // this.friendsList = [
     //   {name: 'Obi'},
     //   {name: 'Ani'},
@@ -42,6 +44,9 @@ export class FriendsPage {
             this.friendsList = JSON.parse(tab);
             this.haveFriend = true;
             console.log('FriendListLoad');
+            let members = [localStorage.getItem('userId'), this.friendsList[0].id];
+            console.log(members);
+            conversationService.createConversation(members);
           }
         } else {
           this.showPopup("Error", "Problem retriving friends.");

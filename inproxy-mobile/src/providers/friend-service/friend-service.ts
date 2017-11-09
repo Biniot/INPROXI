@@ -29,7 +29,7 @@ export class FriendServiceProvider {
             observer.next(true);
             observer.complete();
           }, err => {
-            observer.error(err.message)
+            observer.error(err.message);
           });
     });
   }
