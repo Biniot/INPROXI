@@ -16,5 +16,6 @@ export let USERS_ENDPOINT = "users/";
 export let ROOMS_ENDPOINT = "group/";
 export let FRIENDREQUEST_ENDPOINT = "friendrequest/";
 export let GET_FRIENDREQUEST_ENDPOINT = "/friendrequests";
+export let GET_USER_CONVERSATION = "/conversations";
 export let SEARCH_USER_ENDPOINT = "search_user/";
 export let FRIEND_ENDPOINT = "/friends";

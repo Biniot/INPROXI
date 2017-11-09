@@ -4,7 +4,7 @@ import { HttpRequestProvider } from '../http-request/http-request';
 
 import {
   API_ADDRESS, VERSION, USERS_ENDPOINT, GET_FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT,
-  SEARCH_USER_ENDPOINT
+  SEARCH_USER_ENDPOINT, GET_USER_CONVERSATION
 } from '../constants/constants';
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
@@ -21,11 +21,13 @@ export class UserServiceProvider {
   isUserLoad: boolean;
   iSFriendLoad: boolean;
   isFriendRequestLoad: boolean;
+  isConversationtLoad: boolean;
 
   constructor(private request : HttpRequestProvider) {
     this.isUserLoad = false;
     this.iSFriendLoad = false;
     this.isFriendRequestLoad = false;
+    this.isConversationtLoad = false;
   }
 
   // Recupere les information de lutilisateur connecter
@@ -51,6 +53,36 @@ export class UserServiceProvider {
           });
       }
     });
+  }
+
+  // Recupere les information de lutilisateur connecter
+  public getUserConversation() {
+    console.log("getUserConversation");
+    this.isConversationtLoad = false;
+    /*return Observable.create(observer => {
+      if (this.isConversationtLoad) {
+        observer.next(true);
+        observer.complete();
+      } else {*/
+        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + GET_USER_CONVERSATION, {
+          //id: this.auth.currentUser.id
+        }).subscribe(
+          result => {
+            console.log("getUserConversation result");
+            console.log(result);
+            // localStorage.setItem('firstName', result.first_name);
+            // localStorage.setItem('lastName', result.last_name);
+            // localStorage.setItem('email', result.email);
+            //this.isConversationtLoad = true;
+            /*observer.next(true);
+            observer.complete();*/
+          }, err => {
+            console.log("getUserConversation result");
+            console.log(err);
+            //observer.error(err.message)
+          });
+      /*}
+    });*/
   }
 
   // Recupere un user a partir dun idUser
