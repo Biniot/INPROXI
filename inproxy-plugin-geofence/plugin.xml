@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="inproxi-plugin-geofence"
+        version="0.0.1">
+
+  <name>inproxi-plugin-geofence</name>
+  <description>Geofence functionnalities</description>
+  <license>Apache 2.0</license>
+  <keywords>geofence,android</keywords>
+
+  <engines>
+    <engine name="cordova" version=">=3.4.0"/>
+  </engines>
+
+  <asset src="www/geofence.js" target="js/geofence.js"/>
+
+  <js-module src="www/geofence.js" name="geofence">
+    <clobbers target="geofence" />
+  </js-module>
+
+  <platform name="android">
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="Geofence">
+        <param name="android-package" value="com.inproxi.geofence.Geofence"/>
+      </feature>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+      <uses-permission android:name="android.permission.BLUETOOTH" />
+      <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+      <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    </config-file>
+
+    <framework src="com.android.support:support-v4:+" />
+
+    <source-file src="src/android/libs/gson-2.7.jar" target-dir="libs" />
+
+    <source-file src="src/android/Geofence.java" target-dir="src/com/inproxi/geofence/"/>
+    <source-file src="src/android/GeofenceLib.java" target-dir="src/com/inproxi/geofence" />
+  </platform>
+
+</plugin>
