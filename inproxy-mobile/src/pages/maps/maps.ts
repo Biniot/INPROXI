@@ -112,8 +112,7 @@ export class MapsPage {
     }, err => {console.error(err);});
   }
 
-  centerMap()
-  {
+  centerMap() {
     this.getLocation().then( res => {
       this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
 
@@ -154,5 +153,4 @@ export class MapsPage {
 
     },err => { console.error(err); });
   }
-
 }

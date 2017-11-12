@@ -5,38 +5,45 @@
   Ionic pages and navigation.
 -->
 <ion-content class="login-content" style="background: url('assets/img/background.PNG') repeat-x 0 0" padding>
-  <ion-row class="logo-row">
-    <ion-col>
-      <img src="assets/icon/inproxi_logo_black.svg"/>
-    </ion-col>
-  </ion-row>
-  <div class="login-box">
+  <ion-grid no-padding>
+    <ion-row class="logo-row">
+      <ion-col>
+        <img src="assets/icon/inproxi_logo_black.svg"/>
+      </ion-col>
+    </ion-row>
+
     <form (ngSubmit)="login()" #registerForm="ngForm">
       <ion-row>
         <ion-col>
-          <ion-list inset>
 
-            <ion-item>
-              <ion-label color="primary" floating>Email</ion-label>
-              <ion-input type="text" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
-            </ion-item>
+          <ion-row>
+            <ion-col>
+              <ion-item class="rounded">
+                <ion-label color="primary">Email</ion-label>
+                <ion-input type="text" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
 
-            <ion-item>
-              <ion-label color="primary" floating>Password</ion-label>
-              <ion-input type="password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
-            </ion-item>
+          <ion-row>
+            <ion-col>
+              <ion-item class="rounded">
+                <ion-label color="primary">Password</ion-label>
+                <ion-input type="password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
 
-          </ion-list>
         </ion-col>
       </ion-row>
 
       <ion-row>
         <ion-col class="signup-col">
-          <button ion-button class="submit-btn" full type="submit" color="secondary" [disabled]="!registerForm.form.valid">Login</button>
+          <button ion-button class="submit-btn" full type="submit" color="secondary" [disabled]="!registerForm.form.valid" round>Login</button>
           <button ion-button class="register-btn" block clear type="button" (click)="createAccount()">Create New Account</button>  <!--le type="button" empeche de trigger le login()-->
         </ion-col>
       </ion-row>
 
     </form>
-  </div>
+  </ion-grid>
 </ion-content>
