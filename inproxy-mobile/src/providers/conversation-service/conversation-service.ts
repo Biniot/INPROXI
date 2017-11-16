@@ -37,23 +37,6 @@ export class ConversationServiceProvider {
         //observer.error(err.message);
       });
     //});
-
-    console.log("createConversation 2");
-    /*return Observable.create(observer => {*/
-    this.request.post(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT_POST, {
-      members : members
-    }).subscribe(
-      result => {
-        console.log("createConversation2 result");
-        console.log(result);
-        /*observer.next(true);
-        observer.complete();*/
-      }, err => {
-        console.log("createConversation2 err");
-        console.log(err);
-        //observer.error(err.message);
-      });
-    //});
   }
 
   public editConversation(conversationId: string, members: string[]) {

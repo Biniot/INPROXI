@@ -36,7 +36,7 @@ export class GroupDetailPage {
     };
 
     this.groupInfo.nbUser = this.groupInfo.users.length;
-    this.groupInfo.expirationNbDay = this.daydiff(this.parseDate(new Date()), this.parseDate(this.groupInfo.expirationDate));
+    //this.groupInfo.expirationNbDay = this.daydiff(this.parseDate(new Date()), this.parseDate(this.groupInfo.expirationDate));
 
   }
 
