@@ -13,7 +13,7 @@ page-edit-user {
       100% { background-position: 0 0; }
     }
 
-    background: url("../../assets/img/background.PNG") repeat-x 0 0;
+    background: #E6E6E6;
     background-size:cover;
     -webkit-animation:animatedBackground 80s linear infinite;
     -moz-animation:animatedBackground 80s linear infinite;
@@ -21,8 +21,11 @@ page-edit-user {
     -o-animation:animatedBackground 80s linear infinite;
     animation:animatedBackground 80s linear infinite;
 
+    .form {
+      padding-bottom: 100px;
+    }
+    
     .edit-user-box {
-      background-color: rgba(123, 67, 151, 0.8);
       padding: 20px 20px 0px 20px;
       margin-top: 30px;
     }
@@ -40,6 +43,7 @@ page-edit-user {
     }
 
     .submit-col {
+      position: sticky;
       margin: 0px 16px 0px 16px;
       padding-bottom: 20px;
     }
