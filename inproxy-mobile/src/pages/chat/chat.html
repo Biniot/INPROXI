@@ -13,10 +13,10 @@
 </ion-header>
 
 <!--[attr.ion-start]="message.htmlClass == 'isUserClass'" [attr.ion-end]="message.htmlClass == 'isNotUserClass'"-->
-<ion-content class="chat-content" style="background: url('assets/img/background.PNG') repeat-x 0 0" padding>
+<ion-content class="chat-content" style="background: #E6E6E6" padding>
   <div>
     <h1>{{currentFriend.firstName}} {{currentFriend.lastName}}</h1>
-    <ion-label *ngIf="!haveMessage" floating>No message</ion-label>
+    <ion-label class="noMessage" *ngIf="!haveMessage" floating>Aucun message</ion-label>
   </div>
   <div *ngIf="haveMessage">
     <ion-list>

@@ -20,6 +20,10 @@ page-chat {
     -o-animation:animatedBackground 80s linear infinite;
     animation:animatedBackground 80s linear infinite;
 
+    .noMessage {
+      padding-left: 10px;
+    }
+    
     ion-row {
       align-items: center;
       text-align: center;
