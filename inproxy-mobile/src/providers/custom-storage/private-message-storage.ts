@@ -135,6 +135,10 @@ export class PrivateMessageStorageProvider {
     return null;
   }
 
+  public getUsersId() {
+    return this.keyList;
+  }
+
   public eraseAllData() {
     this.keyList = null;
     this.messageMap = null;

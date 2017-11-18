@@ -15,7 +15,37 @@
 
 </ion-header>
 
-
 <ion-content padding>
-toto
+  <ion-list *ngIf="listPrivateChat.length > 0">
+    <ion-list-header>
+      Private Chat
+    </ion-list-header>
+    <ion-item *ngFor="let privateChat of listPrivateChat">
+      {{privateChat.friendName}}
+      <ion-icon name="information-circle" (click)="showInfoPage(1, privateChat.friendId)" style="zoom:3.0;"></ion-icon>
+      <ion-icon name="chatbubbles" (click)="lunchChatPage(1, privateChat.friendId, privateChat.friendName)" style="zoom:3.0;"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="listGroupChat.length > 0">
+    <ion-list-header>
+      Group Chat
+    </ion-list-header>
+    <ion-item *ngFor="let groupChat of listGroupChat">
+      {{groupChat.groupName}}
+      <ion-icon name="information-circle" (click)="showInfoPage(2, groupChat.groupId)" style="zoom:3.0;"></ion-icon>
+      <ion-icon name="chatbubbles" (click)="lunchChatPage(2, groupChat.groupId, groupChat.groupName)" style="zoom:3.0;"></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="listRoomChat.length > 0">
+    <ion-list-header>
+      Room Chat
+    </ion-list-header>
+    <ion-item *ngFor="let roomChat of listRoomChat">
+      {{roomChat.roomName}}
+      <ion-icon name="information-circle" (click)="showInfoPage(3, roomChat.roomId)" style="zoom:3.0;"></ion-icon>
+      <ion-icon name="chatbubbles" (click)="lunchChatPage(3, roomChat.roomId, roomChat.roomName)" style="zoom:3.0;"></ion-icon>
+    </ion-item>
+  </ion-list>
 </ion-content>

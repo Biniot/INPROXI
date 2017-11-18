@@ -17,19 +17,19 @@ var sock = io(API_ADDRESS, {
 @Injectable()
 export class IoServiceProvider {
   _isConnected: boolean;
+  privateMesasgeCallback: any;
+  groupMesasgeCallback: any;
+  roomMesasgeCallback: any;
 
   constructor() {
     this._isConnected = false;
-    // this.
-    //   socket = io(API_ADDRESS, {
-    //   reconnection: true,
-    //   //autoConnect: false
-    //   //query : {token: localStorage.getItem('token')},
-    // });
 
     sock.on('connect', this.sendAuth);
     sock.on('disconnect', this.onDisconnect);
-    //sock.on('reconnect', this.sendAuth);
+    sock.on('reconnect', this.sendAuth);
+    this.privateMesasgeCallback = null;
+    this.groupMesasgeCallback = null;
+    this.roomMesasgeCallback = null;
     console.log(sock);
   }
 
@@ -55,6 +55,10 @@ export class IoServiceProvider {
     console.log("connectSocket");
     sock.open();
     this.sendAuth();
+    // TODO : A voir si ya besoin de reset les callback en cas de deco ou pas ?
+    if (this.privateMesasgeCallback !== null) {
+      sock.on('private_message', this.privateMesasgeCallback);
+    }
   }
 
   public disconnectSocket() {
@@ -82,6 +86,7 @@ export class IoServiceProvider {
   /* PrivateMessage function */
   public setPrivateMessageCallback(functionPrivateMessage: any) {
     console.log("setPrivateMessageCallback");
+    this.privateMesasgeCallback = functionPrivateMessage;
     sock.on('private_message', functionPrivateMessage);
   }
 

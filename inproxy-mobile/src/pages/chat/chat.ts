@@ -4,6 +4,7 @@ import {User} from "../../model/userModel";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 import {IoServiceProvider} from "../../providers/io-service/io-service";
+import {ChatType} from "../../model/ChatType";
 
 /**
  * Generated class for the ChatPage page.
@@ -17,62 +18,96 @@ import {IoServiceProvider} from "../../providers/io-service/io-service";
   templateUrl: 'chat.html',
 })
 export class ChatPage {
-  currentFriend: User;
+  // General
+  pageTitle: string;
   messageList: any;
-  friendId: string;
   messageToSend: string;
   haveMessage: boolean;
+  chatType: any;
+
+  // Private Chat
+  currentFriend: User;
+
+  // Group Chat
+  currentGroup: any;
+
+  // Room Chat
+  currentRoom: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserServiceProvider,
               private alertCtrl: AlertController, private privateMessage: PrivateMessageStorageProvider,
               private ioService: IoServiceProvider) {
-    this.currentFriend = new User("", "");
-    this.friendId = navParams.get('idFriend');
-    this.userService.getUserInfoById(this.friendId).subscribe(success => {
-        console.log("ChatPage success");
-        console.log(success);
-        this.currentFriend = new User(success.last_name, success.email);
-        this.currentFriend.firstName = success.first_name;
-      },
-      error => {
-        this.showPopup("Error", error);
-        this.navCtrl.pop();
-      });
-    this.loadMessageList();
+
+    this.chatType = navParams.get('chatType');
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
+      this.ioService.setPrivateMessageCallback(this.receiveMessage);
     }
-    this.ioService.setPrivateMessageCallback(this.receiveMessage);
+    this.pageTitle = navParams.get('pageTitle');
+
+    if (this.chatType == ChatType.PRIVATE) {
+      this.userService.getUserInfoById(navParams.get('id')).subscribe(success => {
+          console.log("ChatPage success");
+          console.log(success);
+          this.currentFriend = new User(success.last_name, success.email);
+          this.currentFriend.firstName = success.first_name;
+          this.currentFriend.userId = navParams.get('id');
+          //this.pageTitle = success.first_name + " " + success.last_name;
+        },
+        error => {
+          this.showPopup("Error", error);
+          this.navCtrl.pop();
+        });
+      this.loadMessageList();
+    } else if (this.chatType == ChatType.GROUP) {
+
+    } else if (this.chatType == ChatType.ROOM) {
+
+    }
   }
 
   public receiveMessage(message: any) {
     console.log("receiveMessage");
     console.log(message);
-    this.privateMessage.addElem(message);
-    this.loadMessageList();
+    if (this.chatType == ChatType.PRIVATE) {
+      this.privateMessage.addElem(message);
+      this.loadMessageList();
+    } else if (this.chatType == ChatType.GROUP) {
+
+    } else if (this.chatType == ChatType.ROOM) {
+
+    }
   }
 
   public sendMessage() {
-    try {
-      if (!this.ioService.isConnected()) {
-        this.ioService.connectSocket();
-      }
-      this.ioService.sendMessage(localStorage.getItem('userId'), this.friendId, this.messageToSend);
+    console.log("sendMessage");
+    if (!this.ioService.isConnected()) {
+      this.ioService.connectSocket();
+    }
+    if (this.chatType == ChatType.PRIVATE) {
+      this.ioService.sendMessage(localStorage.getItem('userId'), this.currentFriend.userId, this.messageToSend);
       this.privateMessage.addElem({
         from: localStorage.getItem('userId'),
-        to: this.friendId,
+        to: this.currentFriend.userId,
         message: this.messageToSend
       });
       this.messageToSend = null;
       this.loadMessageList();
+    } else if (this.chatType == ChatType.GROUP) {
+
+    } else if (this.chatType == ChatType.ROOM) {
+
+    }
+    try {
     } catch (exception) {
       console.log(exception);
     }
   }
 
   public loadMessageList() {
-    this.messageList = this.privateMessage.getListMessageByUserId(this.friendId);
-    (this.messageList != null && this.messageList.length > 0) ? this.haveMessage = true : this.haveMessage = false;
+    // TODO : load depuis la bonne class
+    // this.messageList = this.privateMessage.getListMessageByUserId(this.friendId);
+    // (this.messageList != null && this.messageList.length > 0) ? this.haveMessage = true : this.haveMessage = false;
   }
 
   showPopup(title, text) {

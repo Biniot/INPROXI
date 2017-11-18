@@ -4,6 +4,7 @@ import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 import { UserPage } from '../user/user';
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
+import {ChatType} from "../../model/ChatType";
 
 /**
  * Generated class for the FriendsPage page.
@@ -84,8 +85,8 @@ export class FriendsPage {
     this.navCtrl.push('UserPage', {userId: idFriend});
   }
 
-  public friendChat(idFriend: string) {
-    this.navCtrl.push('ChatPage', {idFriend: idFriend});
+  public friendChat(idFriend: string, name: string) {
+    this.navCtrl.push('ChatPage', {id: idFriend, chatType: ChatType.PRIVATE, pageTitle: name});
   }
 
   showPopup(title, text) {
