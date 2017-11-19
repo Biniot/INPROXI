@@ -10,9 +10,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { GroupPage } from '../pages/group/group';
 import { MapsPage } from '../pages/maps/maps';
-import { UserPage } from '../pages/user/user';
 import { FriendsPage } from '../pages/friends/friends';
 import { LoginPage } from '../pages/login/login';
 
@@ -33,7 +31,6 @@ import { ConversationServiceProvider } from '../providers/conversation-service/c
   declarations: [
     MyApp,
     HomePage,
-    GroupPage,
     MapsPage,
     FriendsPage,
     LoginPage
@@ -48,7 +45,6 @@ import { ConversationServiceProvider } from '../providers/conversation-service/c
   entryComponents: [
     MyApp,
     HomePage,
-    GroupPage,
     MapsPage,
     FriendsPage,
     LoginPage,

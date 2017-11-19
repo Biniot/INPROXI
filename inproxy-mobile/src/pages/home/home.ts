@@ -35,14 +35,13 @@ export class HomePage {
               private _PMStorage: PrivateMessageStorageProvider) {
     if (!this._ioService.isConnected()) {
       this._ioService.connectSocket();
+      let self = this;
+      let onPrivateMessage = (data: any) => {
+        console.log("onPrivateMessage");
+        console.log(data);
+        self._PMStorage.addElem(data);};
+      this._ioService.setPrivateMessageCallback(onPrivateMessage);
     }
-    this._ioService.setPrivateMessageCallback(this.onPrivateMessage);
-  }
-
-  onPrivateMessage(data: any) {
-    console.log("onPrivateMessage");
-    console.log(data);
-    this._PMStorage.addElem(data);
   }
 
   ngAfterViewInit(){

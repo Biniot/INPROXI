@@ -38,11 +38,23 @@ export class ChatPage {
               private alertCtrl: AlertController, private privateMessage: PrivateMessageStorageProvider,
               private ioService: IoServiceProvider) {
 
-    this.chatType = navParams.get('chatType');
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
-      this.ioService.setPrivateMessageCallback(this.receiveMessage);
+      let self = this;
+      let onPrivateMessage = (message: any) => {
+        console.log("onPrivateMessage");
+        console.log(message);
+        if (self.chatType == ChatType.PRIVATE) {
+          self.privateMessage.addElem(message);
+          self.loadMessageList();
+        } else if (self.chatType == ChatType.GROUP) {
+
+        } else if (self.chatType == ChatType.ROOM) {
+
+        }};
+      this.ioService.setPrivateMessageCallback(onPrivateMessage);
     }
+    this.chatType = navParams.get('chatType');
     this.pageTitle = navParams.get('pageTitle');
 
     if (this.chatType == ChatType.PRIVATE) {
@@ -58,19 +70,6 @@ export class ChatPage {
           this.showPopup("Error", error);
           this.navCtrl.pop();
         });
-      this.loadMessageList();
-    } else if (this.chatType == ChatType.GROUP) {
-
-    } else if (this.chatType == ChatType.ROOM) {
-
-    }
-  }
-
-  public receiveMessage(message: any) {
-    console.log("receiveMessage");
-    console.log(message);
-    if (this.chatType == ChatType.PRIVATE) {
-      this.privateMessage.addElem(message);
       this.loadMessageList();
     } else if (this.chatType == ChatType.GROUP) {
 

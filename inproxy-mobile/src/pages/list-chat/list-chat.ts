@@ -55,7 +55,7 @@ export class ListChatPage {
     if (chatType == ChatType.PRIVATE) {
       this.navCtrl.push('UserPage', {userId: id});
     } else if (chatType == ChatType.GROUP) {
-      this.navCtrl.push('GroupDetailPage', {idGroup: id});
+      this.navCtrl.push('GroupDetailPage', {"idGroup": id});
     } else if (chatType == ChatType.ROOM) {
       this.navCtrl.push('RoomDetailPage', {idRoom: id});
     }

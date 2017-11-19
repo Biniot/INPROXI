@@ -42,23 +42,25 @@ export class PrivateMessageStorageProvider {
 
     console.log("addElem");
     console.log(message);
+    // Recherche les id stocker pour ne pas en créer de doublon
     for (let key in this.keyList) {
       if (key.localeCompare(message.from) === 0) {
-        // console.log("key === message.from");
+        console.log("key === message.from");
         this.addToMap(message, false, true);
         isAdd = true;
         break;
       } else if (key.localeCompare(message.to) === 0) {
-        // console.log("key === message.to");
+        console.log("key === message.to");
         this.addToMap(message, true, true);
         isAdd = true;
         break;
       }
     }
+    // Si l'id n'existe pas on le créer
     if (!isAdd) {
       console.log("!isAdd");
       if (message.from.localeCompare(localStorage.getItem('userId')) === 0) {
-        // console.log("from user");
+        console.log("from user");
         this.addToMap(message, true, false);
         if (this.keyList === null) {
           this.keyList = [];
@@ -69,7 +71,7 @@ export class PrivateMessageStorageProvider {
         console.log(message);
         this.keyList.push(message.to);
       } else {
-        // console.log("not from user");
+        console.log("not from user");
         if (this.keyList === null) {
           this.keyList = [];
         }
@@ -78,34 +80,32 @@ export class PrivateMessageStorageProvider {
       }
     }
 
-    // console.log("addElem End list");
-    // console.log(this.keyList);
-    // console.log("addElem End groupMap");
-    // console.log(this.groupMap);
+    console.log("addElem End list");
+    console.log(this.keyList);
+    console.log("addElem End messageMap");
+    console.log(this.messageMap);
   }
 
   addToMap(message:any, isUser: boolean, isExist: boolean) {
+    console.log("addToMap");
+    console.log("message [" + message + "] isUser [" + isUser + "] isExist [" + isExist + "]");
     if (this.messageMap === null) {
+      console.log("this.messageMap === null");
       this.messageMap = {};
     }
     let elem;
-    if (isUser) {
-      elem = this.messageMap[message.to];
-    } else {
-      elem = this.messageMap[message.from];
-    }
-    // console.log("addToMap elem");
-    // console.log(elem);
     if (isExist) {
       if (isUser) {
+        elem = this.messageMap[message.to];
         elem[elem.length] =  {message: message.message, htmlClass: "isUserClass"};
         this.messageMap[message.to] = elem;
       } else {
+        elem = this.messageMap[message.from];
         elem[elem.length] =  {message: message.message, htmlClass: "isNotUserClass"};
         this.messageMap[message.from] = elem;
       }
-      // console.log("addToMap new elem");
-      // console.log(elem);
+      console.log("addToMap new elem");
+      console.log(elem);
     } else {
       elem = [];
       if (isUser) {
@@ -115,8 +115,8 @@ export class PrivateMessageStorageProvider {
         elem[elem.length] =  {message: message.message, htmlClass: "isNotUserClass"};
         this.messageMap[message.from] = elem;
       }
-      // console.log("addToMap new elem");
-      // console.log(elem);
+      console.log("addToMap new elem");
+      console.log(elem);
     }
     localStorage.setItem(this.keyListLocalStorage, JSON.stringify(this.keyList));
     localStorage.setItem(this.keyMapLocalStorage, JSON.stringify(this.messageMap));
