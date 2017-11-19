@@ -64,13 +64,13 @@ export class ChatPage {
           this.currentFriend = new User(success.last_name, success.email);
           this.currentFriend.firstName = success.first_name;
           this.currentFriend.userId = navParams.get('id');
+          this.loadMessageList();
           //this.pageTitle = success.first_name + " " + success.last_name;
         },
         error => {
           this.showPopup("Error", error);
           this.navCtrl.pop();
         });
-      this.loadMessageList();
     } else if (this.chatType == ChatType.GROUP) {
 
     } else if (this.chatType == ChatType.ROOM) {
@@ -105,8 +105,14 @@ export class ChatPage {
 
   public loadMessageList() {
     // TODO : load depuis la bonne class
-    // this.messageList = this.privateMessage.getListMessageByUserId(this.friendId);
-    // (this.messageList != null && this.messageList.length > 0) ? this.haveMessage = true : this.haveMessage = false;
+    if (this.chatType == ChatType.PRIVATE) {
+      this.messageList = this.privateMessage.getListMessageByUserId(this.currentFriend.userId);
+      (this.messageList != null && this.messageList.length > 0) ? this.haveMessage = true : this.haveMessage = false;
+    } else if (this.chatType == ChatType.GROUP) {
+
+    } else if (this.chatType == ChatType.ROOM) {
+
+    }
   }
 
   showPopup(title, text) {

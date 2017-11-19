@@ -24,8 +24,9 @@ import { Geolocation } from "@ionic-native/geolocation";
 import { RoomServiceProvider } from '../providers/room-service/room-service';
 import { IoServiceProvider } from '../providers/io-service/io-service';
 import { PrivateMessageStorageProvider } from '../providers/custom-storage/private-message-storage';
-import {GroupStorageProvider} from "../providers/custom-storage/group-storage";
+import { GroupMessageStorageProvider } from "../providers/custom-storage/group-message-storage";
 import { ConversationServiceProvider } from '../providers/conversation-service/conversation-service';
+import { RoomMessageStorageProvider } from "../providers/custom-storage/room-message-storage";
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { ConversationServiceProvider } from '../providers/conversation-service/c
     RoomServiceProvider,
     IoServiceProvider,
     PrivateMessageStorageProvider,
-    GroupStorageProvider,
+    GroupMessageStorageProvider,
+    RoomMessageStorageProvider,
     ConversationServiceProvider
   ]
 })
