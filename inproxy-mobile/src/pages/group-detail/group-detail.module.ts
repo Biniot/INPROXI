@@ -13,4 +13,4 @@ import { GroupDetailPage } from './group-detail';
     GroupDetailPage
   ]
 })
-export class GroupDetailPageModule {}
+export class RoomDetailPageModule {}

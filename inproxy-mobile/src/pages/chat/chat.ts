@@ -84,12 +84,12 @@ export class ChatPage {
       this.ioService.connectSocket();
     }
     if (this.chatType == ChatType.PRIVATE) {
-      this.ioService.sendMessage(localStorage.getItem('userId'), this.currentFriend.userId, this.messageToSend);
       this.privateMessage.addElem({
         from: localStorage.getItem('userId'),
         to: this.currentFriend.userId,
         message: this.messageToSend
       });
+      this.ioService.sendMessage(localStorage.getItem('userId'), this.currentFriend.userId, this.messageToSend);
       this.messageToSend = null;
       this.loadMessageList();
     } else if (this.chatType == ChatType.GROUP) {

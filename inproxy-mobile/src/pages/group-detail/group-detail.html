@@ -1,5 +1,5 @@
 <!--
-  Generated template for the GroupDetailPage page.
+  Generated template for the RoomDetailPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -7,30 +7,22 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{groupInfo.name}} - {{groupInfo.nbUser}} members</ion-title>
+    <ion-title>group-detail</ion-title>
   </ion-navbar>
-  <div col-12>
-    <div col-4><img alt="GroupAvatar" height="42" width="42" src="../../assets/img/avatar.png"/></div>
-    <div col-8>
-      <ion-list>
-        <ion-item>{{groupInfo.name}} ({{groupInfo.expirationNbDay}} days left)</ion-item>
-        <ion-item ><ion-label>Status</ion-label><ion-toggle [(ngModel)]="groupInfo.status"></ion-toggle></ion-item>
-        <ion-item><ion-label>Expiration</ion-label><ion-toggle [(ngModel)]="groupInfo.expiration"></ion-toggle></ion-item>
-        <ion-item><button ion-button type="button" color="danger" (click)="quitGroup(groupInfo.idGroup)">Quit group</button></ion-item>
-      </ion-list>
-    </div>
-  </div>
+
 </ion-header>
 
 
 <ion-content padding>
+<ion-label>{{currentGroup.name}}</ion-label>
   <ion-list>
-    <ion-item *ngFor="let user of groupInfo.users" (click)="toUserDetail(user.userId)">
-      <!--TODO : changer lavatar-->
+    <ion-item *ngFor="let user of currentGroup.userList">
       <ion-avatar item-start>
         <img src="../../assets/img/avatar.png">
       </ion-avatar>
       <h2>{{user.fullName}}</h2>
+      <ion-icon name="information-circle" (click)="showUserInfoPage(user.userId)" style="zoom:3.0;"></ion-icon>
+      <ion-icon name="chatbubbles" (click)="lunchChatPage(user.userId, user.fullName)" style="zoom:3.0;"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>
