@@ -25,7 +25,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let user of roomInfo.users" (click)="toUserDetail(user.userId)">
+    <ion-item *ngFor="let user of roomInfo.users">
       <!--TODO : changer lavatar-->
       <ion-avatar item-start>
         <img src="../../assets/img/avatar.png">
