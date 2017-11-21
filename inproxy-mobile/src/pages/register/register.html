@@ -11,43 +11,59 @@
 </ion-header>
 
 <ion-content class="login-content" style="background: url('assets/img/background.PNG') repeat-x 0 0;" padding>
-  <div class="login-box">
-
+  <div>
     <form (ngSubmit)="register()" #registerForm="ngForm">
-      <ion-row>
-        <ion-col>
-          <ion-list inset>
+      <ion-grid class="centered-form">
+        <ion-row>
+          <ion-col>
 
-            <ion-item>
-              <ion-label color="primary" floating>First Name</ion-label>
-              <ion-input type="text" name="firstName" [(ngModel)]="registerCredentials.firstName" required></ion-input>
-            </ion-item>
+            <ion-row>
+              <ion-col>
+                <ion-item class="rounded">
+                  <ion-label color="primary">First Name</ion-label>
+                  <ion-input type="text" name="firstName" [(ngModel)]="registerCredentials.firstName" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
 
-            <ion-item>
-              <ion-label color="primary" floating>Last Name</ion-label>
-              <ion-input type="text" name="lastName" [(ngModel)]="registerCredentials.lastName" required></ion-input>
-            </ion-item>
+            <ion-row>
+              <ion-col>
+                <ion-item class="rounded">
+                  <ion-label color="primary">Last Name</ion-label>
+                  <ion-input type="text" name="lastName" [(ngModel)]="registerCredentials.lastName" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
 
-            <ion-item>
-              <ion-label color="primary" floating>Email</ion-label>
-              <ion-input type="text" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
-            </ion-item>
+            <ion-row>
+              <ion-col>
+                <ion-item class="rounded">
+                  <ion-label color="primary">Email</ion-label>
+                  <ion-input type="text" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
 
-            <ion-item>
-              <ion-label color="primary" floating>Password</ion-label>
-              <ion-input type="password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
-            </ion-item>
+            <ion-row>
+              <ion-col>
+                <ion-item class="rounded">
+                  <ion-label color="primary">Password</ion-label>
+                  <ion-input type="password" name="password" [(ngModel)]="registerCredentials.password" required></ion-input>
+                </ion-item>
+              </ion-col>
+            </ion-row>
 
-          </ion-list>
-        </ion-col>
-      </ion-row>
+          </ion-col>
+        </ion-row>
 
-      <ion-row>
-        <ion-col class="signup-col">
-          <button ion-button class="submit-btn" full type="submit" color="secondary" [disabled]="!registerForm.form.valid">Register</button>
-        </ion-col>
-      </ion-row>
+        <ion-row>
+          <ion-col class="signup-col">
+            <button ion-button class="submit-btn" full type="submit" color="secondary" [disabled]="!registerForm.form.valid" round>Register</button>
+          </ion-col>
+        </ion-row>
 
+      </ion-grid>
     </form>
+
   </div>
 </ion-content>

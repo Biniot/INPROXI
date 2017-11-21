@@ -1,29 +1,12 @@
 page-chat {
   .chat-content {
 
-    @keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
-
-    @-webkit-keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
-
-    background-size:cover;
-    -webkit-animation:animatedBackground 80s linear infinite;
-    -moz-animation:animatedBackground 80s linear infinite;
-    -ms-animation:animatedBackground 80s linear infinite;
-    -o-animation:animatedBackground 80s linear infinite;
-    animation:animatedBackground 80s linear infinite;
+    background: #E6E6E6;
 
     .noMessage {
       padding-left: 10px;
     }
-    
+
     ion-row {
       align-items: center;
       text-align: center;
@@ -35,6 +18,7 @@ page-chat {
       //border: 1px solid #ffffff;
       border-bottom: 0px !important;
       box-shadow: black !important;
+      border-radius: 25px;
     }
 
     .signup-col {

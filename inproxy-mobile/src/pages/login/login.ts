@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { HomePage } from "../home/home";
-import {UserServiceProvider} from "../../providers/user-service/user-service";
+import { UserServiceProvider } from "../../providers/user-service/user-service";
 
 /**
  * Generated class for the LoginPage page.
@@ -35,7 +34,7 @@ export class LoginPage {
     this.auth.login(this.registerCredentials).subscribe(
       allowed => {
         this.userService.refreshProvider();
-        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.setRoot('MapsPage');
         },
       error => this.showError(error));
   }
@@ -43,7 +42,7 @@ export class LoginPage {
   public anonymousLogin() {
     this.showLoading();
     this.auth.anonymousLogin();
-    this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot('MapsPage');
   }
 
   showLoading() {

@@ -9,34 +9,23 @@ import { HttpRequestProvider } from '../providers/http-request/http-request';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { GroupPage } from '../pages/group/group';
-import { MapsPage } from '../pages/maps/maps';
-import { UserPage } from '../pages/user/user';
-import { FriendsPage } from '../pages/friends/friends';
-import { LoginPage } from '../pages/login/login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage'
-import {NativeStorage} from "@ionic-native/native-storage";
+import { NativeStorage } from "@ionic-native/native-storage";
 import { FriendServiceProvider } from '../providers/friend-service/friend-service';
 import { GoogleMaps } from "@ionic-native/google-maps";
 import { Geolocation } from "@ionic-native/geolocation";
 import { RoomServiceProvider } from '../providers/room-service/room-service';
 import { IoServiceProvider } from '../providers/io-service/io-service';
 import { PrivateMessageStorageProvider } from '../providers/custom-storage/private-message-storage';
-import {GroupStorageProvider} from "../providers/custom-storage/group-storage";
+import { GroupStorageProvider } from "../providers/custom-storage/group-storage";
 import { GeofenceProvider } from '../providers/geofence/geofence';
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage,
-    GroupPage,
-    MapsPage,
-    FriendsPage,
-    LoginPage
+    MyApp
   ],
   imports: [
     BrowserModule,
@@ -46,12 +35,7 @@ import { GeofenceProvider } from '../providers/geofence/geofence';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage,
-    GroupPage,
-    MapsPage,
-    FriendsPage,
-    LoginPage,
+    MyApp
   ],
   providers: [
     StatusBar,

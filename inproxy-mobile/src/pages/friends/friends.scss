@@ -1,24 +1,7 @@
 page-friends {
   .friend-content {
 
-    @keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
-
-    @-webkit-keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
-
-    background-size:cover;
-    -webkit-animation:animatedBackground 80s linear infinite;
-    -moz-animation:animatedBackground 80s linear infinite;
-    -ms-animation:animatedBackground 80s linear infinite;
-    -o-animation:animatedBackground 80s linear infinite;
-    animation:animatedBackground 80s linear infinite;
+    background:#E6E6E6;
 
     .logo-row {
       padding-top: 50px;
@@ -38,7 +21,7 @@ page-friends {
 
     ion-item {
       padding-left: 15px !important;
-      margin-bottom: 10px;       
+      margin-bottom: 10px;
     vertical-align: middle;
 
       //border: 1px solid #ffffff;
@@ -46,19 +29,12 @@ page-friends {
       box-shadow: black !important;
         margin: 0 0 0 0;
     }
-    
-    .name {
-      height: 0px;
-        display: inline-block;
-        line-height: normal;
-        vertical-align: middle;
-    }
-    
+
     h2 {
       margin-bottom: 10px;
       margin-bottom: 10px;
     }
-      
+
     ion-icon {
         float: right;
     }
@@ -66,10 +42,7 @@ page-friends {
     .information {
         margin-left: 5px;
     }
-      
-    .chat {
-        margin-right: 5px;
-    }
+
 
     .signup-col {
       margin: 0px 16px 0px 16px;

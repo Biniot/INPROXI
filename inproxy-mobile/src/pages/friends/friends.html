@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -16,25 +16,20 @@
 </ion-header>
 
 
-<ion-content class="friend-content" style="background:#E6E6E6 repeat-x 0 0">
+<ion-content class="friend-content">
   <ion-list *ngIf="haveFriend">
     <ion-item *ngFor="let friend of friendsList">
       <ion-avatar item-start>
         <img src="../../assets/img/avatar.png">
       </ion-avatar>
-      <div class="name">
-          <h2 (click)="friendInfo(friend.id)">{{friend.first_name}} {{friend.last_name}}</h2>
-      </div> 
-      <ion-icon class="information" name="information" (click)="friendInfo(friend.id)" style="zoom:3.0;"></ion-icon>
-      <ion-icon class="chat" name="chatbubbles" (click)="friendChat(friend.id)" style="zoom:3.0;"></ion-icon>
+      <h2 (click)="friendInfo(friend.id)">{{friend.first_name}} {{friend.last_name}}</h2>
+      <button ion-button clear icon-only item-end (click)="friendChat(friend.id)">
+        <ion-icon name="chatbubbles"></ion-icon>
+      </button>
     </ion-item>
   </ion-list>
   <ion-card *ngIf="!haveFriend">
-    <ion-card-header>
-    </ion-card-header>
-    <ion-card-content>
       You have no friend yet. Go talk to some people !
-    </ion-card-content>
   </ion-card>
   <ion-fab right bottom>
     <button ion-fab class="link-btn" (click)="addFriendRequest()"><ion-icon name="add"></ion-icon></button>

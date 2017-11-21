@@ -44,7 +44,6 @@ $colors: (
 // Material Design only Sass variables can go here
 
 // User Profil
-$item-md-avatar-size: 100px;
 
 
 // App Windows Variables
@@ -62,6 +61,15 @@ $item-md-avatar-size: 100px;
 // default are overridden.
 
 @import "ionic.theme.default";
+
+// Rounded Inputs
+.rounded {
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 30px;
+  margin-bottom: 10px;
+}
+
 
 
 // Ionicons

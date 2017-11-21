@@ -1,5 +1,5 @@
-import {Component, ViewChild, ElementRef} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { NavController, IonicPage } from 'ionic-angular';
 
 import {
   GoogleMaps,
@@ -17,6 +17,7 @@ import {
 
 import {Geolocation} from '@ionic-native/geolocation';
 
+@IonicPage()
 @Component({
   selector: 'page-maps',
   templateUrl: 'maps.html'

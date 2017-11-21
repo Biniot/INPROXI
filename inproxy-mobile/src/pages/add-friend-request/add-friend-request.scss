@@ -1,26 +1,8 @@
 page-add-friend-request {
   .add-friend-content {
 
-    @keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
+    background-color: #E6E6E6;
 
-    @-webkit-keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
-
-    background-size:cover;
-    -webkit-animation:animatedBackground 80s linear infinite;
-    -moz-animation:animatedBackground 80s linear infinite;
-    -ms-animation:animatedBackground 80s linear infinite;
-    -o-animation:animatedBackground 80s linear infinite;
-    animation:animatedBackground 80s linear infinite;
-
-      
     .logo-row {
       padding-top: 50px;
       padding-bottom: 20px;
@@ -38,17 +20,12 @@ page-add-friend-request {
     }
 
     ion-item {
-        
+
       padding-left: 30px !important;
       margin-bottom: 10px;
       //border: 1px solid #ffffff;
       border-bottom: 0px !important;
       box-shadow: black !important;
-    }
-
-    .signup-col {
-      margin: 0px 16px 0px 16px;
-      padding-bottom: 20px;
     }
 
     .item-inner {
@@ -58,30 +35,30 @@ page-add-friend-request {
 
     .submit-btn {
         box-shadow: 2px 2px 2px #212121;
-        margin-bottom: 1px; 
+        margin-bottom: 1px;
         height: 50px;
         padding-left: 10px;
         padding-bottom: 10px;
     }
-    
+
     .register-btn {
       color: #ffffff;
       font-size: 0.8em;
     }
-    
+
       .item {
-          
+
           font-weight:700 ;
           margin-bottom: 5px;
       }
-    
+
       p {
           text-align: center;
           font-weight: 900;
           font-size: 1.2em;
           color: #7B4397;
       }
-      
+
       .searchRes {
           height: 270px;
           margin-bottom: 10px;

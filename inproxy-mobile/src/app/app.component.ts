@@ -3,12 +3,6 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
-import { GroupPage } from '../pages/group/group';
-import { MapsPage } from '../pages/maps/maps';
-import { FriendsPage } from '../pages/friends/friends';
-import { LoginPage } from '../pages/login/login';
-
 @Component({
   templateUrl: 'app.html'
 })
@@ -25,15 +19,14 @@ export class MyApp {
     this.initializeApp();
 
     if (localStorage.getItem('token') != null)
-      this.rootPage = HomePage;
+      this.rootPage = 'MapsPage';
     else
-      this.rootPage = LoginPage;
+      this.rootPage = 'LoginPage';
 
     this.pages = [
-      { title: 'Home', icon: 'home', component: HomePage },
-      { title: 'Group', icon: 'chatboxes', component: GroupPage },
-      { title: 'Maps', icon: 'map', component: MapsPage },
-      { title: 'Friends', icon: 'people', component: FriendsPage },
+      { title: 'Maps', icon: 'map', component: 'MapsPage' },
+      { title: 'Group', icon: 'chatboxes', component: 'GroupPage' },
+      { title: 'Friends', icon: 'people', component: 'FriendsPage' },
       { title: 'User', icon: 'person', component: 'UserPage' }
     ];
   }
@@ -51,6 +44,6 @@ export class MyApp {
 
   logout() {
     localStorage.removeItem('token');
-    this.nav.setRoot(LoginPage);
+    this.nav.setRoot('LoginPage');
   }
 }

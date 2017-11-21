@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -8,18 +8,20 @@
 </ion-header>
 
 <ion-content padding>
-  <div #map id="map" style="height:100%">
-    <ul style="list-style-type: none; position:absolute; top: 10%; right: 0">
+  <div #map id="map">
+    <ul>
       <!--<li>-->
         <!--<button ion-button (click)="centerMap()">-->
           <!--<ion-icon name="locate"></ion-icon>-->
         <!--</button>-->
       <!--</li>-->
       <li>
-        <button ion-button (click)="getClickPos()">
-          <ion-icon name="add"></ion-icon>
-        </button>
       </li>
     </ul>
   </div>
+  <ion-fab bottom right>
+    <button ion-fab (click)="getClickPos()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
