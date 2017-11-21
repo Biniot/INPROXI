@@ -23,7 +23,6 @@ import { PrivateMessageStorageProvider } from '../providers/custom-storage/priva
 import { GroupMessageStorageProvider } from "../providers/custom-storage/group-message-storage";
 import { ConversationServiceProvider } from '../providers/conversation-service/conversation-service';
 import { RoomMessageStorageProvider } from "../providers/custom-storage/room-message-storage";
-import { GroupStorageProvider } from "../providers/custom-storage/group-storage";
 import { GeofenceProvider } from '../providers/geofence/geofence';
 
 @NgModule({
@@ -58,7 +57,6 @@ import { GeofenceProvider } from '../providers/geofence/geofence';
     GroupMessageStorageProvider,
     RoomMessageStorageProvider,
     ConversationServiceProvider,
-    GroupStorageProvider,
     GeofenceProvider
   ]
 })

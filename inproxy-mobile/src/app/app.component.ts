@@ -25,9 +25,9 @@ export class MyApp {
 
     this.pages = [
       { title: 'Maps', icon: 'map', component: 'MapsPage' },
-      { title: 'Group', icon: 'chatboxes', component: 'GroupPage' },
       { title: 'Friends', icon: 'people', component: 'FriendsPage' },
-      { title: 'User', icon: 'person', component: 'UserPage' }
+      { title: 'User', icon: 'person', component: 'UserPage' },
+      { title: 'Chats', icon: 'chatboxes', component: 'ListChatPage' }
     ];
   }
 
