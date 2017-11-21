@@ -18,6 +18,7 @@ import {
 import {Geolocation} from '@ionic-native/geolocation';
 import {IoServiceProvider} from "../../providers/io-service/io-service";
 import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
+//import {GeofenceProvider} from "../../providers/geofence/geofence";
 
 @Component({
   selector: 'page-home',
@@ -30,7 +31,7 @@ export class HomePage {
   _loc: LatLng;
 
   constructor(public navCtrl: NavController,
-              private _googleMaps: GoogleMaps,
+              private _googleMaps: GoogleMaps,/* private _geofence: GeofenceProvider,*/
               private _geoLoc: Geolocation, private _ioService: IoServiceProvider,
               private _PMStorage: PrivateMessageStorageProvider) {
     if (!this._ioService.isConnected()) {
@@ -43,6 +44,11 @@ export class HomePage {
       this._ioService.setPrivateMessageCallback(onPrivateMessage);
     }
   }
+
+  functionSuccess(succes: any) {
+    console.log('functionSuccess');
+    console.log(succes);
+  };
 
   ngAfterViewInit(){
     // this.initMap();

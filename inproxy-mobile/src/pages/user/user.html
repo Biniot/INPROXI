@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar color="dark">
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -16,41 +16,51 @@
 </ion-header>
 
 
-<ion-content class="user-content" style="background: url('assets/img/background.PNG') repeat-x 0 0" padding>
+<ion-content class="user-content">
   <div class="user-box">
-
-
-    <ion-row>
-      <ion-col>
-        <ion-list inset>
-
-          <ion-item *ngIf="isUser" >
-            <ion-col col-12><img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatarPath}}"/></ion-col>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item *ngIf="isUser" no-lines>
+            <!--
+                        <ion-col col-12><img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatarPath}}"/></ion-col>
+            -->
+            <ion-avatar item-start>
+              <img src="../../assets/img/avatar.png">
+            </ion-avatar>
           </ion-item>
 
-          <ion-item>
-            <ion-col col-4>First name :</ion-col>
+          <ion-item no-lines>
+            <ion-col col-4>FIRST NAME:</ion-col>
             <ion-col col-8 >{{currentUser.firstName}}</ion-col>
           </ion-item>
 
-          <ion-item>
-            <ion-col col-4>last name :</ion-col>
+          <ion-item no-lines>
+            <ion-col col-4>LAST NAME:</ion-col>
             <ion-col col-8 >{{currentUser.lastName}}</ion-col>
           </ion-item>
 
-          <ion-item>
-            <ion-col col-4>Email :</ion-col>
+          <ion-item no-lines>
+            <ion-col col-4>EMAIL:</ion-col>
             <ion-col col-8 >{{currentUser.email}}</ion-col>
           </ion-item>
-
-        </ion-list>
-      </ion-col>
-    </ion-row>
-    <ion-row  *ngIf="isUser" >
-      <ion-col class="action-col">
-        <button ion-button class="link-btn" (click)="editUserNav()">Edit</button>
-        <button ion-button class="link-btn" *ngIf="isUser" (click)="deleteUser()">Delete account</button>
-      </ion-col>
-    </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>
+
+<ion-footer *ngIf="isUser">
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <button ion-button block (click)="editUserNav()"><span>Edit</span></button>
+        </ion-col>
+        <ion-col>
+          <button ion-button block *ngIf="isUser" (click)="deleteUser()"><span>Delete account</span></button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

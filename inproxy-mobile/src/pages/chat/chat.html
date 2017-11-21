@@ -6,14 +6,14 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>chat</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Chat</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 <!--[attr.ion-start]="message.htmlClass == 'isUserClass'" [attr.ion-end]="message.htmlClass == 'isNotUserClass'"-->
-<ion-content class="chat-content" style="background: url('assets/img/background.PNG') repeat-x 0 0" padding>
+<ion-content class="chat-content" padding>
   <div>
     <h1>{{pageTitle}}</h1>
     <ion-label *ngIf="!haveMessage" floating>No message</ion-label>
@@ -26,8 +26,11 @@
       </ion-item>
     </ion-list>
   </div>
-  <div style="border-style: solid;">
-    <ion-col col-10><ion-input type="text" placeholder="Message" [(ngModel)]="messageToSend"></ion-input></ion-col>
-    <ion-col col-2 ><ion-icon name="send" (click)="sendMessage()" style="zoom:3.0;"></ion-icon></ion-col>
-  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-item>
+    <ion-input type="text" placeholder="Type your message"></ion-input>
+    <button ion-button clear item-end icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>
+  </ion-item>
+</ion-footer>

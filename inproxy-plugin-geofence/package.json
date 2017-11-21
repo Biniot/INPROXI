@@ -1,0 +1,16 @@
+{
+  "name": "inproxi-plugin-geofence",
+  "version": "0.0.1",
+  "cordova": {
+    "id": "inproxi-plugin-geofence",
+    "platforms": [
+      "android"
+    ]
+  },
+  "description": "Geofence functionnalities",
+  "author": "",
+  "license": "Apache 2.0",
+  "keywords": [
+    "geofence"
+  ]
+}

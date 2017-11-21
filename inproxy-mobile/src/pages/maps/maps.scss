@@ -1,3 +1,13 @@
 page-maps {
 
+  #map {
+    height: 100%;
+
+    ul {
+      list-style-type: none;
+      position: absolute;
+      top: 10%;
+      right: 0;
+    }
+  }
 }

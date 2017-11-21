@@ -1,30 +1,13 @@
 page-user {
   .user-content  {
 
-    @keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
-
-    @-webkit-keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
-
-    background-size:cover;
-    -webkit-animation:animatedBackground 80s linear infinite;
-    -moz-animation:animatedBackground 80s linear infinite;
-    -ms-animation:animatedBackground 80s linear infinite;
-    -o-animation:animatedBackground 80s linear infinite;
-    animation:animatedBackground 80s linear infinite;
+    background: #E6E6E6;
 
     .user-box {
-      background-color: rgba(123, 67, 151, 0.8);
-      padding: 20px 20px 0px 20px;
-      margin-top: 30px;
+      background-color: #E6E6E6;
+      height: 520px;
     }
+
 
     ion-row {
       align-items: center;
@@ -44,14 +27,29 @@ page-user {
     }
 
     .item-inner {
-      border-bottom-color: #7B4397 !important;
       box-shadow: none !important;
     }
 
     .link-btn {
-      background: #51CFB1;
-      border-radius: 30px !important;
+      position: sticky;
+      width: 150px;
+      padding-bottom: 10px;
+      background: #0000FF;
       border: 1px solid #ffffff;
+    }
+
+    .delete {
+            position: sticky;
+      background: #FF0000;
+      padding-bottom: 10px;
+      border: 1px solid #ffffff;
+    }
+
+    span {
+      height: 0px;
+    }
+
+    img {
     }
   }
 }

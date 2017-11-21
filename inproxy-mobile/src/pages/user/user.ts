@@ -31,6 +31,7 @@ export class UserPage {
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
       this.userService.getUserInfoById(navParams.get('userId')).subscribe(success => {
+        console.log(success);
         this.currentUser = new User(success.last_name, success.email);
         this.currentUser.firstName = success.first_name;
       },

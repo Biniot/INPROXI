@@ -43,7 +43,7 @@ $colors: (
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-
+// User Profil
 
 
 // App Windows Variables
@@ -61,6 +61,15 @@ $colors: (
 // default are overridden.
 
 @import "ionic.theme.default";
+
+// Rounded Inputs
+.rounded {
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 30px;
+  margin-bottom: 10px;
+}
+
 
 
 // Ionicons

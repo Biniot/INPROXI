@@ -9,15 +9,11 @@ import { HttpRequestProvider } from '../providers/http-request/http-request';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { MapsPage } from '../pages/maps/maps';
-import { FriendsPage } from '../pages/friends/friends';
-import { LoginPage } from '../pages/login/login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IonicStorageModule } from '@ionic/storage'
-import {NativeStorage} from "@ionic-native/native-storage";
+import { NativeStorage } from "@ionic-native/native-storage";
 import { FriendServiceProvider } from '../providers/friend-service/friend-service';
 import { GoogleMaps } from "@ionic-native/google-maps";
 import { Geolocation } from "@ionic-native/geolocation";
@@ -27,14 +23,12 @@ import { PrivateMessageStorageProvider } from '../providers/custom-storage/priva
 import { GroupMessageStorageProvider } from "../providers/custom-storage/group-message-storage";
 import { ConversationServiceProvider } from '../providers/conversation-service/conversation-service';
 import { RoomMessageStorageProvider } from "../providers/custom-storage/room-message-storage";
+import { GroupStorageProvider } from "../providers/custom-storage/group-storage";
+import { GeofenceProvider } from '../providers/geofence/geofence';
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage,
-    MapsPage,
-    FriendsPage,
-    LoginPage
+    MyApp
   ],
   imports: [
     BrowserModule,
@@ -44,11 +38,7 @@ import { RoomMessageStorageProvider } from "../providers/custom-storage/room-mes
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage,
-    MapsPage,
-    FriendsPage,
-    LoginPage,
+    MyApp
   ],
   providers: [
     StatusBar,
@@ -67,7 +57,9 @@ import { RoomMessageStorageProvider } from "../providers/custom-storage/room-mes
     PrivateMessageStorageProvider,
     GroupMessageStorageProvider,
     RoomMessageStorageProvider,
-    ConversationServiceProvider
+    ConversationServiceProvider,
+    GroupStorageProvider,
+    GeofenceProvider
   ]
 })
 export class AppModule {}

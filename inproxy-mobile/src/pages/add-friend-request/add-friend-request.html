@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -15,43 +15,50 @@
 
 </ion-header>
 
-<ion-content class="add-friend-content" style="background: url('assets/img/background.PNG') repeat-x 0 0" padding>
+<ion-content class="add-friend-content" padding>
   <div class="add-friend-box">
+   <p>AJOUTER UN UTILISATEUR A VOS AMIS</p>
     <form (ngSubmit)="addFriend()" #registerForm="ngForm">
-      <ion-row>
-        <ion-col>
-          <ion-list inset>
-
-            <ion-item>
-              <ion-input type="text" placeholder="Firstname Lastname" name="name" [(ngModel)]="friendRequestCredentials.name" (input)="searchForIt($event)" required></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-input type="text" placeholder="Message" name="message" [(ngModel)]="friendRequestCredentials.message" required></ion-input>
-            </ion-item>
-
-            <!--<ion-item>-->
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-list inset>
+              <div class="item">
+                <ion-item>
+                  <ion-input type="text" placeholder="Nom d'utilisateur" name="name" [(ngModel)]="friendRequestCredentials.name" (input)="searchForIt($event)" required></ion-input>
+                </ion-item>
+              </div>
+              <div class="item">
+                <ion-item>
+                  <ion-input type="text" placeholder="Message" name="message" [(ngModel)]="friendRequestCredentials.message" required></ion-input>
+                </ion-item>
+              </div>
+              <!--<ion-item>-->
               <!--<ion-input type="hidden" [(ngModel)]="friendRequestCredentials.idFriend" required></ion-input>-->
-            <!--</ion-item>-->
+              <!--</ion-item>-->
 
-            <!--<ion-item>-->
+              <!--<ion-item>-->
               <!--<ion-input type="text" placeholder="Email" name="email" [(ngModel)]="friendRequestCredentials.email" required></ion-input>-->
-            <!--</ion-item>-->
+              <!--</ion-item>-->
 
-          </ion-list>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col class="submit-col">
-          <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Submit</button>
-        </ion-col>
-      </ion-row>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </form>
-    <ion-list *ngIf="showList">
-      <ion-item *ngFor="let friend of friendList" >
-        <h2 (click)="updateForm(friend.id)">{{friend.first_name}} {{friend.last_name}}</h2>
-      </ion-item>
-    </ion-list>
+    <div class="searchRes">
+      <ion-list *ngIf="showList" >
+        <ion-item *ngFor="let friend of friendList" >
+          <h2 (click)="updateForm(friend.id)">{{friend.first_name}} {{friend.last_name}}</h2>
+        </ion-item>
+      </ion-list>
+    </div>
+
   </div>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button block class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Submit</button>
+  </ion-toolbar>
+</ion-footer>
