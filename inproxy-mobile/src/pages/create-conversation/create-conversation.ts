@@ -91,6 +91,10 @@ export class CreateConversationPage {
     console.log(this.newConversation.members);
   }
 
+  createConversation() {
+    this.conversationService.createConversation(this.newConversation.members);
+  }
+
   showPopup(title, text) {
     let alert = this.alertCtrl.create({
       title: title,

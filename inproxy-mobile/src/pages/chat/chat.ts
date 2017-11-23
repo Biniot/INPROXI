@@ -85,12 +85,14 @@ export class ChatPage {
     }
     if (this.chatType == ChatType.PRIVATE) {
       console.log("sendMessage ChatPage ChatType.PRIVATE");
-      this.privateMessage.addElem({
+      console.log(this.messageToSend);
+      let content = {
         from: localStorage.getItem('userId'),
-        to: this.currentFriend.userId,
+        group_id: this.navParams.get('group_id'),
         message: this.messageToSend
-      });
-      this.ioService.sendMessage(localStorage.getItem('userId'), this.currentFriend.userId, this.messageToSend);
+      };
+      this.privateMessage.addElem(content);
+      this.ioService.sendMessage(content.from, content.group_id, content.message);
       this.messageToSend = null;
       this.loadMessageList();
     } else if (this.chatType == ChatType.GROUP) {
