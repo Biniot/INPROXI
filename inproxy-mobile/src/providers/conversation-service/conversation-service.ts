@@ -63,20 +63,19 @@ export class ConversationServiceProvider {
 
   public getMessageConversation(conversationId: string) {
     console.log('getMessageConversation [' + conversationId + ']');
-    //return Observable.create(observer => {
-      this.request.get(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT + conversationId + MESSAGES_ENDPOINT, {
-      }).subscribe(
+    return new Observable(observer => {
+      this.request.get(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT + conversationId + MESSAGES_ENDPOINT, {}).subscribe(
         result => {
           console.log("getMessageConversation result");
           console.log(result);
-          // observer.next(result);
-          // observer.complete();
+          observer.next(result);
+          observer.complete();
         }, err => {
           console.log("getMessageConversation err");
           console.log(err);
-          //observer.error(err.message)
+          observer.error(err.message)
         });
-    //});
+    })
   }
 
   public addMessageConversation(message : string, conversationId: string) {
