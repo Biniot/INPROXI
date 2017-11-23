@@ -26,6 +26,7 @@ export class FriendServiceProvider {
           message : message
         }).subscribe(
           result => {
+            console.log('addFriendRequest result');
             observer.next(true);
             observer.complete();
           }, err => {

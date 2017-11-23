@@ -92,6 +92,7 @@ export class UserServiceProvider {
       this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + id, {
       }).subscribe(
         result => {
+          console.log(result);
           observer.next(result);
           observer.complete();
         }, err => {

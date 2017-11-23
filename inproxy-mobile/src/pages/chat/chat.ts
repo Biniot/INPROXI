@@ -82,11 +82,12 @@ export class ChatPage {
   }
 
   public sendMessage() {
-    console.log("sendMessage");
+    console.log("sendMessage ChatPage");
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
     if (this.chatType == ChatType.PRIVATE) {
+      console.log("sendMessage ChatPage ChatType.PRIVATE");
       console.log(this.messageToSend);
       let content = {
         from: localStorage.getItem('userId'),
