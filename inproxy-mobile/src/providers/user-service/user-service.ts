@@ -130,27 +130,26 @@ export class UserServiceProvider {
   // Recupere une liste damis a partir de lid du user connecter
   public getFriends() {
     return Observable.create(observer => {
-      if (this.iSFriendLoad) {
-        observer.next(true);
-        observer.complete();
-      }
-      else {
-          this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + FRIEND_ENDPOINT, {
-          }).subscribe(
-            result => {
-              console.log(result);
-              if (result.length >= 1) {
-                console.log('saved friends');
-                console.log(JSON.stringify(result));
-                localStorage.setItem('friends', JSON.stringify(result));
-              }
-              this.iSFriendLoad = true;
-              observer.next(true);
-              observer.complete();
-            }, err => {
-              observer.error(err.message)
-            });
-      }});
+      // if (this.iSFriendLoad) {
+      //   observer.next(true);
+      //   observer.complete();
+      // }
+      // else {
+      this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + FRIEND_ENDPOINT, {}).subscribe(
+        result => {
+          console.log(result);
+          if (result.length >= 1) {
+            console.log('saved friends');
+            console.log(JSON.stringify(result));
+            localStorage.setItem('friends', JSON.stringify(result));
+          }
+          this.iSFriendLoad = true;
+          observer.next(true);
+          observer.complete();
+        }, err => {
+          observer.error(err.message)
+        });
+    });
   }
 
   // Edit les informations du user connecter
