@@ -5,6 +5,7 @@ import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 import {IoServiceProvider} from "../../providers/io-service/io-service";
 import {ChatType} from "../../model/ChatType";
+import { ConversationServiceProvider } from '../../providers/conversation-service/conversation-service';
 
 /**
  * Generated class for the ChatPage page.
@@ -24,6 +25,7 @@ export class ChatPage {
   messageToSend: string;
   haveMessage: boolean;
   chatType: any;
+  conversationId: string;
 
   // Private Chat
   currentFriend: User;
@@ -36,7 +38,7 @@ export class ChatPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserServiceProvider,
               private alertCtrl: AlertController, private privateMessage: PrivateMessageStorageProvider,
-              private ioService: IoServiceProvider) {
+              private ioService: IoServiceProvider, private conversationService: ConversationServiceProvider) {
 
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
@@ -56,6 +58,7 @@ export class ChatPage {
     }
     this.chatType = navParams.get('chatType');
     this.pageTitle = navParams.get('pageTitle');
+    this.conversationId = navParams.get('group_id');
 
     if (this.chatType == ChatType.PRIVATE) {
       this.userService.getUserInfoById(navParams.get('id')).subscribe(success => {
@@ -88,7 +91,7 @@ export class ChatPage {
       console.log(this.messageToSend);
       let content = {
         from: localStorage.getItem('userId'),
-        group_id: this.navParams.get('group_id'),
+        group_id: this.conversationId,
         message: this.messageToSend
       };
       let localContent = {
@@ -114,14 +117,14 @@ export class ChatPage {
 
   public loadMessageList() {
     // TODO : load depuis la bonne class
-    if (this.chatType == ChatType.PRIVATE) {
-      this.messageList = this.privateMessage.getListMessageByUserId(this.currentFriend.userId);
-      (this.messageList != null && this.messageList.length > 0) ? this.haveMessage = true : this.haveMessage = false;
-    } else if (this.chatType == ChatType.GROUP) {
-
-    } else if (this.chatType == ChatType.ROOM) {
-
-    }
+    this.conversationService.getMessageConversation(this.conversationId).subscribe(
+      result => {
+        console.log(result);
+      },
+      error => {
+        console.error(error);
+      }
+    );
   }
 
   showPopup(title, text) {
