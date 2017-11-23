@@ -32,17 +32,17 @@ export class ListChatPage {
     this.listGroupChat = [{groupName: "La bande a bono", groupId: ""}, {groupName: "La bande a toto", groupId: ""}];
     this.listRoomChat = [{roomName: "Epitech Parmentier", roomId: ""}, {roomName: "Epitech Kremlin", roomId: ""}];
 
-    for (let userId in messageStorage.getUsersId()) {
-      // TODO : get historique puis l'add to storage
-      userService.getUserInfoById(userId).subscribe(success => {
-          this.listPrivateChat.push({friendName: success.first_name + " " + success.last_name, friendId: success.id});
-        },
-        error => {
-        console.log(error);
-          // this.showPopup("Error", error);
-          // this.navCtrl.pop();
-        });
-    }
+    // for (let userId in messageStorage.getIds()) {
+    //   // TODO : get historique puis l'add to storage
+    //   userService.getUserInfoById(userId).subscribe(success => {
+    //       this.listPrivateChat.push({friendName: success.first_name + " " + success.last_name, friendId: success.id});
+    //     },
+    //     error => {
+    //     console.log(error);
+    //       // this.showPopup("Error", error);
+    //       // this.navCtrl.pop();
+    //     });
+    // }
 
     // TODO : charger les listes de group et room
   }

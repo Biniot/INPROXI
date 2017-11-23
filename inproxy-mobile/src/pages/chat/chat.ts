@@ -91,7 +91,13 @@ export class ChatPage {
         group_id: this.navParams.get('group_id'),
         message: this.messageToSend
       };
-      this.privateMessage.addElem(content);
+      let localContent = {
+        from: localStorage.getItem('userId'),
+        id: this.navParams.get('group_id'),
+        content: this.messageToSend,
+        author: {first_name: this.currentFriend.firstName, last_name: this.currentFriend.lastName, id: this.currentFriend.userId}
+      };
+      this.privateMessage.addElem(localContent);
       this.ioService.sendMessage(content.from, content.group_id, content.message);
       this.messageToSend = null;
       this.loadMessageList();
