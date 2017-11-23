@@ -10,7 +10,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Check request</ion-title>
+    <ion-title>Check friend xrequest</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -27,8 +27,8 @@
           <ion-avatar item-start>
             <img src="../../assets/img/avatar.png">
           </ion-avatar>
-          <h2><h3>From : </h3>{{friendRequest.from}}</h2>
-          <h2><h3>To : </h3>{{friendRequest.to}}</h2>
+          <h2>From : {{friendRequest.from}}</h2>
+          <h2>To : {{friendRequest.to}}</h2>
           <h2><h3>Message : </h3>{{friendRequest.message}}</h2>
           <button ion-button color="danger" (click)="manageFriendRequest(friendRequest.id, false)">Refuse</button>
           <button ion-button color="primary" (click)="manageFriendRequest(friendRequest.id, true)">Accept</button>

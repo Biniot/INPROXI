@@ -91,7 +91,7 @@ export class IoServiceProvider {
   }
 
   public sendMessage(from: string, to: string, message: string) {
-    console.log("sendMessage");
+    console.log("sendMessage IoService");
     sock.emit('private_message', {from: from, to: to, message: message}, function(){console.log("sendMessage success")});
   }
 

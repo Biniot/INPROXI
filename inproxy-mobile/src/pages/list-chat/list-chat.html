@@ -19,6 +19,7 @@
   <ion-list *ngIf="listPrivateChat.length > 0">
     <ion-list-header>
       Private Chat
+      <button ion-button clear icon-only (click)="addFriendRequest()" item-end><ion-icon name="add"></ion-icon></button>
     </ion-list-header>
     <ion-item *ngFor="let privateChat of listPrivateChat">
       {{privateChat.friendName}}
@@ -30,7 +31,7 @@
   <ion-list *ngIf="listGroupChat.length > 0">
     <ion-list-header>
       Group Chat
-    </ion-list-header>
+      <button ion-button clear icon-only (click)="createConversation()" item-end><ion-icon name="add"></ion-icon></button></ion-list-header>
     <ion-item *ngFor="let groupChat of listGroupChat">
       {{groupChat.groupName}}
       <button ion-button clear icon-only (click)="showInfoPage(2, groupChat.groupId)" item-end><ion-icon name="information-circle"></ion-icon></button>
@@ -41,6 +42,7 @@
   <ion-list *ngIf="listRoomChat.length > 0">
     <ion-list-header>
       Room Chat
+      <!--<button ion-button clear icon-only (click)="createRoom()" item-end><ion-icon name="add"></ion-icon></button>-->
     </ion-list-header>
     <ion-item *ngFor="let roomChat of listRoomChat">
       {{roomChat.roomName}}

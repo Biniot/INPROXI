@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
-import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
+//import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 import { UserPage } from '../user/user';
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
 import {ChatType} from "../../model/ChatType";
@@ -22,8 +22,8 @@ export class FriendsPage {
   haveFriend: boolean;
   friendsList: Array<{id: string, first_name: string, last_name: string}>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
-              private userService: UserServiceProvider, private friendRequestService: FriendServiceProvider,
+  constructor(public navCtrl: NavController, /*public navParams: NavParams,*/ private alertCtrl: AlertController,
+              private userService: UserServiceProvider, /*private friendRequestService: FriendServiceProvider,*/
               private conversationService: ConversationServiceProvider) {
     // this.friendsList = [
     //   {name: 'Obi'},
@@ -105,10 +105,6 @@ export class FriendsPage {
       ]
     });
     alert.present();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad FriendsPage');
   }
 
 }

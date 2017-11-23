@@ -51,6 +51,18 @@ export class ListChatPage {
     this.navCtrl.push('ChatPage', {chatType: chatType, id: id, pageTitle: name});
   }
 
+  public addFriendRequest() {
+    this.navCtrl.push('AddFriendRequestPage');
+  }
+
+  public createConversation() {
+    this.navCtrl.push('CreateConversationPage');
+  }
+
+  public createRoom() {
+    this.navCtrl.push('CreateRoomPage');
+  }
+
   showInfoPage(chatType: any, id: string) {
     if (chatType == ChatType.PRIVATE) {
       this.navCtrl.push('UserPage', {userId: id});

@@ -33,6 +33,7 @@ export class AddFriendRequestPage {
   }
 
   public addFriend() {
+    console.log('addFriendRequest');
     this.friendRequestProvider.addFriendRequest(this.friendRequestCredentials.idFriend, this.friendRequestCredentials.message).subscribe(success => {
         this.showPopup("Succes", "Succefully add request friend.");
       },
