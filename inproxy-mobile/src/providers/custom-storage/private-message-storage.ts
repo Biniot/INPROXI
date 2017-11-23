@@ -36,7 +36,8 @@ export class PrivateMessageStorageProvider {
     console.log("messageMap");
     console.log(this.messageMap);
   }
-// Model attendu
+
+  // Model attendu
   // let localContent = {
   //   content: localStorage.getItem('userId'),
   //   id: this.navParams.get('group_id'),
@@ -74,11 +75,12 @@ export class PrivateMessageStorageProvider {
     console.log(this.keyList);
     console.log("addElem End messageMap");
     console.log(this.messageMap);
+
     localStorage.setItem(this.keyListLocalStorage, JSON.stringify(this.keyList));
     localStorage.setItem(this.keyMapLocalStorage, JSON.stringify(this.messageMap));
   }
 
-  addToMap(message:any, isExist: boolean) {
+  private addToMap(message:any, isExist: boolean) {
     console.log("addToMap");
     console.log("message [" + message + "] isExist [" + isExist + "]");
     if (this.messageMap === null) {
@@ -98,7 +100,7 @@ export class PrivateMessageStorageProvider {
   }
 
   // return [{content: message.content, id: message.id, author: message.author, from: message.from}]
-  public getListMessageByUserId(id: string) {
+  public getListMessageById(id: string) {
     // console.log("getListMessageByUserId ");
     for (let key in this.keyList) {
       if (key.localeCompare(id) === 0) {
