@@ -5,6 +5,7 @@ import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 import {IoServiceProvider} from "../../providers/io-service/io-service";
 import {ChatType} from "../../model/ChatType";
+import { ConversationServiceProvider } from '../../providers/conversation-service/conversation-service';
 
 /**
  * Generated class for the ChatPage page.
