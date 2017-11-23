@@ -45,9 +45,6 @@ export class FriendsPage {
             this.friendsList = JSON.parse(tab);
             this.haveFriend = true;
             console.log('FriendListLoad');
-            let members = [localStorage.getItem('userId'), this.friendsList[0].id];
-            console.log(members);
-            conversationService.createConversation(members);
           }
         } else {
           this.showPopup("Error", "Problem retriving friends.");
@@ -59,11 +56,7 @@ export class FriendsPage {
     userService.getFriendRequests().subscribe(success => {
         if (success) {
           let stringRequest = localStorage.getItem('friendRequests');
-          if (stringRequest === 'undefined' || stringRequest === null) {
-            this.haveRequest = false;
-          } else {
-            this.haveRequest = true;
-          }
+          this.haveRequest = !(stringRequest === 'undefined' || stringRequest === null);
         } else {
           this.showPopup("Error", "Problem retriving friend request.");
         }
@@ -86,7 +79,10 @@ export class FriendsPage {
   }
 
   public friendChat(idFriend: string, name: string) {
-    this.navCtrl.push('ChatPage', {id: idFriend, chatType: ChatType.PRIVATE, pageTitle: name});
+    let members = [localStorage.getItem('userId'), idFriend];
+    this.conversationService.createConversation(members).subscribe((result: any) => {
+      this.navCtrl.push('ChatPage', {id: localStorage.getItem('userId'), chatType: ChatType.PRIVATE, pageTitle: name, group_id: result.id});
+    });
   }
 
   showPopup(title, text) {

@@ -90,9 +90,9 @@ export class IoServiceProvider {
     sock.on('private_message', functionPrivateMessage);
   }
 
-  public sendMessage(from: string, to: string, message: string) {
+  public sendMessage(from: string, group_id: string, message: string) {
     console.log("sendMessage");
-    sock.emit('private_message', {from: from, to: to, message: message}, function(){console.log("sendMessage success")});
+    sock.emit('private_message', {from: from, group_id: group_id, message: message}, () => {console.log("sendMessage success")});
   }
 
   /* Generic event function */
@@ -103,5 +103,4 @@ export class IoServiceProvider {
   public receiveEventCallBack(event: string, functionEventCallback: any) {
     sock.on(event, functionEventCallback);
   }
-
 }

@@ -22,20 +22,23 @@ export class ConversationServiceProvider {
 
   public createConversation(members : string[]) {
     console.log("createConversation");
+    console.log(members);
     /*return Observable.create(observer => {*/
-    this.request.post(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT, {
-      members : members
-    }).subscribe(
-      result => {
-        console.log("createConversation result");
-        console.log(result);
-        /*observer.next(true);
-        observer.complete();*/
-      }, err => {
-        console.log("createConversation err");
-        console.log(err);
-        //observer.error(err.message);
-      });
+    return new Observable(observer => {
+      this.request.post(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT, {
+        members : members
+      }).subscribe(
+        result => {
+          console.log("createConversation result");
+          console.log(result);
+          observer.next(result);
+          observer.complete();
+        }, err => {
+          console.error("createConversation err");
+          console.error(err);
+          //observer.error(err.message);
+        });
+    });
     //});
   }
 
