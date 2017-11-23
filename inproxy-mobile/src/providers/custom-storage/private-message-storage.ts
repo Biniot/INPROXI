@@ -145,5 +145,4 @@ export class PrivateMessageStorageProvider {
     localStorage.removeItem(this.keyMapLocalStorage);
     localStorage.removeItem(this.keyListLocalStorage);
   }
-
 }

@@ -18,9 +18,9 @@
   </div>
   <div *ngIf="haveMessage">
     <ion-list>
-      <ion-item *ngFor="let message of messageList" class="{{message.htmlClass}}" style="border-radius: 25px;">
+      <ion-item *ngFor="let message of messageList" style="border-radius: 25px;">
         <div>{{message.from}}</div>
-        <div>{{message.message}}</div>
+        <div>{{message.content}}</div>
       </ion-item>
     </ion-list>
   </div>

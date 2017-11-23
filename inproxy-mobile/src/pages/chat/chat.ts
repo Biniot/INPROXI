@@ -82,16 +82,15 @@ export class ChatPage {
   }
 
   public sendMessage() {
-    console.log("sendMessage ChatPage");
+    console.log("sendMessage");
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
     if (this.chatType == ChatType.PRIVATE) {
-      console.log("sendMessage ChatPage ChatType.PRIVATE");
       console.log(this.messageToSend);
       let content = {
         from: localStorage.getItem('userId'),
-        group_id: this.conversationId,
+        group_id: this.navParams.get('group_id'),
         message: this.messageToSend
       };
       this.privateMessage.addElem(content);
@@ -110,15 +109,7 @@ export class ChatPage {
   }
 
   public loadMessageList() {
-    // TODO : load depuis la bonne class
-    this.conversationService.getMessageConversation(this.conversationId).subscribe(
-      result => {
-        console.log(result);
-      },
-      error => {
-        console.error(error);
-      }
-    );
+    this.privateMessage.getListMessageByUserId()
   }
 
   showPopup(title, text) {
