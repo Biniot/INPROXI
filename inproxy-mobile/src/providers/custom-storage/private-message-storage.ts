@@ -45,38 +45,40 @@ export class PrivateMessageStorageProvider {
   // };
   addElem(message:any) {
     let isAdd = false;
-
-    console.log("addElem");
-    console.log(message);
-    // Recherche les id stocker pour ne pas en créer de doublon
-    let i = 0;
-    while (i < this.keyList.length) {
-      // console.log(this.keyList[i]);
-      if (this.keyList[i].localeCompare(message.id) == 0) {
-        // console.log("localeCompare(message.id) === 0");
-        this.addToMap(message, true);
-        isAdd = true;
-        break;
+    if (!isUndefined(message.id) && !isUndefined(message.content) && !isUndefined(message.author) && !isUndefined(message.from)
+      && !isUndefined(message.author.first_name) && !isUndefined(message.author.last_name) && !isUndefined(message.author.id)) {
+      console.log("addElem");
+      console.log(message);
+      // Recherche les id stocker pour ne pas en créer de doublon
+      let i = 0;
+      while (i < this.keyList.length) {
+        // console.log(this.keyList[i]);
+        if (this.keyList[i].localeCompare(message.id) == 0) {
+          // console.log("localeCompare(message.id) === 0");
+          this.addToMap(message, true);
+          isAdd = true;
+          break;
+        }
+        i++;
       }
-      i++;
-    }
-    // Si l'id n'existe pas on le créer
-    if (!isAdd) {
-      // console.log("!isAdd");
-      this.addToMap(message, false);
-      // console.log('addElem keyList');
-      // console.log(this.keyList);
-      // console.log('addElem message');
-      // console.log(message);
-    }
+      // Si l'id n'existe pas on le créer
+      if (!isAdd) {
+        // console.log("!isAdd");
+        this.addToMap(message, false);
+        // console.log('addElem keyList');
+        // console.log(this.keyList);
+        // console.log('addElem message');
+        // console.log(message);
+      }
 
-    console.log("addElem End list");
-    console.log(this.keyList);
-    console.log("addElem End messageMap");
-    console.log(this.messageMap);
+      console.log("addElem End list");
+      console.log(this.keyList);
+      console.log("addElem End messageMap");
+      console.log(this.messageMap);
 
-    localStorage.setItem(this.keyListLocalStorage, JSON.stringify(this.keyList));
-    localStorage.setItem(this.keyMapLocalStorage, JSON.stringify(this.messageMap));
+      localStorage.setItem(this.keyListLocalStorage, JSON.stringify(this.keyList));
+      localStorage.setItem(this.keyMapLocalStorage, JSON.stringify(this.messageMap));
+    }
   }
 
   private addToMap(message:any, isExist: boolean) {
@@ -96,6 +98,8 @@ export class PrivateMessageStorageProvider {
       if (this.keyList === null || isUndefined(this.keyList)) {
         this.keyList = [];
       }
+      console.log("ici");
+      console.log(this.keyList);
       this.keyList.push(message.id);
     }
     elem[elem.length] =  {content: message.content, id: message.id, author: message.author, from: message.from};
