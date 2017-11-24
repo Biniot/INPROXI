@@ -80,8 +80,8 @@ export class PrivateMessageStorageProvider {
   }
 
   private addToMap(message:any, isExist: boolean) {
-    // console.log("addToMap");
-    // console.log("message [" + message + "] isExist [" + isExist + "]");
+     console.log("addToMap");
+     console.log("message [" + message + "] isExist [" + isExist + "]");
     if (this.messageMap == null) {
       // console.log("this.messageMap === null");
       this.messageMap = {};
@@ -113,6 +113,7 @@ export class PrivateMessageStorageProvider {
         // console.log(this.groupMap[friendId]);
         return (this.messageMap[id]);
       }
+      i++;
     }
     // console.log("getListMessageByUserId null");
     return null;
