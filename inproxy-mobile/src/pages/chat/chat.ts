@@ -115,7 +115,9 @@ export class ChatPage {
   }
 
   public loadMessageList() {
-    this.privateMessage.getListMessageByUserId()
+    let ids = this.privateMessage.getIds();
+    this.messageList = this.privateMessage.getListMessageById(this.conversationId)
+    this.haveMessage = this.messageList != null && this.messageList.length > 0;
   }
 
   showPopup(title, text) {
