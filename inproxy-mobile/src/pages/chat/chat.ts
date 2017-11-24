@@ -42,20 +42,20 @@ export class ChatPage {
 
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
-      let self = this;
-      let onPrivateMessage = (message: any) => {
-        console.log("onPrivateMessage");
-        console.log(message);
-        if (self.chatType == ChatType.PRIVATE) {
-          self.privateMessage.addElem(message);
-          self.loadMessageList();
-        } else if (self.chatType == ChatType.GROUP) {
-
-        } else if (self.chatType == ChatType.ROOM) {
-
-        }};
-      this.ioService.setPrivateMessageCallback(onPrivateMessage);
     }
+    let self = this;
+    let onPrivateMessage = (message: any) => {
+      console.log("onPrivateMessage");
+      console.log(message);
+      if (self.chatType == ChatType.PRIVATE) {
+        self.privateMessage.addElem(message);
+        self.loadMessageList();
+      } else if (self.chatType == ChatType.GROUP) {
+
+      } else if (self.chatType == ChatType.ROOM) {
+
+      }};
+    this.ioService.setPrivateMessageCallback(onPrivateMessage);
     this.chatType = navParams.get('chatType');
     this.pageTitle = navParams.get('pageTitle');
     this.conversationId = navParams.get('group_id');
@@ -79,6 +79,25 @@ export class ChatPage {
     } else if (this.chatType == ChatType.ROOM) {
 
     }
+  }
+
+  ionViewWillEnter() {
+    if (!this.ioService.isConnected()) {
+      this.ioService.connectSocket();
+    }
+    let self = this;
+    let onPrivateMessage = (message: any) => {
+      console.log("onPrivateMessage");
+      console.log(message);
+      if (self.chatType == ChatType.PRIVATE) {
+        self.privateMessage.addElem(message);
+        self.loadMessageList();
+      } else if (self.chatType == ChatType.GROUP) {
+
+      } else if (self.chatType == ChatType.ROOM) {
+
+      }};
+    this.ioService.setPrivateMessageCallback(onPrivateMessage);
   }
 
   public sendMessage() {
