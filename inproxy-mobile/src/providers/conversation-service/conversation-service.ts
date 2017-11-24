@@ -21,16 +21,16 @@ export class ConversationServiceProvider {
   }
 
   public createConversation(members : string[]) {
-    console.log("createConversation");
-    console.log(members);
+    // console.log("createConversation");
+    // console.log(members);
     /*return Observable.create(observer => {*/
     return new Observable(observer => {
       this.request.post(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT, {
         members : members
       }).subscribe(
         result => {
-          console.log("createConversation result");
-          console.log(result);
+          // console.log("createConversation result");
+          // console.log(result);
           observer.next(result);
           observer.complete();
         }, err => {
@@ -48,8 +48,8 @@ export class ConversationServiceProvider {
         members: members
       }).subscribe(
         result => {
-          console.log("editConversation result");
-          console.log(result);
+          // console.log("editConversation result");
+          // console.log(result);
           //localStorage.setItem('password', user.password);
           // observer.next(true);
           // observer.complete();
@@ -62,12 +62,12 @@ export class ConversationServiceProvider {
   }
 
   public getMessageConversation(conversationId: string) {
-    console.log('getMessageConversation [' + conversationId + ']');
+    //console.log('getMessageConversation [' + conversationId + ']');
     return new Observable(observer => {
       this.request.get(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT + conversationId + MESSAGES_ENDPOINT, {}).subscribe(
         result => {
-          console.log("getMessageConversation result");
-          console.log(result);
+          // console.log("getMessageConversation result");
+          // console.log(result);
           observer.next(result);
           observer.complete();
         }, err => {

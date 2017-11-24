@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
+import {isUndefined} from "util";
 
 /*
   Generated class for the PrivateMessageStorageProvider provider.
@@ -26,6 +27,8 @@ export class PrivateMessageStorageProvider {
     if (this.keyList === null) {
       localStorage.removeItem(this.keyMapLocalStorage);
       localStorage.removeItem(this.keyListLocalStorage);
+      this.keyList = [];
+      this.messageMap = {};
     }
     console.log("keyList");
     console.log(this.keyList);
@@ -46,25 +49,25 @@ export class PrivateMessageStorageProvider {
     console.log("addElem");
     console.log(message);
     // Recherche les id stocker pour ne pas en créer de doublon
-    for (let key in this.keyList) {
-      if (key.localeCompare(message.id) === 0) {
+    let i = 0;
+    while (i < this.keyList.length) {
+      // console.log(this.keyList[i]);
+      if (this.keyList[i].localeCompare(message.id) == 0) {
+        // console.log("localeCompare(message.id) === 0");
         this.addToMap(message, true);
         isAdd = true;
         break;
       }
+      i++;
     }
     // Si l'id n'existe pas on le créer
     if (!isAdd) {
-      console.log("!isAdd");
+      // console.log("!isAdd");
       this.addToMap(message, false);
-      if (this.keyList === null) {
-        this.keyList = [];
-      }
-      console.log('addElem keyList');
-      console.log(this.keyList);
-      console.log('addElem message');
-      console.log(message);
-      this.keyList.push(message.id);
+      // console.log('addElem keyList');
+      // console.log(this.keyList);
+      // console.log('addElem message');
+      // console.log(message);
     }
 
     console.log("addElem End list");
@@ -77,29 +80,36 @@ export class PrivateMessageStorageProvider {
   }
 
   private addToMap(message:any, isExist: boolean) {
-    console.log("addToMap");
-    console.log("message [" + message + "] isExist [" + isExist + "]");
-    if (this.messageMap === null) {
-      console.log("this.messageMap === null");
+    // console.log("addToMap");
+    // console.log("message [" + message + "] isExist [" + isExist + "]");
+    if (this.messageMap == null) {
+      // console.log("this.messageMap === null");
       this.messageMap = {};
     }
     let elem;
     if (isExist) {
+      // console.log("isExist");
       elem = this.messageMap[message.id];
     } else {
+      // console.log("!isExist");
       elem = [];
+      if (this.keyList === null || isUndefined(this.keyList)) {
+        this.keyList = [];
+      }
+      this.keyList.push(message.id);
     }
     elem[elem.length] =  {content: message.content, id: message.id, author: message.author, from: message.from};
     this.messageMap[message.id] = elem;
-    console.log("addToMap new elem");
-    console.log(elem);
+    // console.log("addToMap new elem");
+    // console.log(elem);
   }
 
   // return [{content: message.content, id: message.id, author: message.author, from: message.from}]
   public getListMessageById(id: string) {
     // console.log("getListMessageByUserId ");
-    for (let key in this.keyList) {
-      if (key.localeCompare(id) === 0) {
+    let i = 0;
+    while (i < this.keyList.length) {
+      if (this.keyList[i].localeCompare(id) == 0) {
         // console.log(this.groupMap[friendId]);
         return (this.messageMap[id]);
       }
