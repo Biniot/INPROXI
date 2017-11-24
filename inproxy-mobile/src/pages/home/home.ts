@@ -37,12 +37,12 @@ export class HomePage {
     if (!this._ioService.isConnected()) {
       this._ioService.connectSocket();
     }
-    let self = this;
-    let onPrivateMessage = (data: any) => {
-      console.log("onPrivateMessage");
-      console.log(data);
-      self._PMStorage.addElem(data);};
-    this._ioService.setPrivateMessageCallback(onPrivateMessage);
+    // let self = this;
+    // let onPrivateMessage = (data: any) => {
+    //   console.log("onPrivateMessage");
+    //   console.log(data);
+    //   self._PMStorage.addElem(data);};
+    // this._ioService.setPrivateMessageCallback(onPrivateMessage);
   }
 
   functionSuccess(succes: any) {

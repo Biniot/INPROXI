@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {User} from "../../model/userModel";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
@@ -38,23 +38,24 @@ export class ChatPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserServiceProvider,
               private alertCtrl: AlertController, private privateMessage: PrivateMessageStorageProvider,
-              private ioService: IoServiceProvider, private conversationService: ConversationServiceProvider) {
+              private ioService: IoServiceProvider, private conversationService: ConversationServiceProvider, private _ngZone: NgZone) {
 
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
-    let self = this;
     let onPrivateMessage = (message: any) => {
-      console.log("onPrivateMessage");
-      console.log(message);
-      if (self.chatType == ChatType.PRIVATE) {
-        self.privateMessage.addElem(message);
-        self.loadMessageList();
-      } else if (self.chatType == ChatType.GROUP) {
+      _ngZone.run(() => {
+        console.log("onPrivateMessage");
+        console.log(message);
+        if (this.chatType == ChatType.PRIVATE) {
+          this.privateMessage.addElem(message);
+          this.loadMessageList();
+        } else if (this.chatType == ChatType.GROUP) {
 
-      } else if (self.chatType == ChatType.ROOM) {
+        } else if (this.chatType == ChatType.ROOM) {
 
-      }};
+        }
+      });};
     this.ioService.setPrivateMessageCallback(onPrivateMessage);
     this.chatType = navParams.get('chatType');
     this.pageTitle = navParams.get('pageTitle');
@@ -85,19 +86,6 @@ export class ChatPage {
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
-    let self = this;
-    let onPrivateMessage = (message: any) => {
-      console.log("onPrivateMessage");
-      console.log(message);
-      if (self.chatType == ChatType.PRIVATE) {
-        self.privateMessage.addElem(message);
-        self.loadMessageList();
-      } else if (self.chatType == ChatType.GROUP) {
-
-      } else if (self.chatType == ChatType.ROOM) {
-
-      }};
-    this.ioService.setPrivateMessageCallback(onPrivateMessage);
   }
 
   public sendMessage() {
@@ -135,7 +123,7 @@ export class ChatPage {
 
   public loadMessageList() {
     let ids = this.privateMessage.getIds();
-    this.messageList = this.privateMessage.getListMessageById(this.conversationId)
+    this.messageList = this.privateMessage.getListMessageById(this.conversationId);
     this.haveMessage = this.messageList != null && this.messageList.length > 0;
   }
 
