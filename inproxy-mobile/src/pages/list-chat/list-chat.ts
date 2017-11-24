@@ -27,10 +27,10 @@ export class ListChatPage {
     this.listGroupChat = [];
     this.listRoomChat = [];
 
-    // TODO : a virer une fois quon a les init
-    this.listPrivateChat = [{friendName: "David le poulet", friendId: ""}, {friendName: "Gandalf le Blanc", friendId: ""}];
-    this.listGroupChat = [{groupName: "La bande a bono", groupId: ""}, {groupName: "La bande a toto", groupId: ""}];
-    this.listRoomChat = [{roomName: "Epitech Parmentier", roomId: ""}, {roomName: "Epitech Kremlin", roomId: ""}];
+    // // TODO : a virer une fois quon a les init
+    // this.listPrivateChat = [{friendName: "David le poulet", friendId: ""}, {friendName: "Gandalf le Blanc", friendId: ""}];
+    // this.listGroupChat = [{groupName: "La bande a bono", groupId: ""}, {groupName: "La bande a toto", groupId: ""}];
+    // this.listRoomChat = [{roomName: "Epitech Parmentier", roomId: ""}, {roomName: "Epitech Kremlin", roomId: ""}];
 
     // for (let userId in messageStorage.getIds()) {
     //   // TODO : get historique puis l'add to storage

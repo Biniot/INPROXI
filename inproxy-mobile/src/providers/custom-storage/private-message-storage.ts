@@ -18,10 +18,6 @@ export class PrivateMessageStorageProvider {
   keyMapLocalStorage: "keyMapPrivateMessageLocalStorage";
   keyListLocalStorage: "keyListPrivateMessageLocalStorage";
 
-  // HtmlClass
-  // isUserClass: "isUserClass";
-  // isNotUserClass: "isNotUserClass";
-
   constructor() {
     // console.log("PrivateMessageStorageProvider constructor");
     this.messageMap = JSON.parse(localStorage.getItem(this.keyMapLocalStorage));
