@@ -23,7 +23,7 @@ export class FriendsPage {
   friendsList: Array<{id: string, first_name: string, last_name: string}>;
 
   constructor(public navCtrl: NavController, /*public navParams: NavParams,*/ private alertCtrl: AlertController,
-              private userService: UserServiceProvider, /*private friendRequestService: FriendServiceProvider,*/
+              public userService: UserServiceProvider, /*private friendRequestService: FriendServiceProvider,*/
               private conversationService: ConversationServiceProvider) {
     // this.friendsList = [
     //   {name: 'Obi'},
@@ -35,7 +35,10 @@ export class FriendsPage {
     // ]
     this.haveRequest = false;
     this.haveFriend = false;
-    userService.getFriends().subscribe(success => {
+  }
+
+  ionViewWillEnter() {
+    this.userService.getFriends().subscribe(success => {
         if (success) {
           let tab = localStorage.getItem('friends');
           if (tab === 'undefined' || tab === null) {
@@ -53,7 +56,7 @@ export class FriendsPage {
       error => {
         this.showPopup("Error", error);
       });
-    userService.getFriendRequests().subscribe(success => {
+    this.userService.getFriendRequests().subscribe(success => {
         if (success) {
           let stringRequest = localStorage.getItem('friendRequests');
           this.haveRequest = !(stringRequest === 'undefined' || stringRequest === null);

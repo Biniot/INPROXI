@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
 import {isUndefined} from "util";
+import {ChatType} from "../../model/ChatType";
 
 /**
  * Generated class for the CreateConversationPage page.
@@ -47,8 +48,8 @@ export class CreateConversationPage {
   }
 
   updateMembersList(friendId: string, event: boolean, index: number) {
-    console.log("updateMembersList");
-    console.log(this.newConversation.members);
+    // console.log("updateMembersList");
+    // console.log(this.newConversation.members);
     // console.log(index);
     // console.log(this.friendsList[index]);
     // console.log(friendId);
@@ -72,27 +73,19 @@ export class CreateConversationPage {
         this.newConversation.members = [];
         this.newConversation.members.push(friendId);
       }
-    }
-    else {
-      let findIt = false;
-      let i = 0;
-      while (i < this.newConversation.members.length) {
-        console.log(this.newConversation.members[i]);
-        if (this.newConversation.members[i].localeCompare(friendId) === 0) {
-          console.log("findIt event true ");
-          findIt = true;
-        }
-        i++;
-      }
-      if (findIt) {
-        this.newConversation.members.splice(index);
-      }
+    } else {
+      this.newConversation.members = this.newConversation.members.filter(obj => obj!== friendId);
     }
     console.log(this.newConversation.members);
   }
 
   createConversation() {
-    this.conversationService.createConversation(this.newConversation.members);
+    this.newConversation.members.push(localStorage.getItem('userId'));
+    this.conversationService.createConversation(this.newConversation.members).subscribe((result: any) => {
+      this.navCtrl.pop();
+      this.navCtrl.push('ChatPage', {id: localStorage.getItem('userId'),
+        chatType: this.newConversation.members.length > 2 ? ChatType.GROUP : ChatType.PRIVATE, pageTitle: name, group_id: result.id});
+    });
   }
 
   showPopup(title, text) {
