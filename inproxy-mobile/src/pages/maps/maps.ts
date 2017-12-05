@@ -166,11 +166,10 @@ export class MapsPage {
   {
     let formerState: Boolean;
     formerState = this.recordPolyg;
-    this.recordPolyg = !this.recordPolyg;
+    this.recordPolyg = !formerState;
     if (formerState == false)
     {
       this.iconAddPolyg = "square";
-      // this.recordPolyg = true;
       this.getClickPos();
     }
     else
@@ -211,6 +210,10 @@ export class MapsPage {
 
   openModal()
   {
-    this.modal.create('')
+    const saveZone = this.modal.create('SaveZonePage');
+
+    saveZone.present().then(res =>{
+      console.log(res);
+    }, err => {console.error(err)});
   }
 }
