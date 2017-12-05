@@ -81,11 +81,42 @@ export class FriendsPage {
     this.navCtrl.push('UserPage', {userId: idFriend});
   }
 
-  public friendChat(idFriend: string, name: string) {
-    let members = [localStorage.getItem('userId'), idFriend];
-    this.conversationService.createConversation(members).subscribe((result: any) => {
-      this.navCtrl.push('ChatPage', {id: localStorage.getItem('userId'), chatType: ChatType.PRIVATE, pageTitle: name, group_id: result.id});
-    });
+  public friendChat(idFriend: string) {
+    let findConversation = false;
+    this.userService.getUserConversation().subscribe(success => {
+        success.forEach((result) => {
+          result.conversation.members.forEach((member) => {
+            if (member.id.localeCompare(idFriend) == 0 && result.conversation.members.length == 2) {
+              if (!findConversation) {
+                this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, conversationId: result.conversation.id});
+              }
+              findConversation = true;
+            }
+          });
+        });
+        if (!findConversation) {
+          console.log("FriendsPage friendChat !findConversation");
+          this.friendsList.forEach((element) => {
+            console.log("FriendsPage friendChat this.friendsList.forEach");
+            console.log(element);
+            if (element.id.localeCompare(idFriend) == 0) {
+              let members = [localStorage.getItem('userId'), idFriend];
+              console.log("FriendsPage friendChat element.id.localeCompare(idFriend) == 0");
+              this.conversationService.createConversation(members, localStorage.getItem('firstName') + " " +
+                localStorage.getItem('lastName') + ", " + element.first_name + " " + element.last_name).subscribe((result: any) => {
+                  this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, conversationId: result.id});
+                },
+                error => {
+                  this.showPopup("Error", error);
+                });
+            }
+          });
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });
+
   }
 
   showPopup(title, text) {

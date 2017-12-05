@@ -20,17 +20,18 @@ export class ConversationServiceProvider {
     console.log('Hello ConversationServiceProvider Provider');
   }
 
-  public createConversation(members : string[]) {
+  public createConversation(members : string[], name: string) {
     // console.log("createConversation");
     // console.log(members);
     /*return Observable.create(observer => {*/
     return new Observable(observer => {
       this.request.post(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT, {
-        members : members
+        members : members,
+        name: name
       }).subscribe(
         result => {
-          // console.log("createConversation result");
-          // console.log(result);
+          console.log("createConversation result");
+          console.log(result);
           observer.next(result);
           observer.complete();
         }, err => {
@@ -42,32 +43,33 @@ export class ConversationServiceProvider {
     //});
   }
 
-  public editConversation(conversationId: string, members: string[]) {
-    //return Observable.create(observer => {
-      this.request.put(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT + conversationId, {
-        members: members
-      }).subscribe(
-        result => {
-          // console.log("editConversation result");
-          // console.log(result);
-          //localStorage.setItem('password', user.password);
-          // observer.next(true);
-          // observer.complete();
-        }, err => {
-          console.log("editConversation err");
-          console.log(err);
-          // observer.error(err.message)
-        });
-    // });
-  }
+  // public editConversation(conversationId: string, members: string[], name: string) {
+  //   //return Observable.create(observer => {
+  //     this.request.put(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT + conversationId, {
+  //       members: members,
+  //       name: name
+  //     }).subscribe(
+  //       result => {
+  //         // console.log("editConversation result");
+  //         // console.log(result);
+  //         //localStorage.setItem('password', user.password);
+  //         // observer.next(true);
+  //         // observer.complete();
+  //       }, err => {
+  //         console.log("editConversation err");
+  //         console.log(err);
+  //         // observer.error(err.message)
+  //       });
+  //   // });
+  // }
 
   public getMessageConversation(conversationId: string) {
     //console.log('getMessageConversation [' + conversationId + ']');
     return new Observable(observer => {
       this.request.get(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT + conversationId + MESSAGES_ENDPOINT, {}).subscribe(
         result => {
-          // console.log("getMessageConversation result");
-          // console.log(result);
+          console.log("getMessageConversation result");
+          console.log(result);
           observer.next(result);
           observer.complete();
         }, err => {
@@ -78,22 +80,39 @@ export class ConversationServiceProvider {
     })
   }
 
-  public addMessageConversation(message : string, conversationId: string) {
-    /*return Observable.create(observer => {*/
-    this.request.post(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT + conversationId + MESSAGE_ENDPOINT, {
-      content : message,
-      author: localStorage.getItem('userId')
-    }).subscribe(
-      result => {
-        console.log("addMessageConversation result");
-        console.log(result);
-        /*observer.next(true);
-        observer.complete();*/
-      }, err => {
-        console.log("addMessageConversation err");
-        console.log(err);
-        //observer.error(err.message);
-      });
-    //});
+  public getConversationById(conversationId: string) {
+    console.log('getConversationById [' + conversationId + ']');
+    return new Observable(observer => {
+      this.request.get(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT + conversationId, {}).subscribe(
+        result => {
+          console.log("getConversationById result");
+          console.log(result);
+          observer.next(result);
+          observer.complete();
+        }, err => {
+          console.log("getConversationById err");
+          console.log(err);
+          observer.error(err.message)
+        });
+    })
   }
+
+  // public addMessageConversation(message : string, conversationId: string) {
+  //   /*return Observable.create(observer => {*/
+  //   this.request.post(API_ADDRESS + VERSION + CONVERSATION_ENDPOINT + conversationId + MESSAGE_ENDPOINT, {
+  //     content : message,
+  //     author: localStorage.getItem('userId')
+  //   }).subscribe(
+  //     result => {
+  //       console.log("addMessageConversation result");
+  //       console.log(result);
+  //       /*observer.next(true);
+  //       observer.complete();*/
+  //     }, err => {
+  //       console.log("addMessageConversation err");
+  //       console.log(err);
+  //       //observer.error(err.message);
+  //     });
+  //   //});
+  // }
 }

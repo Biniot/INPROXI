@@ -24,68 +24,46 @@ export class ChatPage {
   messageList: any;
   messageToSend: string;
   haveMessage: boolean;
-  chatType: any;
-  conversationId: string;
+  currentConversation: any;
 
-  // Private Chat
-  currentFriend: User;
-
-  // Group Chat
-  currentGroup: any;
-
-  // Room Chat
-  currentRoom: any;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, private userService: UserServiceProvider,
-              private alertCtrl: AlertController, private privateMessage: PrivateMessageStorageProvider,
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
               private ioService: IoServiceProvider, private conversationService: ConversationServiceProvider, private _ngZone: NgZone) {
 
-    if (!this.ioService.isConnected()) {
-      this.ioService.connectSocket();
-    }
     let onPrivateMessage = (message: any) => {
       _ngZone.run(() => {
         console.log("onPrivateMessage");
         console.log(message);
-        if (this.chatType == ChatType.PRIVATE) {
-          this.privateMessage.addElem(message);
-          this.loadMessageList();
-        } else if (this.chatType == ChatType.GROUP) {
-
-        } else if (this.chatType == ChatType.ROOM) {
-
-        }
+        this.messageList.push(message);
+        this.showPopup("onMessageReceive", JSON.stringify(message));
       });};
     this.ioService.setPrivateMessageCallback(onPrivateMessage);
-    this.chatType = navParams.get('chatType');
-    this.pageTitle = navParams.get('pageTitle');
-    this.conversationId = navParams.get('group_id');
-
-    if (this.chatType == ChatType.PRIVATE) {
-      this.userService.getUserInfoById(navParams.get('id')).subscribe(success => {
-          console.log("ChatPage success");
-          console.log(success);
-          this.currentFriend = new User(success.last_name, success.email);
-          this.currentFriend.firstName = success.first_name;
-          this.currentFriend.userId = navParams.get('id');
-          this.loadMessageList();
-          //this.pageTitle = success.first_name + " " + success.last_name;
-        },
-        error => {
-          this.showPopup("Error", error);
-          this.navCtrl.pop();
-        });
-    } else if (this.chatType == ChatType.GROUP) {
-
-    } else if (this.chatType == ChatType.ROOM) {
-
-    }
   }
 
   ionViewWillEnter() {
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
+    this.conversationService.getConversationById(this.navParams.get('conversationId')).subscribe(success => {
+        console.log("ChatPage getConversationById success");
+        console.log(success);
+        this.currentConversation = success;
+        this.pageTitle = this.currentConversation.name;
+      },
+      error => {
+        this.showPopup("Error", error);
+        this.navCtrl.pop();
+      });
+
+    this.conversationService.getMessageConversation(this.navParams.get('conversationId')).subscribe(success => {
+        console.log("ChatPage getMessageConversation success");
+        console.log(success);
+        this.messageList = success;
+        this.showPopup("onMessageReceive", "Size of the data receive : " + this.messageList.length);
+      },
+      error => {
+        this.showPopup("Error", error);
+        this.navCtrl.pop();
+      });
   }
 
   public sendMessage() {
@@ -93,38 +71,20 @@ export class ChatPage {
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
-    if (this.chatType == ChatType.PRIVATE) {
-      console.log(this.messageToSend);
-      let content = {
-        from: localStorage.getItem('userId'),
-        group_id: this.navParams.get('group_id'),
-        message: this.messageToSend
-      };
-      let localContent = {
-        from: localStorage.getItem('userId'),
-        id: this.navParams.get('group_id'),
-        content: this.messageToSend,
-        author: {first_name: this.currentFriend.firstName, last_name: this.currentFriend.lastName, id: this.currentFriend.userId}
-      };
-      this.privateMessage.addElem(localContent);
-      this.ioService.sendMessage(content.from, content.group_id, content.message);
-      this.messageToSend = null;
-      this.loadMessageList();
-    } else if (this.chatType == ChatType.GROUP) {
-
-    } else if (this.chatType == ChatType.ROOM) {
-
-    }
-    try {
-    } catch (exception) {
-      console.log(exception);
-    }
-  }
-
-  public loadMessageList() {
-    let ids = this.privateMessage.getIds();
-    this.messageList = this.privateMessage.getListMessageById(this.conversationId);
-    this.haveMessage = this.messageList != null && this.messageList.length > 0;
+    console.log(this.messageToSend);
+    // let newMessage = {
+    //   createdAt: new Date().toDateString,
+    //   content: this.messageToSend,
+    //   author : {
+    //     first_name: localStorage.getItem("userFirstName"),
+    //     last_name: localStorage.getItem("userLastName"),
+    //     id: localStorage.getItem('userId')
+    //   },
+    //   id: ""
+    // };
+    this.ioService.sendMessage(localStorage.getItem('userId'), this.currentConversation.id, this.messageToSend);
+    this.messageToSend = null;
+    // this.messageList.push(newMessage);
   }
 
   showPopup(title, text) {

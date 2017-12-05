@@ -81,10 +81,13 @@ export class CreateConversationPage {
 
   createConversation() {
     this.newConversation.members.push(localStorage.getItem('userId'));
-    this.conversationService.createConversation(this.newConversation.members).subscribe((result: any) => {
+    this.conversationService.createConversation(this.newConversation.members, this.newConversation.name).subscribe((result: any) => {
       this.navCtrl.pop();
-      this.navCtrl.push('ChatPage', {id: localStorage.getItem('userId'),
-        chatType: this.newConversation.members.length > 2 ? ChatType.GROUP : ChatType.PRIVATE, pageTitle: name, group_id: result.id});
+      if (this.newConversation.members.length == 2) {
+        this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, conversationId: result.id});
+      } else {
+        this.navCtrl.push('ChatPage', {chatType: ChatType.GROUP, conversationId: result.id});
+      }
     });
   }
 

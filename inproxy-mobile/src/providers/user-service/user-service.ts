@@ -58,31 +58,26 @@ export class UserServiceProvider {
   // Recupere les information de lutilisateur connecter
   public getUserConversation() {
     console.log("getUserConversation");
-    this.isConversationtLoad = false;
-    /*return Observable.create(observer => {
-      if (this.isConversationtLoad) {
+    //this.isConversationtLoad = false;
+    return Observable.create(observer => {
+      /*if (this.isConversationtLoad) {
         observer.next(true);
         observer.complete();
       } else {*/
-        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + GET_USER_CONVERSATION, {
-          //id: this.auth.currentUser.id
-        }).subscribe(
+        this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + GET_USER_CONVERSATION, {}).subscribe(
           result => {
             console.log("getUserConversation result");
             console.log(result);
-            // localStorage.setItem('firstName', result.first_name);
-            // localStorage.setItem('lastName', result.last_name);
-            // localStorage.setItem('email', result.email);
             //this.isConversationtLoad = true;
-            /*observer.next(true);
-            observer.complete();*/
+            observer.next(result);
+            observer.complete();
           }, err => {
             console.log("getUserConversation result");
             console.log(err);
-            //observer.error(err.message)
+            observer.error(err.message)
           });
-      /*}
-    });*/
+      //}
+    });
   }
 
   // Recupere un user a partir dun idUser
