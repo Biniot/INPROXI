@@ -1,5 +1,5 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, IonicPage } from 'ionic-angular';
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { NavController, IonicPage, ModalController } from 'ionic-angular';
 
 import {
   GoogleMaps,
@@ -11,11 +11,12 @@ import {
   MarkerOptions,
   Polygon,
   PolygonOptions,
-  ILatLng
+  ILatLng,
+  VisibleRegion
   // MyLocation
 } from '@ionic-native/google-maps';
 
-import {Geolocation} from '@ionic-native/geolocation';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @IonicPage()
 @Component({
@@ -26,49 +27,82 @@ import {Geolocation} from '@ionic-native/geolocation';
 export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
-  _loc: LatLng;
+  loc: LatLng;
+  visi: VisibleRegion;
+  recordPolyg: Boolean;
+  iconAddPolyg: String;
+  currentPolyg: ILatLng[];
+  subsRec: any;
+
+  // cncl: HTMLElement;
+
 
   constructor(public navCtrl: NavController,
-              private _googleMaps: GoogleMaps,
-              private _geoLoc: Geolocation) {
+              private modal: ModalController,
+              private googleMaps: GoogleMaps,
+              private geoLoc: Geolocation) {
   }
 
   ngAfterViewInit(){
-    // let _div = document.getElementById("groupMap");
-    // let _button = _div.getElementsByTagName('_btn_polygon')[0];
-    // let _isEnabled = true;
+    // let div = document.getElementById("groupMap");
+    // let button = div.getElementsByTagName('btnPolygon')[0];
+    // let isEnabled = true;
+    this.recordPolyg = false;
+    this.iconAddPolyg= "add";
 
     this.initMap();
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       this.map.setMyLocationEnabled(true);
       this.map.getMyLocation().then( location => {
+        this.loc = location.latLng;
+        this.moveCam(this.loc);
 
-        this._loc = location.latLng;
-        this.moveCam(this._loc);
-        // this.createMarker(this._loc).then((marker: Marker) => {
-        //   marker.showInfoWindow();
-        // },err => e{console.error(err);});
+        this.getView();
+        // this.map.on(GoogleMapsEvent.CAMERA_MOVE).subscribe((e) => {
+        //   this.getView();
+        //   console.log(e);
+        // }, err => {console.error(err);});
 
-      }, err => {console.error(err);});
-      // _button.addEventListener('click', function () ).then(res =>{
-      //   _isEnabled = !_isEnabled;
-      //   _button.innerHTML = "<ion-icon name='remove'></ion-icon>";
-      //   this.getClickPos(_isEnabled);
+        // this.map.addEventListener('zoom_changed',this.visi=this.getView());
+        // this.map.on(GoogleMapsEvent.MAP_ZO)
+        //   {
+        //   this.visi = this.getView();
+        // }
+        //   console.log(res);
+        }, err => {console.error(err);});
+      // button.addEventListener('click', function () ).then(res =>{
+      //   isEnabled = !isEnabled;
+      //   button.innerHTML = "<ion-icon name='remove'></ion-icon>";
+      //   this.getClickPos(isEnabled);
       //   }, err => {console.error(err);});
 
-
     });
-
   }
 
   //Load the groupMap
   initMap(){
     let element = this.mapElement.nativeElement;
-    this.map = this._googleMaps.create(element)
+    this.map = this.googleMaps.create(element)
   }
 
   getLocation(){
-    return this._geoLoc.getCurrentPosition();
+    return this.geoLoc.getCurrentPosition();
+  }
+
+  getView()
+  {
+    let visible: VisibleRegion;
+    visible = this.map.getVisibleRegion();
+
+    console.log(
+      "NE lat "  + visible.northeast.lat  +
+      " NE lng "  + visible.northeast.lng
+    );
+    console.log(
+      "SW lat " + visible.southwest.lat  +
+      " SW lng "  + visible.southwest.lng
+    );
+   this.visi = visible;
   }
 
   moveCam(loc : LatLng){
@@ -89,69 +123,94 @@ export class MapsPage {
     return  this.map.addMarker(markerOptions);
   }
 
-  createPolygMarkers(_mpts: ILatLng[]){
-    for (let i = 0; i < _mpts.length; i++){
-     let _spt = new LatLng(_mpts[i].lat, _mpts[i].lng);
+  createPolygMarkers(mpts: ILatLng[]){
+    for (let i = 0; i < mpts.length; i++){
+     let spt = new LatLng(mpts[i].lat, mpts[i].lng);
 
-      this.createMarker(_spt).then((marker: Marker) => {
+      this.createMarker(spt).then((marker: Marker) => {
           marker.showInfoWindow();
         },err => {console.error(err);});
     }
   }
 
-  createPolygon(_mpts: ILatLng[]){
+  createPolygon(mpts: ILatLng[]){
     let polygOptions: PolygonOptions = {
-      points: _mpts,
+      points: mpts,
       strokeColor: '#e60000',
+      fillColor: 'rgba(0,0,0,0)',
       strokeWidth: 3,
       visible: true
     };
 
-    this.map.addPolygon(polygOptions).then( (_polyg : Polygon) => {
-      _polyg.setVisible(true);
-      _polyg.setClickable(false);
+    this.map.addPolygon(polygOptions).then( (polyg : Polygon) => {
+      polyg.setVisible(true);
+      polyg.setClickable(false);
     }, err => {console.error(err);});
   }
 
-  centerMap() {
-    this.getLocation().then( res => {
-      this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
+  // centerMap() {
+  //   this.getLocation().then( res => {
+  //     this.loc = new LatLng(res.coords.latitude, res.coords.longitude);
+  //
+  //     this.map.clear().then(res => {
+  //       this.moveCam(this.loc);
+  //       console.log(res);
+  //       this.createMarker(this.loc).then((marker: Marker) => {
+  //         marker.hideInfoWindow();
+  //       }, err => { console.error(err); });
+  //     }, err=> {console.error(err);});
+  //   }, err => { console.error(err); });
+  // }
 
-      this.map.clear().then(res => {
-        this.moveCam(this._loc);
-        console.log(res);
-        this.createMarker(this._loc).then((marker: Marker) => {
-          marker.hideInfoWindow();
-        }, err => { console.error(err); });
-      }, err=> {console.error(err);});
-    }, err => { console.error(err); });
+  createZone()
+  {
+    let formerState: Boolean;
+    formerState = this.recordPolyg;
+    this.recordPolyg = !this.recordPolyg;
+    if (formerState == false)
+    {
+      this.iconAddPolyg = "square";
+      // this.recordPolyg = true;
+      this.getClickPos();
+    }
+    else
+    {
+      // this.recordPolyg = false;
+      this.iconAddPolyg ="add";
+      // envoyer sur le serveur
+      this.subsRec.unsubscribe();
+      this.openModal();
+    }
   }
 
   getClickPos()
   {
-    let _mpts: ILatLng[];
-    let _spt : LatLng;
-    let _counter = 0;
-    _mpts = [];
+    let mpts: ILatLng[];
+    let spt : LatLng;
+    let mkr = true;
+    mpts = [];
 
-    this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
-      _spt = new LatLng(e.lat, e.lng);
-      _mpts.push(_spt);
-      console.log("Lat: " + _spt.lat);
-      console.log("Lng: " + _spt.lng);
-      this.createPolygMarkers(_mpts);
+    this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
+      spt = new LatLng(e.lat, e.lng);
+      mpts.push(spt);
+      console.log("Lat: " + spt.lat);
+      console.log("Lng: " + spt.lng);
 
-      if (_counter > 0) {
-        // console.log(_mpts[0]);
         this.map.clear().then(res => {
-          this.createPolygMarkers(_mpts);
-          this.createPolygon(_mpts);
+          if (mkr == true) {
+            this.createMarker(spt).then(res => {
+              if (res != null) {mkr = false;}
+              }, err => {console.error(err);});
+          }
+          this.currentPolyg = mpts;
+          this.createPolygon(mpts);
           console.log(res);
         },err => {console.error(err);});
-      }
-      _counter++;
-      console.log(_counter);
-
     },err => { console.error(err); });
+  }
+
+  openModal()
+  {
+    this.modal.create('')
   }
 }
