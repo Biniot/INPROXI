@@ -17,9 +17,7 @@ var sock = io(API_ADDRESS, {
 @Injectable()
 export class IoServiceProvider {
   _isConnected: boolean;
-  privateMesasgeCallback: any;
-  groupMesasgeCallback: any;
-  roomMesasgeCallback: any;
+  mesasgeCallback: any;
 
   constructor() {
     this._isConnected = false;
@@ -27,9 +25,7 @@ export class IoServiceProvider {
     sock.on('connect', this.sendAuth);
     sock.on('disconnect', this.onDisconnect);
     sock.on('reconnect', this.sendAuth);
-    this.privateMesasgeCallback = null;
-    this.groupMesasgeCallback = null;
-    this.roomMesasgeCallback = null;
+    this.mesasgeCallback = null;
     console.log(sock);
   }
 
@@ -55,10 +51,10 @@ export class IoServiceProvider {
     console.log("connectSocket");
     sock.open();
     this.sendAuth();
-    // TODO : A voir si ya besoin de reset les callback en cas de deco ou pas ?
-    if (this.privateMesasgeCallback !== null) {
-      sock.on('private_message', this.privateMesasgeCallback);
-    }
+    // // TODO : A voir si ya besoin de reset les callback en cas de deco ou pas ?
+    // if (this.mesasgeCallback !== null) {
+    //   sock.on('conversation_message', this.privateMesasgeCallback);
+    // }
   }
 
   public disconnectSocket() {
@@ -74,23 +70,25 @@ export class IoServiceProvider {
     sock.emit('leave_room', {room_id: idRoom}, function(){console.log("leaveRoom success")})
   }
 
-  public sendRoomMessage(idRoom: string, from: string, message: string, firstName: string, lastName: string) {
-    sock.emit('room_message', {room_id: idRoom, from: from, message: message, first_name: firstName, last_name: lastName},
-      function(){console.log("sendRoomMessage success")})
-  }
-
-  public setRoomMessageCallback(functionRoomMessage: any) {
-    sock.on('room_message', functionRoomMessage);
-  }
+  // public sendRoomMessage(idRoom: string, from: string, message: string, firstName: string, lastName: string) {
+  //   sock.emit('room_message', {room_id: idRoom, from: from, message: message, first_name: firstName, last_name: lastName},
+  //     function(){console.log("sendRoomMessage success")})
+  // }
+  //
+  // public setRoomMessageCallback(functionRoomMessage: any) {
+  //   sock.on('room_message', functionRoomMessage);
+  // }
 
   /* PrivateMessage function */
   public setPrivateMessageCallback(functionPrivateMessage: any) {
     console.log("setMessageCallback");
-    this.privateMesasgeCallback = functionPrivateMessage;
-    sock.on('conversation_message', functionPrivateMessage);
+    if (this.mesasgeCallback == null) {
+      this.mesasgeCallback = functionPrivateMessage;
+      sock.on('conversation_message', functionPrivateMessage);
+    }
   }
 
-  public sendMessage(from: string, conversationId: string, message: string) {
+  public sendMessage(from: any, conversationId: string, message: string) {
     console.log("sendMessage IoService");
     console.log(sock);
     sock.emit('conversation_message', {author: from, conversation_id: conversationId, content: message}, () => {console.log("IoServiceProvider sendMessage success")});

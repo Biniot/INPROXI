@@ -27,16 +27,26 @@ export class ChatPage {
   currentConversation: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
-              private ioService: IoServiceProvider, private conversationService: ConversationServiceProvider, private _ngZone: NgZone) {
+              private ioService: IoServiceProvider, private conversationService: ConversationServiceProvider, private _ngZone: NgZone,
+              private userService: UserServiceProvider) {
 
     let onPrivateMessage = (message: any) => {
       _ngZone.run(() => {
         console.log("onPrivateMessage");
         console.log(message);
-        this.messageList.push(message);
-        this.showPopup("onMessageReceive", JSON.stringify(message));
+        if (message.author.id.localeCompare(localStorage.getItem('userId')) != 0) {
+          this.messageList.push(message);
+        }
       });};
     this.ioService.setPrivateMessageCallback(onPrivateMessage);
+    this.userService.getUserInfo().subscribe(success => {
+        console.log('HomePage getUserInfo functionSuccess');
+        console.log(success);
+      },
+      error => {
+        console.log('HomePage getUserInfo functionError');
+        console.log(error);
+      });
   }
 
   ionViewWillEnter() {
@@ -54,11 +64,14 @@ export class ChatPage {
         this.navCtrl.pop();
       });
 
-    this.conversationService.getMessageConversation(this.navParams.get('conversationId')).subscribe(success => {
+    this.conversationService.getMessageConversation(this.navParams.get('conversationId')).subscribe((success: any) => {
         console.log("ChatPage getMessageConversation success");
         console.log(success);
-        this.messageList = success;
-        this.showPopup("onMessageReceive", "Size of the data receive : " + this.messageList.length);
+        if (success.length > 0) {
+          this.haveMessage = true;
+          this.messageList = success;
+        }
+        //this.showPopup("onMessageReceive", "Size of the data receive : " + this.messageList.length);
       },
       error => {
         this.showPopup("Error", error);
@@ -72,19 +85,19 @@ export class ChatPage {
       this.ioService.connectSocket();
     }
     console.log(this.messageToSend);
-    // let newMessage = {
-    //   createdAt: new Date().toDateString,
-    //   content: this.messageToSend,
-    //   author : {
-    //     first_name: localStorage.getItem("userFirstName"),
-    //     last_name: localStorage.getItem("userLastName"),
-    //     id: localStorage.getItem('userId')
-    //   },
-    //   id: ""
-    // };
-    this.ioService.sendMessage(localStorage.getItem('userId'), this.currentConversation.id, this.messageToSend);
+    let newMessage = {
+      createdAt: new Date().toDateString,
+      content: this.messageToSend,
+      author : {
+        first_name: localStorage.getItem("firstName"),
+        last_name: localStorage.getItem("lastName"),
+        id: localStorage.getItem('userId')
+      },
+      id: ""
+    };
+    this.ioService.sendMessage(newMessage.author, this.currentConversation.id, this.messageToSend);
     this.messageToSend = null;
-    // this.messageList.push(newMessage);
+    this.messageList.push(newMessage);
   }
 
   showPopup(title, text) {
