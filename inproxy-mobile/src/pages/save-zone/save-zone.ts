@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+import {ILatLng} from "@ionic-native/google-maps";
+import {takeUntil} from "rxjs/operator/takeUntil";
 
 /**
  * Generated class for the SaveZonePage page.
@@ -10,15 +12,48 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-save-zone',
-  templateUrl: 'save-zone.html',
+  templateUrl: 'save-zone.html'
 })
+
 export class SaveZonePage {
+  polyPoints: ILatLng[];
+  zoneName: String;
+  isPublic: Boolean;
+  zoneAdm: String;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  allData : {
+    polyPoints: ILatLng[],
+    zoneName: String,
+    isPublic: Boolean,
+    zoneAdm: String
+  };
+
+  constructor(private navParams: NavParams,
+              private view: ViewController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SaveZonePage');
+  ionViewWillLoad() {
+    this.allData = this.navParams.get('zone');
+    this.polyPoints = this.allData.polyPoints;
+    this.zoneName = this.allData.zoneName;
+    this.isPublic = this.allData.isPublic;
+    this.zoneAdm = this.allData.zoneAdm;
   }
 
+  closeModal(){
+    this.view.dismiss(this.allData).then(res => {
+      console.log("closeModal: " + res);
+      }, err => { console.error(err); });
+  }
+
+  public validateZone()
+  {
+    this.allData = {
+      polyPoints: this.polyPoints,
+      zoneName: this.allData.zoneName,
+      isPublic: this.isPublic,
+      zoneAdm: this.zoneAdm
+    };
+    this.closeModal();
+  }
 }

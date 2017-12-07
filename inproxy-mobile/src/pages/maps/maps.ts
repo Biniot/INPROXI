@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { NavController, IonicPage, ModalController } from 'ionic-angular';
+import { Modal, ModalOptions, NavController, IonicPage, ModalController } from 'ionic-angular';
 
 import {
   GoogleMaps,
@@ -32,28 +32,72 @@ export class MapsPage {
   recordPolyg: Boolean;
   iconAddPolyg: String;
   currentPolyg: ILatLng[];
+  polyPoints: ILatLng[];
   subsRec: any;
-
-  // cncl: HTMLElement;
-
+  currentZone: {
+    polyPoints: ILatLng[],
+    zoneName: String,
+    isPublic: Boolean,
+    zoneAdm: String
+  };
+  allZones: [{
+    polyPoints: ILatLng[],
+    zoneName: String,
+    isPublic: Boolean,
+    zoneAdm: String
+  }];
+  // allZones: any;
+  // zoneAdm: String;
+  zoneName: String;
 
   constructor(public navCtrl: NavController,
               private modal: ModalController,
               private googleMaps: GoogleMaps,
               private geoLoc: Geolocation) {
+
   }
 
   ngAfterViewInit(){
-    // let div = document.getElementById("groupMap");
-    // let button = div.getElementsByTagName('btnPolygon')[0];
-    // let isEnabled = true;
-    this.recordPolyg = false;
-    this.iconAddPolyg= "add";
+    let name : String;
+    let points: ILatLng[];
+    let adm:  String;
 
+    name = "";
+    points = [];
+    adm = "";
+
+    this.currentPolyg           = [];
+    this.recordPolyg            = false;
+    this.iconAddPolyg           = "add";
+
+    this.currentZone = ({
+      polyPoints : points,
+      zoneName : name,
+      isPublic : true,
+      zoneAdm : adm
+    });
+
+    // this.currentZone.polyPoints = [];
+    // this.currentZone.zoneName   = "";
+    // this.currentZone.isPublic   = true;
+    // this.currentZone.zoneAdm    = "";
+
+    // this.allZones[0].polyPoints = this.currentZone.polyPoints;
+    // this.allZones[0].zoneName   = this.currentZone.zoneName;
+    // this.allZones[0].isPublic   = this.currentZone.isPublic;
+    // this.allZones[0].zoneAdm    = this.currentZone.zoneAdm;
+
+    this.allZones = [{
+      polyPoints: this.currentZone.polyPoints,
+      zoneName: this.currentZone.zoneName,
+      isPublic: this.currentZone.isPublic,
+      zoneAdm: this.currentZone.zoneAdm
+    }];
+    //
     this.initMap();
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       this.map.setMyLocationEnabled(true);
-      this.map.getMyLocation().then( location => {
+      this.map.getMyLocation().then(location => {
         this.loc = location.latLng;
         this.moveCam(this.loc);
 
@@ -69,8 +113,8 @@ export class MapsPage {
         //   this.visi = this.getView();
         // }
         //   console.log(res);
-        }, err => {console.error(err);});
-      // button.addEventListener('click', function () ).then(res =>{
+        }, err => { console.error(err); });
+      // button.addEventListener('click', function ()).then(res =>{
       //   isEnabled = !isEnabled;
       //   button.innerHTML = "<ion-icon name='remove'></ion-icon>";
       //   this.getClickPos(isEnabled);
@@ -93,15 +137,14 @@ export class MapsPage {
   {
     let visible: VisibleRegion;
     visible = this.map.getVisibleRegion();
-
-    console.log(
-      "NE lat "  + visible.northeast.lat  +
-      " NE lng "  + visible.northeast.lng
-    );
-    console.log(
-      "SW lat " + visible.southwest.lat  +
-      " SW lng "  + visible.southwest.lng
-    );
+    // console.log(
+    //   "NE lat "  + visible.northeast.lat  +
+    //   " NE lng "  + visible.northeast.lng
+    // );
+    // console.log(
+    //   "SW lat " + visible.southwest.lat  +
+    //   " SW lng "  + visible.southwest.lng
+    // );
    this.visi = visible;
   }
 
@@ -111,8 +154,8 @@ export class MapsPage {
       zoom: 15,
       tilt: 10
     };
-    this.map.moveCamera(options).then( res => {console.log(res);},
-      err => {console.error(err);})
+    this.map.moveCamera(options).then(res => {console.log("move camera: " + res);},
+      err => { console.error("move camera: " + err); })
   }
 
   createMarker(loc: LatLng){
@@ -129,11 +172,14 @@ export class MapsPage {
 
       this.createMarker(spt).then((marker: Marker) => {
           marker.showInfoWindow();
-        },err => {console.error(err);});
+        },err => { console.error(err); });
     }
   }
 
   createPolygon(mpts: ILatLng[]){
+    // if (mpts === []){
+    //   return("empty polygon");
+    // }
     let polygOptions: PolygonOptions = {
       points: mpts,
       strokeColor: '#e60000',
@@ -141,15 +187,36 @@ export class MapsPage {
       strokeWidth: 3,
       visible: true
     };
-
-    this.map.addPolygon(polygOptions).then( (polyg : Polygon) => {
+    this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
       polyg.setVisible(true);
       polyg.setClickable(false);
-    }, err => {console.error(err);});
+    }, err => { console.error("addPolygon: " + err); });
+  }
+
+  createAllPolygons(allZones : [{ polyPoints : ILatLng[],
+    zoneName : String,
+    isPublic : Boolean,
+    zoneAdm : String }])
+  {
+    // allZones : [{ polyPoints : ILatLng[],
+    //   zoneName : String,
+    //   isPublic : Boolean,
+    //   zoneAdm : String }];
+    let polyn : String;
+    // let polyg : ILatLng[];
+    this.map.clear().then(res => {
+      console.log("mapClear: " + res);
+      for (let i = 1; i <= allZones.length; i++){
+        let polyg: ILatLng[];
+        polyg = allZones[i].polyPoints;
+        this.createPolygon(polyg);
+      }
+    },err => { console.error("mapClear: " + err); });
+
   }
 
   // centerMap() {
-  //   this.getLocation().then( res => {
+  //   this.getLocation().then(res => {
   //     this.loc = new LatLng(res.coords.latitude, res.coords.longitude);
   //
   //     this.map.clear().then(res => {
@@ -167,7 +234,7 @@ export class MapsPage {
     let formerState: Boolean;
     formerState = this.recordPolyg;
     this.recordPolyg = !formerState;
-    if (formerState == false)
+    if (formerState === false)
     {
       this.iconAddPolyg = "square";
       this.getClickPos();
@@ -178,7 +245,7 @@ export class MapsPage {
       this.iconAddPolyg ="add";
       // envoyer sur le serveur
       this.subsRec.unsubscribe();
-      this.openModal();
+      this.saveZone();
     }
   }
 
@@ -189,31 +256,85 @@ export class MapsPage {
     let mkr = true;
     mpts = [];
 
+    this.currentZone.zoneName = "";
     this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
       spt = new LatLng(e.lat, e.lng);
       mpts.push(spt);
-      console.log("Lat: " + spt.lat);
-      console.log("Lng: " + spt.lng);
-
-        this.map.clear().then(res => {
-          if (mkr == true) {
-            this.createMarker(spt).then(res => {
-              if (res != null) {mkr = false;}
-              }, err => {console.error(err);});
-          }
-          this.currentPolyg = mpts;
-          this.createPolygon(mpts);
-          console.log(res);
-        },err => {console.error(err);});
-    },err => { console.error(err); });
+      console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
+      this.map.clear().then(res => {
+        if (mkr === true) {
+          this.createMarker(spt).then(res => {
+            if (res != null) { mkr = false; }
+          }, err => { console.error("createMarker" + err); });
+        }
+        this.currentZone.polyPoints = mpts;
+        this.currentPolyg = mpts;
+        this.createPolygon(mpts);
+        console.log("mapClear: " + mpts);
+      },err => { console.error("mapClear: " + err); });
+    },err => { console.error("getClickPos: " + err); });
   }
 
-  openModal()
+  saveZone()
   {
-    const saveZone = this.modal.create('SaveZonePage');
+    // const saveZoneOptions: ModalOptions = {
+    // };
+
+    // let i: number;
+    // i = this.allZones.length;
+    //
+    // let zoneData =
+    //   {
+    //   // this.currentZone;
+    //     polyPoints: this.currentZone.polyPoints,
+    //     zoneName: this.currentZone.zoneName,
+    //     isPublic: this.currentZone.isPublic,
+    //     zoneAdm: this.currentZone.zoneAdm
+    //   };
+    const data = {
+          polyPoints: this.currentZone.polyPoints,
+          zoneName: this.currentZone.zoneName,
+          isPublic: this.currentZone.isPublic,
+          zoneAdm: this.currentZone.zoneAdm
+    };
+
+    let saveZone: Modal = this.modal.create(
+      'SaveZonePage',
+      { zone: data }
+      // ,saveZoneOptions
+    );
 
     saveZone.present().then(res =>{
       console.log(res);
-    }, err => {console.error(err)});
+    }, err => { console.error(err) });
+
+    saveZone.onDidDismiss((allData : {
+      polyPoints : ILatLng[],
+      zoneName : String,
+      isPublic : Boolean,
+      zoneAdm : String
+    }) => {
+      let i = this.allZones.length;
+      console.log('MODAL DATA', allData);
+      console.log('data ' + allData.isPublic);
+      this.allZones.push(allData);
+      // this.allZones[i] = {
+      //   polyPoints : allData.polyPoints,
+      //   zoneName : allData.zoneName,
+      //   isPublic : allData.isPublic,
+      //   zoneAdm : allData.zoneAdm
+      // };
+      console.log('manip :' + this.allZones[i].zoneName);
+
+        this.createAllPolygons(this.allZones);
+
+      // this.map.clear().then(res => {
+      //   // console.log(this.allZones[i].polyPoints[0].toString());
+      //   // this.createPolygon(this.allZones[i].polyPoints);
+      //   // this.createAllPolygons(this.allZones);
+      // },err => { console.error("mapClear: " + err); });
+     });
   }
+
+
 }
