@@ -6,7 +6,6 @@ import {
   GoogleMap,
   CameraPosition,
   LatLng,
-  GoogleMapsEvent,
   Marker,
   MarkerOptions,
   Polygon,

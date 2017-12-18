@@ -1,22 +1,19 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { Modal, ModalOptions, NavController, IonicPage, ModalController } from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Modal, NavController, IonicPage, ModalController } from 'ionic-angular';
 
 import {
   GoogleMaps,
   GoogleMap,
   CameraPosition,
   LatLng,
-  GoogleMapsEvent,
-  Marker,
   MarkerOptions,
   Polygon,
   PolygonOptions,
   ILatLng,
   VisibleRegion,
   LatLngBounds,
-  BaseArrayClass,
-  MyLocation
-} from '@ionic-native/google-maps';
+  BaseArrayClass, GoogleMapsEvent
+ } from '@ionic-native/google-maps';
 
 import { Geolocation } from '@ionic-native/geolocation';
 
@@ -34,7 +31,7 @@ export class MapsPage {
   recordPolyg: Boolean;
   iconAddPolyg: String;
   currentPolyg: ILatLng[];
-  polyPoints: ILatLng[];
+  // polyPoints: ILatLng[];
   subsRec: any;
   currentZone: {
     polyPoints: ILatLng[],
@@ -168,33 +165,27 @@ export class MapsPage {
     return  this.map.addMarker(markerOptions);
   }
 
-  createPolygMarkers(mpts: ILatLng[]){
-    for (let i = 0; i < mpts.length; i++){
-     let spt = new LatLng(mpts[i].lat, mpts[i].lng);
 
-      this.createMarker(spt).then((marker: Marker) => {
-          marker.showInfoWindow();
-        },err => { console.error(err); });
-    }
-  }
+  // Pour edition de polygone: creation des markers des angles qu'on peut ensuite drag, recuperer la nvl pos puis modifier polyg
+  // createPolygMarkers(mpts: ILatLng[]){
+  //   for (let i = 0; i < mpts.length; i++){
+  //    let spt = new LatLng(mpts[i].lat, mpts[i].lng);
+  //
+  //     this.createMarker(spt).then((marker: Marker) => {
+  //         marker.showInfoWindow();
+  //       },err => { console.error(err); });
+  //   }
+  // }
 
   createPolygon(mpts: ILatLng[]){
     let strkcolor = '';
-    let position: ILatLng;
-    // position = [lat = 0];
     this.map.getMyLocation().then(location => {
       this.loc = location.latLng;
       // position.lng = location.latLng.lng;
       }, err => { console.error(err);});
-    if (position !== null) {
-// let pos =       new LatLng(location location.lng);
-      console.log(this.loc.lat);
-    }
 
-    // let amIIn = true;
-    let amIIn = this.containsLocation(this.loc, mpts);
-    // console.log("am I in? " + amIIn);
-    (amIIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
+    let isUserIn = this.containsLocation(this.loc, mpts);
+    (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
     let polygOptions: PolygonOptions = {
       points: mpts,
       strokeColor: strkcolor,
@@ -213,11 +204,13 @@ export class MapsPage {
     isPublic : Boolean,
     zoneAdm : String }])
   {
+    // zoneAdm: createur de la zone, besoin de recuperer le nom (ou ID) de l'utilisateur
+
     // allZones : [{ polyPoints : ILatLng[],
     //   zoneName : String,
     //   isPublic : Boolean,
     //   zoneAdm : String }];
-    let polyn : String;
+    // let polyn : String;
     // let polyg : ILatLng[];
     this.map.clear().then(res => {
       console.log("mapClear: " + res);
@@ -277,6 +270,7 @@ export class MapsPage {
       mpts.push(spt);
       console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
       this.map.clear().then(res => {
+        console.debug(res);
         if (mkr === true) {
           this.createMarker(spt).then(res => {
             if (res != null) { mkr = false; }

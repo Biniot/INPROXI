@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavParams, ViewController } from 'ionic-angular';
-import {ILatLng} from "@ionic-native/google-maps";
-import {takeUntil} from "rxjs/operator/takeUntil";
+import { ILatLng } from "@ionic-native/google-maps";
+// import {takeUntil} from "rxjs/operator/takeUntil";
 
 /**
  * Generated class for the SaveZonePage page.
