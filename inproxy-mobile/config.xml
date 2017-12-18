@@ -106,5 +106,4 @@
         <variable name="API_KEY_FOR_IOS" value="AIzaSyCH05DXUpmchzbD4gaO4xGJxVbhRPXyErM" />
     </plugin>
     <plugin name="cordova-plugin-geofence" spec="^0.7.0" />
-    <plugin name="inproxi-plugin-geofence" spec="file:///C:\Users\Erwin\Documents\Work\INPROXI\inproxy-plugin-geofence" />
 </widget>
