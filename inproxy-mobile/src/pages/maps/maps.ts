@@ -12,8 +12,10 @@ import {
   Polygon,
   PolygonOptions,
   ILatLng,
-  VisibleRegion
-  // MyLocation
+  VisibleRegion,
+  LatLngBounds,
+  BaseArrayClass,
+  MyLocation
 } from '@ionic-native/google-maps';
 
 import { Geolocation } from '@ionic-native/geolocation';
@@ -48,7 +50,7 @@ export class MapsPage {
   }];
   // allZones: any;
   // zoneAdm: String;
-  zoneName: String;
+  //zoneName: String;
 
   constructor(public navCtrl: NavController,
               private modal: ModalController,
@@ -177,12 +179,25 @@ export class MapsPage {
   }
 
   createPolygon(mpts: ILatLng[]){
-    // if (mpts === []){
-    //   return("empty polygon");
-    // }
+    let strkcolor = '';
+    let position: ILatLng;
+    // position = [lat = 0];
+    this.map.getMyLocation().then(location => {
+      this.loc = location.latLng;
+      // position.lng = location.latLng.lng;
+      }, err => { console.error(err);});
+    if (position !== null) {
+// let pos =       new LatLng(location location.lng);
+      console.log(this.loc.lat);
+    }
+
+    // let amIIn = true;
+    let amIIn = this.containsLocation(this.loc, mpts);
+    // console.log("am I in? " + amIIn);
+    (amIIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
     let polygOptions: PolygonOptions = {
       points: mpts,
-      strokeColor: '#e60000',
+      strokeColor: strkcolor,
       fillColor: 'rgba(0,0,0,0)',
       strokeWidth: 3,
       visible: true
@@ -334,6 +349,65 @@ export class MapsPage {
       //   // this.createAllPolygons(this.allZones);
       // },err => { console.error("mapClear: " + err); });
      });
+  }
+
+  containsLocation(position : ILatLng, path: ILatLng[])
+  {
+    let pos = new LatLng(position.lat, position.lng);
+    if (pos === null) {
+      return false;
+    }
+    if (path instanceof BaseArrayClass) {
+      path = path.getArray();
+    }
+    let points = JSON.parse(JSON.stringify(path));
+
+    let first = points[0],
+      last = points[points.length - 1];
+    if (first.lat !== last.lat || first.lng !== last.lng) {
+      points.push({
+        lat: first.lat,
+        lng: first.lng
+      });
+    }
+    let point = {
+      lat: pos.lat,
+      lng: pos.lng
+    };
+
+    let wn = 0,
+      bounds = new LatLngBounds(points),
+      sw = bounds.southwest,
+      ne = bounds.northeast,
+      offsetLng360 = sw.lng <= 0 && ne.lng >= 0 && sw.lng < ne.lng ? 360 : 0;
+
+    sw.lng += offsetLng360;
+    point.lng += offsetLng360;
+
+    points = points.map(function(vertex) {
+      vertex.lng += +offsetLng360;
+      return vertex;
+    });
+
+    let vt, a, b;
+
+    for (let i = 0; i < points.length - 1; i++) {
+      a = points[i];
+      b = points[i + 1];
+
+      if ((a.lat <= point.lat) && (b.lat > point.lat)) {
+        vt = (point.lat - a.lat) / (b.lat - a.lat);
+        if (point.lng < (a.lng + (vt * (b.lng - a.lng)))) {
+          wn++;
+        }
+      } else if ((a.lat > point.lat) && (b.lat <= point.lat)) {
+        vt = (point.lat - a.lat) / (b.lat - a.lat);
+        if (point.lng < (a.lng + (vt * (b.lng - a.lng)))) {
+          wn--;
+        }
+      }
+    }
+    return (wn !== 0);
   }
 
 
