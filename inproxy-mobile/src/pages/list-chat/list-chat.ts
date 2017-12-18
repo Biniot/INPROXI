@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import {Events, IonicPage, NavController} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 import {ChatType} from "../../model/ChatType";
@@ -18,7 +18,7 @@ import {ChatType} from "../../model/ChatType";
 export class ListChatPage {
   listConversation: any;
 
-  constructor(private userService: UserServiceProvider, public navCtrl: NavController) {
+  constructor(private userService: UserServiceProvider, public navCtrl: NavController, public events: Events) {
     console.log("ListChatPage constructor");
     this.listConversation = [];
     userService.getUserConversation().subscribe(success => {
@@ -31,6 +31,10 @@ export class ListChatPage {
         console.log(error);
       });
 
+    events.subscribe('zone:push', (conversation) => {
+      // user and time are the same arguments passed in `events.publish(user, time)`
+      this.listConversation.push(conversation);
+    });
     // // TODO : a virer une fois quon a les init
     //this.listConversation = [{name: "David le poulet", members: [], id: ""}, {name: "La bande a bono", members: [], id: ""}];
   }
