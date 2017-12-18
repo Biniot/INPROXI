@@ -1,21 +1,21 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { NavController, IonicPage } from 'ionic-angular';
+import { Modal, NavController, IonicPage, ModalController } from 'ionic-angular';
 
 import {
   GoogleMaps,
   GoogleMap,
   CameraPosition,
   LatLng,
-  GoogleMapsEvent,
-  Marker,
   MarkerOptions,
   Polygon,
   PolygonOptions,
-  ILatLng
-  // MyLocation
-} from '@ionic-native/google-maps';
+  ILatLng,
+  VisibleRegion,
+  LatLngBounds,
+  BaseArrayClass, GoogleMapsEvent
+ } from '@ionic-native/google-maps';
 
-import {Geolocation} from '@ionic-native/geolocation';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @IonicPage()
 @Component({
@@ -26,49 +26,125 @@ import {Geolocation} from '@ionic-native/geolocation';
 export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
-  _loc: LatLng;
+  loc: LatLng;
+  visi: VisibleRegion;
+  recordPolyg: Boolean;
+  iconAddPolyg: String;
+  currentPolyg: ILatLng[];
+  // polyPoints: ILatLng[];
+  subsRec: any;
+  currentZone: {
+    polyPoints: ILatLng[],
+    zoneName: String,
+    isPublic: Boolean,
+    zoneAdm: String
+  };
+  allZones: [{
+    polyPoints: ILatLng[],
+    zoneName: String,
+    isPublic: Boolean,
+    zoneAdm: String
+  }];
+  // allZones: any;
+  // zoneAdm: String;
+  //zoneName: String;
 
   constructor(public navCtrl: NavController,
-              private _googleMaps: GoogleMaps,
-              private _geoLoc: Geolocation) {
+              private modal: ModalController,
+              private googleMaps: GoogleMaps,
+              private geoLoc: Geolocation) {
+
   }
 
   ngAfterViewInit(){
-    // let _div = document.getElementById("groupMap");
-    // let _button = _div.getElementsByTagName('_btn_polygon')[0];
-    // let _isEnabled = true;
+    let name : String;
+    let points: ILatLng[];
+    let adm:  String;
 
+    name = "";
+    points = [];
+    adm = "";
+
+    this.currentPolyg           = [];
+    this.recordPolyg            = false;
+    this.iconAddPolyg           = "add";
+
+    this.currentZone = ({
+      polyPoints : points,
+      zoneName : name,
+      isPublic : true,
+      zoneAdm : adm
+    });
+
+    // this.currentZone.polyPoints = [];
+    // this.currentZone.zoneName   = "";
+    // this.currentZone.isPublic   = true;
+    // this.currentZone.zoneAdm    = "";
+
+    // this.allZones[0].polyPoints = this.currentZone.polyPoints;
+    // this.allZones[0].zoneName   = this.currentZone.zoneName;
+    // this.allZones[0].isPublic   = this.currentZone.isPublic;
+    // this.allZones[0].zoneAdm    = this.currentZone.zoneAdm;
+
+    this.allZones = [{
+      polyPoints: this.currentZone.polyPoints,
+      zoneName: this.currentZone.zoneName,
+      isPublic: this.currentZone.isPublic,
+      zoneAdm: this.currentZone.zoneAdm
+    }];
+    //
     this.initMap();
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       this.map.setMyLocationEnabled(true);
-      this.map.getMyLocation().then( location => {
+      this.map.getMyLocation().then(location => {
+        this.loc = location.latLng;
+        this.moveCam(this.loc);
 
-        this._loc = location.latLng;
-        this.moveCam(this._loc);
-        // this.createMarker(this._loc).then((marker: Marker) => {
-        //   marker.showInfoWindow();
-        // },err => e{console.error(err);});
+        this.getView();
+        // this.map.on(GoogleMapsEvent.CAMERA_MOVE).subscribe((e) => {
+        //   this.getView();
+        //   console.log(e);
+        // }, err => {console.error(err);});
 
-      }, err => {console.error(err);});
-      // _button.addEventListener('click', function () ).then(res =>{
-      //   _isEnabled = !_isEnabled;
-      //   _button.innerHTML = "<ion-icon name='remove'></ion-icon>";
-      //   this.getClickPos(_isEnabled);
+        // this.map.addEventListener('zoom_changed',this.visi=this.getView());
+        // this.map.on(GoogleMapsEvent.MAP_ZO)
+        //   {
+        //   this.visi = this.getView();
+        // }
+        //   console.log(res);
+        }, err => { console.error(err); });
+      // button.addEventListener('click', function ()).then(res =>{
+      //   isEnabled = !isEnabled;
+      //   button.innerHTML = "<ion-icon name='remove'></ion-icon>";
+      //   this.getClickPos(isEnabled);
       //   }, err => {console.error(err);});
 
-
     });
-
   }
 
   //Load the groupMap
   initMap(){
     let element = this.mapElement.nativeElement;
-    this.map = this._googleMaps.create(element)
+    this.map = this.googleMaps.create(element)
   }
 
   getLocation(){
-    return this._geoLoc.getCurrentPosition();
+    return this.geoLoc.getCurrentPosition();
+  }
+
+  getView()
+  {
+    let visible: VisibleRegion;
+    visible = this.map.getVisibleRegion();
+    // console.log(
+    //   "NE lat "  + visible.northeast.lat  +
+    //   " NE lng "  + visible.northeast.lng
+    // );
+    // console.log(
+    //   "SW lat " + visible.southwest.lat  +
+    //   " SW lng "  + visible.southwest.lng
+    // );
+   this.visi = visible;
   }
 
   moveCam(loc : LatLng){
@@ -77,8 +153,8 @@ export class MapsPage {
       zoom: 15,
       tilt: 10
     };
-    this.map.moveCamera(options).then( res => {console.log(res);},
-      err => {console.error(err);})
+    this.map.moveCamera(options).then(res => {console.log("move camera: " + res);},
+      err => { console.error("move camera: " + err); })
   }
 
   createMarker(loc: LatLng){
@@ -89,69 +165,244 @@ export class MapsPage {
     return  this.map.addMarker(markerOptions);
   }
 
-  createPolygMarkers(_mpts: ILatLng[]){
-    for (let i = 0; i < _mpts.length; i++){
-     let _spt = new LatLng(_mpts[i].lat, _mpts[i].lng);
 
-      this.createMarker(_spt).then((marker: Marker) => {
-          marker.showInfoWindow();
-        },err => {console.error(err);});
-    }
-  }
+  // Pour edition de polygone: creation des markers des angles qu'on peut ensuite drag, recuperer la nvl pos puis modifier polyg
+  // createPolygMarkers(mpts: ILatLng[]){
+  //   for (let i = 0; i < mpts.length; i++){
+  //    let spt = new LatLng(mpts[i].lat, mpts[i].lng);
+  //
+  //     this.createMarker(spt).then((marker: Marker) => {
+  //         marker.showInfoWindow();
+  //       },err => { console.error(err); });
+  //   }
+  // }
 
-  createPolygon(_mpts: ILatLng[]){
+  createPolygon(mpts: ILatLng[]){
+    let strkcolor = '';
+    this.map.getMyLocation().then(location => {
+      this.loc = location.latLng;
+      // position.lng = location.latLng.lng;
+      }, err => { console.error(err);});
+
+    let isUserIn = this.containsLocation(this.loc, mpts);
+    (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
     let polygOptions: PolygonOptions = {
-      points: _mpts,
-      strokeColor: '#e60000',
+      points: mpts,
+      strokeColor: strkcolor,
+      fillColor: 'rgba(0,0,0,0)',
       strokeWidth: 3,
       visible: true
     };
-
-    this.map.addPolygon(polygOptions).then( (_polyg : Polygon) => {
-      _polyg.setVisible(true);
-      _polyg.setClickable(false);
-    }, err => {console.error(err);});
+    this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
+      polyg.setVisible(true);
+      polyg.setClickable(false);
+    }, err => { console.error("addPolygon: " + err); });
   }
 
-  centerMap() {
-    this.getLocation().then( res => {
-      this._loc = new LatLng(res.coords.latitude, res.coords.longitude);
+  createAllPolygons(allZones : [{ polyPoints : ILatLng[],
+    zoneName : String,
+    isPublic : Boolean,
+    zoneAdm : String }])
+  {
+    // zoneAdm: createur de la zone, besoin de recuperer le nom (ou ID) de l'utilisateur
 
-      this.map.clear().then(res => {
-        this.moveCam(this._loc);
-        console.log(res);
-        this.createMarker(this._loc).then((marker: Marker) => {
-          marker.hideInfoWindow();
-        }, err => { console.error(err); });
-      }, err=> {console.error(err);});
-    }, err => { console.error(err); });
+    // allZones : [{ polyPoints : ILatLng[],
+    //   zoneName : String,
+    //   isPublic : Boolean,
+    //   zoneAdm : String }];
+    // let polyn : String;
+    // let polyg : ILatLng[];
+    this.map.clear().then(res => {
+      console.log("mapClear: " + res);
+      for (let i = 1; i <= allZones.length; i++){
+        let polyg: ILatLng[];
+        polyg = allZones[i].polyPoints;
+        this.createPolygon(polyg);
+      }
+    },err => { console.error("mapClear: " + err); });
+
+  }
+
+  // centerMap() {
+  //   this.getLocation().then(res => {
+  //     this.loc = new LatLng(res.coords.latitude, res.coords.longitude);
+  //
+  //     this.map.clear().then(res => {
+  //       this.moveCam(this.loc);
+  //       console.log(res);
+  //       this.createMarker(this.loc).then((marker: Marker) => {
+  //         marker.hideInfoWindow();
+  //       }, err => { console.error(err); });
+  //     }, err=> {console.error(err);});
+  //   }, err => { console.error(err); });
+  // }
+
+  createZone()
+  {
+    let formerState: Boolean;
+    formerState = this.recordPolyg;
+    this.recordPolyg = !formerState;
+    if (formerState === false)
+    {
+      this.iconAddPolyg = "square";
+      this.getClickPos();
+    }
+    else
+    {
+      // this.recordPolyg = false;
+      this.iconAddPolyg ="add";
+      // envoyer sur le serveur
+      this.subsRec.unsubscribe();
+      this.saveZone();
+    }
   }
 
   getClickPos()
   {
-    let _mpts: ILatLng[];
-    let _spt : LatLng;
-    let _counter = 0;
-    _mpts = [];
+    let mpts: ILatLng[];
+    let spt : LatLng;
+    let mkr = true;
+    mpts = [];
 
-    this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
-      _spt = new LatLng(e.lat, e.lng);
-      _mpts.push(_spt);
-      console.log("Lat: " + _spt.lat);
-      console.log("Lng: " + _spt.lng);
-      this.createPolygMarkers(_mpts);
-
-      if (_counter > 0) {
-        // console.log(_mpts[0]);
-        this.map.clear().then(res => {
-          this.createPolygMarkers(_mpts);
-          this.createPolygon(_mpts);
-          console.log(res);
-        },err => {console.error(err);});
-      }
-      _counter++;
-      console.log(_counter);
-
-    },err => { console.error(err); });
+    this.currentZone.zoneName = "";
+    this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
+      spt = new LatLng(e.lat, e.lng);
+      mpts.push(spt);
+      console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
+      this.map.clear().then(res => {
+        console.debug(res);
+        if (mkr === true) {
+          this.createMarker(spt).then(res => {
+            if (res != null) { mkr = false; }
+          }, err => { console.error("createMarker" + err); });
+        }
+        this.currentZone.polyPoints = mpts;
+        this.currentPolyg = mpts;
+        this.createPolygon(mpts);
+        console.log("mapClear: " + mpts);
+      },err => { console.error("mapClear: " + err); });
+    },err => { console.error("getClickPos: " + err); });
   }
+
+  saveZone()
+  {
+    // const saveZoneOptions: ModalOptions = {
+    // };
+
+    // let i: number;
+    // i = this.allZones.length;
+    //
+    // let zoneData =
+    //   {
+    //   // this.currentZone;
+    //     polyPoints: this.currentZone.polyPoints,
+    //     zoneName: this.currentZone.zoneName,
+    //     isPublic: this.currentZone.isPublic,
+    //     zoneAdm: this.currentZone.zoneAdm
+    //   };
+    const data = {
+          polyPoints: this.currentZone.polyPoints,
+          zoneName: this.currentZone.zoneName,
+          isPublic: this.currentZone.isPublic,
+          zoneAdm: this.currentZone.zoneAdm
+    };
+
+    let saveZone: Modal = this.modal.create(
+      'SaveZonePage',
+      { zone: data }
+      // ,saveZoneOptions
+    );
+
+    saveZone.present().then(res =>{
+      console.log(res);
+    }, err => { console.error(err) });
+
+    saveZone.onDidDismiss((allData : {
+      polyPoints : ILatLng[],
+      zoneName : String,
+      isPublic : Boolean,
+      zoneAdm : String
+    }) => {
+      let i = this.allZones.length;
+      console.log('MODAL DATA', allData);
+      console.log('data ' + allData.isPublic);
+      this.allZones.push(allData);
+      // this.allZones[i] = {
+      //   polyPoints : allData.polyPoints,
+      //   zoneName : allData.zoneName,
+      //   isPublic : allData.isPublic,
+      //   zoneAdm : allData.zoneAdm
+      // };
+      console.log('manip :' + this.allZones[i].zoneName);
+
+        this.createAllPolygons(this.allZones);
+
+      // this.map.clear().then(res => {
+      //   // console.log(this.allZones[i].polyPoints[0].toString());
+      //   // this.createPolygon(this.allZones[i].polyPoints);
+      //   // this.createAllPolygons(this.allZones);
+      // },err => { console.error("mapClear: " + err); });
+     });
+  }
+
+  containsLocation(position : ILatLng, path: ILatLng[])
+  {
+    let pos = new LatLng(position.lat, position.lng);
+    if (pos === null) {
+      return false;
+    }
+    if (path instanceof BaseArrayClass) {
+      path = path.getArray();
+    }
+    let points = JSON.parse(JSON.stringify(path));
+
+    let first = points[0],
+      last = points[points.length - 1];
+    if (first.lat !== last.lat || first.lng !== last.lng) {
+      points.push({
+        lat: first.lat,
+        lng: first.lng
+      });
+    }
+    let point = {
+      lat: pos.lat,
+      lng: pos.lng
+    };
+
+    let wn = 0,
+      bounds = new LatLngBounds(points),
+      sw = bounds.southwest,
+      ne = bounds.northeast,
+      offsetLng360 = sw.lng <= 0 && ne.lng >= 0 && sw.lng < ne.lng ? 360 : 0;
+
+    sw.lng += offsetLng360;
+    point.lng += offsetLng360;
+
+    points = points.map(function(vertex) {
+      vertex.lng += +offsetLng360;
+      return vertex;
+    });
+
+    let vt, a, b;
+
+    for (let i = 0; i < points.length - 1; i++) {
+      a = points[i];
+      b = points[i + 1];
+
+      if ((a.lat <= point.lat) && (b.lat > point.lat)) {
+        vt = (point.lat - a.lat) / (b.lat - a.lat);
+        if (point.lng < (a.lng + (vt * (b.lng - a.lng)))) {
+          wn++;
+        }
+      } else if ((a.lat > point.lat) && (b.lat <= point.lat)) {
+        vt = (point.lat - a.lat) / (b.lat - a.lat);
+        if (point.lng < (a.lng + (vt * (b.lng - a.lng)))) {
+          wn--;
+        }
+      }
+    }
+    return (wn !== 0);
+  }
+
+
 }
