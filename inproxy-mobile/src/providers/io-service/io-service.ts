@@ -88,7 +88,7 @@ export class IoServiceProvider {
     }
   }
 
-  public sendMessage(from: any, conversationId: string, message: string) {
+  public sendMessage(from: string, conversationId: string, message: string) {
     console.log("sendMessage IoService");
     console.log(sock);
     sock.emit('conversation_message', {author: from, conversation_id: conversationId, content: message}, () => {console.log("IoServiceProvider sendMessage success")});

@@ -19,7 +19,10 @@
   <div *ngIf="haveMessage">
     <ion-list>
       <ion-item *ngFor="let message of messageList" style="border-radius: 25px;">
-        <div>{{message.author.first_name + " " + message.author.last_name}}</div>
+        <div>
+          <div item-start>{{message.author.first_name + " " + message.author.last_name}}</div>
+          <div item-end>{{message.createdAt}}</div>
+        </div>
         <div>{{message.content}}</div>
       </ion-item>
     </ion-list>

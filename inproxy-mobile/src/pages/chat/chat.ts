@@ -6,6 +6,7 @@ import {PrivateMessageStorageProvider} from "../../providers/custom-storage/priv
 import {IoServiceProvider} from "../../providers/io-service/io-service";
 import {ChatType} from "../../model/ChatType";
 import { ConversationServiceProvider } from '../../providers/conversation-service/conversation-service';
+import {isUndefined} from "ionic-angular/util/util";
 
 /**
  * Generated class for the ChatPage page.
@@ -30,12 +31,30 @@ export class ChatPage {
               private ioService: IoServiceProvider, private conversationService: ConversationServiceProvider, private _ngZone: NgZone,
               private userService: UserServiceProvider) {
 
+    this.haveMessage = false;
     let onPrivateMessage = (message: any) => {
       _ngZone.run(() => {
         console.log("onPrivateMessage");
         console.log(message);
         if (message.author.id.localeCompare(localStorage.getItem('userId')) != 0) {
-          this.messageList.push(message);
+          this.userService.getUserInfoById(message.author.id).subscribe(success => {
+              //console.log(success);
+              let newMessage = {
+                createdAt: new Date().toDateString(),
+                content: message.content,
+                author : {
+                  first_name: success.first_name,
+                  last_name: success.last_name,
+                  id: message.author.id
+                },
+                id: ""
+              };
+              this.messageList.push(newMessage);
+              this.haveMessage = true;
+            },
+            error => {
+              this.showPopup("Error", error);
+            });
         }
       });};
     this.ioService.setPrivateMessageCallback(onPrivateMessage);
@@ -47,6 +66,10 @@ export class ChatPage {
         console.log('HomePage getUserInfo functionError');
         console.log(error);
       });
+
+    if (isUndefined(this.messageList)) {
+      this.messageList = [];
+    }
   }
 
   ionViewWillEnter() {
@@ -80,13 +103,13 @@ export class ChatPage {
   }
 
   public sendMessage() {
-    console.log("sendMessage");
+    console.log("ChatPage sendMessage");
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
     console.log(this.messageToSend);
     let newMessage = {
-      createdAt: new Date().toDateString,
+      createdAt: new Date().toDateString(),
       content: this.messageToSend,
       author : {
         first_name: localStorage.getItem("firstName"),
@@ -95,9 +118,15 @@ export class ChatPage {
       },
       id: ""
     };
-    this.ioService.sendMessage(newMessage.author, this.currentConversation.id, this.messageToSend);
+    console.log(newMessage);
+    this.ioService.sendMessage(newMessage.author.id, this.currentConversation.id, this.messageToSend);
     this.messageToSend = null;
+    if (isUndefined(this.messageList)) {
+      this.messageList = [];
+    }
     this.messageList.push(newMessage);
+    console.log(this.messageList);
+    this.haveMessage = true;
   }
 
   showPopup(title, text) {
