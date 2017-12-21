@@ -5,11 +5,9 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar color="primary">
     <ion-title>Chat</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 <!--[attr.ion-start]="message.htmlClass == 'isUserClass'" [attr.ion-end]="message.htmlClass == 'isNotUserClass'"-->
@@ -20,9 +18,12 @@
   </div>
   <div *ngIf="haveMessage">
     <ion-list>
-      <ion-item *ngFor="let message of messageList" class="{{message.htmlClass}}" style="border-radius: 25px;">
-        <div>{{message.from}}</div>
-        <div>{{message.message}}</div>
+      <ion-item *ngFor="let message of messageList" style="border-radius: 25px;">
+        <div>
+          <div item-start>{{message.author.first_name + " " + message.author.last_name}}</div>
+          <div item-end>{{message.createdAt}}</div>
+        </div>
+        <div>{{message.content}}</div>
       </ion-item>
     </ion-list>
   </div>
@@ -30,7 +31,7 @@
 
 <ion-footer>
   <ion-item>
-    <ion-input type="text" placeholder="Type your message"></ion-input>
+    <ion-input type="text" placeholder="Type your message" [(ngModel)]="messageToSend"></ion-input>
     <button ion-button clear item-end icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>
   </ion-item>
 </ion-footer>

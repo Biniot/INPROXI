@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar color="dark">
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -16,36 +16,15 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="listPrivateChat.length > 0">
-    <ion-list-header>
-      Private Chat
-    </ion-list-header>
-    <ion-item *ngFor="let privateChat of listPrivateChat">
-      {{privateChat.friendName}}
-      <button ion-button clear icon-only (click)="showInfoPage(1, privateChat.friendId)" item-end><ion-icon name="information-circle"></ion-icon></button>
-      <button ion-button clear icon-only (click)="lunchChatPage(1, privateChat.friendId, privateChat.friendName)" item-end><ion-icon name="chatbubbles"></ion-icon></button>
+  <ion-list >
+    <ion-item *ngFor="let result of listConversation" (click)="lunchChatPage(result.conversation.id)">
+      {{result.conversation.name}} ({{result.conversation.members.length}})
+      <p>{{result.conversation.last_message}}</p>
+      <!--<button ion-button clear icon-only (click)="showInfoPage(1, privateChat.friendId)" item-end><ion-icon name="information-circle"></ion-icon></button>-->
+      <!--<button ion-button clear icon-only (click)="lunchChatPage(1, privateChat.friendId, privateChat.friendName)" item-end><ion-icon name="chatbubbles"></ion-icon></button>-->
     </ion-item>
   </ion-list>
-
-  <ion-list *ngIf="listGroupChat.length > 0">
-    <ion-list-header>
-      Group Chat
-    </ion-list-header>
-    <ion-item *ngFor="let groupChat of listGroupChat">
-      {{groupChat.groupName}}
-      <button ion-button clear icon-only (click)="showInfoPage(2, groupChat.groupId)" item-end><ion-icon name="information-circle"></ion-icon></button>
-      <button ion-button clear icon-only (click)="lunchChatPage(2, groupChat.groupId, groupChat.groupName)" item-end><ion-icon name="chatbubbles"></ion-icon></button>
-    </ion-item>
-  </ion-list>
-
-  <ion-list *ngIf="listRoomChat.length > 0">
-    <ion-list-header>
-      Room Chat
-    </ion-list-header>
-    <ion-item *ngFor="let roomChat of listRoomChat">
-      {{roomChat.roomName}}
-      <button ion-button clear icon-only (click)="showInfoPage(3, roomChat.roomId)" item-end><ion-icon name="information-circle"></ion-icon></button>
-      <button ion-button clear icon-only (click)="lunchChatPage(3, roomChat.roomId, roomChat.roomName)" item-end><ion-icon name="chatbubbles"></ion-icon></button>
-    </ion-item>
-  </ion-list>
+  <ion-fab right bottom>
+    <button ion-fab class="link-btn" (click)="createConversation()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 </ion-content>

@@ -20,8 +20,13 @@
     </ul>
   </div>
   <ion-fab bottom right>
-    <button ion-fab (click)="getClickPos()">
-      <ion-icon name="add"></ion-icon>
+
+    <button ion-fab (click)="createZone()">
+      <ion-icon [name]=this.iconAddPolyg ></ion-icon>
     </button>
+
   </ion-fab>
+  <!--<button ion-button (click)="addPolyPoints(this._recordPolyg)">-->
+    <!--<ion-icon [name]=this._iconAddPolyg ></ion-icon>-->
+  <!--</button>-->
 </ion-content>

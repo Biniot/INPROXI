@@ -1,0 +1,60 @@
+<!--
+  Generated template for the SaveZonePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title> Save Zone </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Cancel</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid no-padding>
+
+    <form #saveform="ngForm" (ngSubmit)="validateZone()">
+      <ion-row>
+        <ion-col>
+
+          <ion-row>
+            <ion-col>
+              <ion-item class="rounded" >
+                <ion-label >Zone Name</ion-label>
+                <ion-input type="text" [(ngModel)]="allData.zoneName" name="zoneName" required ></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <ion-item class="rounded" >
+                <ion-label> Public </ion-label>
+                <ion-toggle  type="toggle" [(ngModel)]="allData.isPublic" name="isPublic"></ion-toggle>
+                <!--<ion-toggle "openZone"></ion-toggle>-->
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item  class="rounded" >
+            <button ion-button class="submit-btn" full type="submit" color="secondary" round>Save Zone</button>
+            <!--<button ion-button class="register-btn" block clear type="button" (click)="createAccount()">Create New Account</button>  &lt;!&ndash;le type="button" empeche de trigger le login()&ndash;&gt;-->
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+    </form>
+  </ion-grid>
+</ion-content>

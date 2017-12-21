@@ -1,0 +1,56 @@
+<!--
+  Generated template for the CreateConversationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="dark">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Create group</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div class="create-conversation-box">
+    <form (ngSubmit)="createConversation()" #registerForm="ngForm">
+      <ion-row class="form">
+        <ion-col>
+          <ion-list inset>
+
+            <ion-item>
+              <ion-input type="text" placeholder="Name" name="name" [(ngModel)]="newConversation.name" required></ion-input>
+            </ion-item>
+
+            <ion-list *ngIf="haveFriend">
+              <ion-item *ngFor="let friend of friendsList; let i = index">
+                <ion-checkbox (ionChange)="updateMembersList(friend.id, $event.checked, i)" item-start></ion-checkbox>
+                <ion-label>{{friend.first_name}} {{friend.last_name}}</ion-label>
+                <ion-avatar item-end>
+                  <img src="../../assets/img/avatar.png">
+                </ion-avatar>
+              </ion-item>
+            </ion-list>
+
+          </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-toolbar  style="position: absolute; bottom: 20px; width: 100%">
+        <button ion-button block class="submit-btn" type="submit" [disabled]="!registerForm.form.valid">Submit</button>
+      </ion-toolbar>
+
+      <!--<ion-row item-end>-->
+        <!--<ion-col class="submit-col">-->
+          <!--<button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Create conversation</button>-->
+        <!--</ion-col>-->
+      <!--</ion-row>-->
+
+    </form>
+  </div>
+</ion-content>

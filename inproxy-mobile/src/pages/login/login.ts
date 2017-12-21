@@ -11,7 +11,6 @@ import { UserServiceProvider } from "../../providers/user-service/user-service";
  */
 
 @IonicPage()
-
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',

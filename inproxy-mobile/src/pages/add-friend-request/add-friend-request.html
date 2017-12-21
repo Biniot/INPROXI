@@ -5,20 +5,18 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Add request</ion-title>
+    <ion-title>Add friend request</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content class="add-friend-content" padding>
   <div class="add-friend-box">
-   <p>AJOUTER UN UTILISATEUR A VOS AMIS</p>
-    <form (ngSubmit)="addFriend()" #registerForm="ngForm">
+   <!--<p>AJOUTER UN UTILISATEUR A VOS AMIS</p>-->
+    <form (ngSubmit)="addFriend()" #registerForm="ngForm" id="friendsForm">
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -45,20 +43,18 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    </form>
-    <div class="searchRes">
-      <ion-list *ngIf="showList" >
-        <ion-item *ngFor="let friend of friendList" >
-          <h2 (click)="updateForm(friend.id)">{{friend.first_name}} {{friend.last_name}}</h2>
-        </ion-item>
-      </ion-list>
-    </div>
 
-  </div>
+      <div class="searchRes">
+        <ion-list *ngIf="showList" >
+          <ion-item *ngFor="let friend of friendList" >
+            <h2 (click)="updateForm(friend.id)">{{friend.first_name}} {{friend.last_name}}</h2>
+          </ion-item>
+        </ion-list>
+      </div>
+      <ion-toolbar>
+        <button ion-button block class="submit-btn" type="submit" [disabled]="!registerForm.form.valid">Submit</button>
+      </ion-toolbar>
+    </form>
+    </div>
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <button ion-button block class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Submit</button>
-  </ion-toolbar>
-</ion-footer>

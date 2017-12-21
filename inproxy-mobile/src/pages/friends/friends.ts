@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
-import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
+//import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 import { UserPage } from '../user/user';
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
 import {ChatType} from "../../model/ChatType";
@@ -22,8 +22,8 @@ export class FriendsPage {
   haveFriend: boolean;
   friendsList: Array<{id: string, first_name: string, last_name: string}>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
-              private userService: UserServiceProvider, private friendRequestService: FriendServiceProvider,
+  constructor(public navCtrl: NavController, /*public navParams: NavParams,*/ private alertCtrl: AlertController,
+              public userService: UserServiceProvider, /*private friendRequestService: FriendServiceProvider,*/
               private conversationService: ConversationServiceProvider) {
     // this.friendsList = [
     //   {name: 'Obi'},
@@ -35,7 +35,10 @@ export class FriendsPage {
     // ]
     this.haveRequest = false;
     this.haveFriend = false;
-    userService.getFriends().subscribe(success => {
+  }
+
+  ionViewWillEnter() {
+    this.userService.getFriends().subscribe(success => {
         if (success) {
           let tab = localStorage.getItem('friends');
           if (tab === 'undefined' || tab === null) {
@@ -45,9 +48,6 @@ export class FriendsPage {
             this.friendsList = JSON.parse(tab);
             this.haveFriend = true;
             console.log('FriendListLoad');
-            let members = [localStorage.getItem('userId'), this.friendsList[0].id];
-            console.log(members);
-            conversationService.createConversation(members);
           }
         } else {
           this.showPopup("Error", "Problem retriving friends.");
@@ -56,14 +56,10 @@ export class FriendsPage {
       error => {
         this.showPopup("Error", error);
       });
-    userService.getFriendRequests().subscribe(success => {
+    this.userService.getFriendRequests().subscribe(success => {
         if (success) {
           let stringRequest = localStorage.getItem('friendRequests');
-          if (stringRequest === 'undefined' || stringRequest === null) {
-            this.haveRequest = false;
-          } else {
-            this.haveRequest = true;
-          }
+          this.haveRequest = !(stringRequest === 'undefined' || stringRequest === null);
         } else {
           this.showPopup("Error", "Problem retriving friend request.");
         }
@@ -85,8 +81,42 @@ export class FriendsPage {
     this.navCtrl.push('UserPage', {userId: idFriend});
   }
 
-  public friendChat(idFriend: string, name: string) {
-    this.navCtrl.push('ChatPage', {id: idFriend, chatType: ChatType.PRIVATE, pageTitle: name});
+  public friendChat(idFriend: string) {
+    let findConversation = false;
+    this.userService.getUserConversation().subscribe(success => {
+        success.forEach((result) => {
+          result.conversation.members.forEach((member) => {
+            if (member.id.localeCompare(idFriend) == 0 && result.conversation.members.length == 2) {
+              if (!findConversation) {
+                this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, conversationId: result.conversation.id});
+              }
+              findConversation = true;
+            }
+          });
+        });
+        if (!findConversation) {
+          console.log("FriendsPage friendChat !findConversation");
+          this.friendsList.forEach((element) => {
+            console.log("FriendsPage friendChat this.friendsList.forEach");
+            console.log(element);
+            if (element.id.localeCompare(idFriend) == 0) {
+              let members = [localStorage.getItem('userId'), idFriend];
+              console.log("FriendsPage friendChat element.id.localeCompare(idFriend) == 0");
+              this.conversationService.createConversation(members, localStorage.getItem('firstName') + " " +
+                localStorage.getItem('lastName') + ", " + element.first_name + " " + element.last_name).subscribe((result: any) => {
+                  this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, conversationId: result.id});
+                },
+                error => {
+                  this.showPopup("Error", error);
+                });
+            }
+          });
+        }
+      },
+      error => {
+        this.showPopup("Error", error);
+      });
+
   }
 
   showPopup(title, text) {
@@ -105,10 +135,6 @@ export class FriendsPage {
       ]
     });
     alert.present();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad FriendsPage');
   }
 
 }

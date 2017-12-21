@@ -6,7 +6,6 @@ import {
   GoogleMap,
   CameraPosition,
   LatLng,
-  GoogleMapsEvent,
   Marker,
   MarkerOptions,
   Polygon,
@@ -18,6 +17,7 @@ import {
 import {Geolocation} from '@ionic-native/geolocation';
 import {IoServiceProvider} from "../../providers/io-service/io-service";
 import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
+import {UserServiceProvider} from "../../providers/user-service/user-service";
 //import {GeofenceProvider} from "../../providers/geofence/geofence";
 
 @Component({
@@ -32,17 +32,24 @@ export class HomePage {
 
   constructor(public navCtrl: NavController,
               private _googleMaps: GoogleMaps,/* private _geofence: GeofenceProvider,*/
-              private _geoLoc: Geolocation, private _ioService: IoServiceProvider,
-              private _PMStorage: PrivateMessageStorageProvider) {
+              private _geoLoc: Geolocation, private _ioService: IoServiceProvider, private _userService: UserServiceProvider) {
     if (!this._ioService.isConnected()) {
       this._ioService.connectSocket();
-      let self = this;
-      let onPrivateMessage = (data: any) => {
-        console.log("onPrivateMessage");
-        console.log(data);
-        self._PMStorage.addElem(data);};
-      this._ioService.setPrivateMessageCallback(onPrivateMessage);
     }
+    this._userService.getUserInfo().subscribe(success => {
+        console.log('HomePage getUserInfo functionSuccess');
+        console.log(success);
+      },
+      error => {
+        console.log('HomePage getUserInfo functionError');
+        console.log(error);
+      });
+    // let self = this;
+    // let onPrivateMessage = (data: any) => {
+    //   console.log("onPrivateMessage");
+    //   console.log(data);
+    //   self._PMStorage.addElem(data);};
+    // this._ioService.setPrivateMessageCallback(onPrivateMessage);
   }
 
   functionSuccess(succes: any) {
