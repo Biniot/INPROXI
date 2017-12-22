@@ -82,26 +82,31 @@ export class FriendsPage {
   }
 
   public friendChat(idFriend: string) {
+    console.log("FriendsPage friendChat idFriend");
+    console.log(idFriend);
     let findConversation = false;
     this.userService.getUserConversation().subscribe(success => {
+        console.log("FriendsPage friendChat getUserConversation");
+        console.log(success);
         success.forEach((result) => {
           result.conversation.members.forEach((member) => {
             if (member.id.localeCompare(idFriend) == 0 && result.conversation.members.length == 2) {
               if (!findConversation) {
                 this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, conversationId: result.conversation.id});
               }
+              console.log("FriendsPage friendChat findConversation");
               findConversation = true;
             }
           });
         });
         if (!findConversation) {
-          // console.log("FriendsPage friendChat !findConversation");
+           console.log("FriendsPage friendChat !findConversation");
           this.friendsList.forEach((element) => {
-            // console.log("FriendsPage friendChat this.friendsList.forEach");
-            // console.log(element);
+             console.log("FriendsPage friendChat this.friendsList.forEach");
+             console.log(element);
             if (element.id.localeCompare(idFriend) == 0) {
               let members = [localStorage.getItem('userId'), idFriend];
-              // console.log("FriendsPage friendChat element.id.localeCompare(idFriend) == 0");
+               console.log("FriendsPage friendChat element.id.localeCompare(idFriend) == 0");
               this.conversationService.createConversation(members, localStorage.getItem('firstName') + " " +
                 localStorage.getItem('lastName') + ", " + element.first_name + " " + element.last_name).subscribe((result: any) => {
                   this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, conversationId: result.id});

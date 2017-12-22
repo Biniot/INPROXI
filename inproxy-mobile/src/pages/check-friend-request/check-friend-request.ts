@@ -57,6 +57,9 @@ export class CheckFriendRequestPage {
           if (success) {
             this.showPopup("Succes", "Succefully respond request.");
             this.loadList();
+            if (this.friendRequestList.length < 1) {
+              this.navCtrl.pop();
+            }
           } else {
             this.showPopup("Error", "Problem responding request.");
           }
