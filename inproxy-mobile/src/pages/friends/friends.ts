@@ -88,7 +88,7 @@ export class FriendsPage {
           result.conversation.members.forEach((member) => {
             if (member.id.localeCompare(idFriend) == 0 && result.conversation.members.length == 2) {
               if (!findConversation) {
-                this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, conversationId: result.conversation.id});
+                this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, conversationId: result.conversation.id});
               }
               findConversation = true;
             }
@@ -104,7 +104,7 @@ export class FriendsPage {
               // console.log("FriendsPage friendChat element.id.localeCompare(idFriend) == 0");
               this.conversationService.createConversation(members, localStorage.getItem('firstName') + " " +
                 localStorage.getItem('lastName') + ", " + element.first_name + " " + element.last_name).subscribe((result: any) => {
-                  this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, conversationId: result.id});
+                  this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, conversationId: result.id});
                 },
                 error => {
                   this.showPopup("Error", error);

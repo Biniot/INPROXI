@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import {Events, IonicPage, NavController} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
-import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
-import {ChatType} from "../../model/ChatType";
 
 /**
  * Generated class for the ListChatPage page.
@@ -24,6 +22,7 @@ export class ListChatPage {
     userService.getUserConversation().subscribe(success => {
         // console.log("ListChatPage getUserConversation success");
         // console.log(success);
+      // TODO : boucler pr add le chattype STD
         this.listConversation = success;
       },
       error => {
@@ -32,6 +31,7 @@ export class ListChatPage {
       });
 
     events.subscribe('zone:push', (conversation) => {
+      // TODO : add le type ROOM_CONVER
       this.listConversation.push(conversation);
     });
 
@@ -42,8 +42,8 @@ export class ListChatPage {
     //this.listConversation = [{name: "David le poulet", members: [], id: ""}, {name: "La bande a bono", members: [], id: ""}];
   }
 
-  lunchChatPage(id: string) {
-    this.navCtrl.push('ChatPage', {conversationId: id});
+  lunchChatPage(id: string, chatType) {
+    this.navCtrl.push('ChatPage', {chatType: chatType, conversationId: id});
   }
 
   public createConversation() {
