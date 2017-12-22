@@ -48,12 +48,12 @@ export class CreateConversationPage {
   }
 
   updateMembersList(friendId: string, event: boolean, index: number) {
-    // console.log("updateMembersList");
-    // console.log(this.newConversation.members);
-    // console.log(index);
-    // console.log(this.friendsList[index]);
-    // console.log(friendId);
-    // console.log(event);
+    console.log("updateMembersList");
+    console.log(this.newConversation.members);
+    console.log(index);
+    console.log(this.friendsList[index]);
+    console.log(friendId);
+    console.log(event);
     if (event) {
       if (!isUndefined(this.newConversation.members) && this.newConversation.members !== null && this.newConversation.members.length > 0) {
         let findIt = false;

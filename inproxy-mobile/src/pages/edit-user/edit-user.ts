@@ -60,7 +60,7 @@ export class EditUserPage {
     this.camera.getPicture(this.cameraOptions)
       .then(file_uri =>
         {
-          console.log(file_uri);
+          // console.log(file_uri);
           // TODO : Est-ce un path ou autre chose ? Si autre chose revoir pour recup un path sinon cest good
           this.imageSrc = file_uri;
         },
@@ -76,7 +76,7 @@ export class EditUserPage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
+            // console.log('Cancel clicked');
           }
         },
         {
@@ -106,7 +106,7 @@ export class EditUserPage {
             }, error => {
               this.showPopup("Error", error);
             });
-            console.log('Save clicked');
+            // console.log('Save clicked');
           }
         }
       ]

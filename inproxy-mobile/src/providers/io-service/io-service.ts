@@ -26,20 +26,20 @@ export class IoServiceProvider {
     sock.on('disconnect', this.onDisconnect);
     sock.on('reconnect', this.sendAuth);
     this.mesasgeCallback = null;
-    console.log(sock);
+    // console.log(sock);
   }
 
   /* Socket utiliy */
   sendAuth() {
-    console.log("sendAuth");
-    console.log(sock);
+    // console.log("sendAuth");
+    // console.log(sock);
     this._isConnected = true;
     sock.emit('auth', {token: localStorage.getItem('token'), user_id: localStorage.getItem('userId')}, function(){console.log("sendAuth success")});
   }
 
   onDisconnect() {
-    console.log(sock);
-    console.log("disconnect");
+    // console.log(sock);
+    // console.log("disconnect");
     this._isConnected = false;
   }
 
@@ -81,7 +81,7 @@ export class IoServiceProvider {
 
   /* PrivateMessage function */
   public setPrivateMessageCallback(functionPrivateMessage: any) {
-    console.log("setMessageCallback");
+    // console.log("setMessageCallback");
     if (this.mesasgeCallback == null) {
       this.mesasgeCallback = functionPrivateMessage;
       sock.on('conversation_message', functionPrivateMessage);
@@ -89,8 +89,8 @@ export class IoServiceProvider {
   }
 
   public sendMessage(from: string, conversationId: string, message: string) {
-    console.log("sendMessage IoService");
-    console.log(sock);
+    // console.log("sendMessage IoService");
+    // console.log(sock);
     sock.emit('conversation_message', {author: from, conversation_id: conversationId, content: message}, () => {console.log("IoServiceProvider sendMessage success")});
   }
 

@@ -26,7 +26,7 @@ export class FriendServiceProvider {
           message : message
         }).subscribe(
           result => {
-            console.log('addFriendRequest result');
+            // console.log('addFriendRequest result');
             observer.next(true);
             observer.complete();
           }, err => {
@@ -43,7 +43,7 @@ export class FriendServiceProvider {
         status : isAccepted ? 'accept' : 'remove'
       }).subscribe(
         data => {
-          console.log('cest un put donc osef');
+          // console.log('cest un put donc osef');
           observer.next(true);},
         err => {observer.error(err)},
         () => {

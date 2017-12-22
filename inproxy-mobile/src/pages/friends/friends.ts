@@ -47,7 +47,7 @@ export class FriendsPage {
           } else {
             this.friendsList = JSON.parse(tab);
             this.haveFriend = true;
-            console.log('FriendListLoad');
+            // console.log('FriendListLoad');
           }
         } else {
           this.showPopup("Error", "Problem retriving friends.");
@@ -95,13 +95,13 @@ export class FriendsPage {
           });
         });
         if (!findConversation) {
-          console.log("FriendsPage friendChat !findConversation");
+          // console.log("FriendsPage friendChat !findConversation");
           this.friendsList.forEach((element) => {
-            console.log("FriendsPage friendChat this.friendsList.forEach");
-            console.log(element);
+            // console.log("FriendsPage friendChat this.friendsList.forEach");
+            // console.log(element);
             if (element.id.localeCompare(idFriend) == 0) {
               let members = [localStorage.getItem('userId'), idFriend];
-              console.log("FriendsPage friendChat element.id.localeCompare(idFriend) == 0");
+              // console.log("FriendsPage friendChat element.id.localeCompare(idFriend) == 0");
               this.conversationService.createConversation(members, localStorage.getItem('firstName') + " " +
                 localStorage.getItem('lastName') + ", " + element.first_name + " " + element.last_name).subscribe((result: any) => {
                   this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, conversationId: result.id});

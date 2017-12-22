@@ -44,7 +44,7 @@ export class CheckFriendRequestPage {
   }
 
   checkIt(id1: string, id2: string) {
-    console.log("ID1 : " + id1 + "; ID2 : " + id2);
+    // console.log("ID1 : " + id1 + "; ID2 : " + id2);
     if (id1 === id2) {
       return true;
     }

@@ -31,7 +31,7 @@ export class UserPage {
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
       this.userService.getUserInfoById(navParams.get('userId')).subscribe(success => {
-        console.log(success);
+        // console.log(success);
         this.currentUser = new User(success.last_name, success.email);
         this.currentUser.firstName = success.first_name;
       },
@@ -114,7 +114,7 @@ export class UserPage {
                   role: 'cancel',
                   handler: () => {
                     this.navCtrl.setRoot(LoginPage);
-                    console.log('Ok clicked');
+                    // console.log('Ok clicked');
                   }
                 }]
               });
@@ -122,7 +122,7 @@ export class UserPage {
             }, error => {
               this.showPopup("Error", "Error cleaning account");
             });
-            console.log('Delete clicked');
+            // console.log('Delete clicked');
           }
         }
       ]

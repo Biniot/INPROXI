@@ -19,16 +19,16 @@ export class ListChatPage {
   listConversation: any;
 
   constructor(private userService: UserServiceProvider, public navCtrl: NavController, public events: Events) {
-    console.log("ListChatPage constructor");
+    // console.log("ListChatPage constructor");
     this.listConversation = [];
     userService.getUserConversation().subscribe(success => {
-        console.log("ListChatPage getUserConversation success");
-        console.log(success);
+        // console.log("ListChatPage getUserConversation success");
+        // console.log(success);
         this.listConversation = success;
       },
       error => {
-        console.log("ListChatPage getUserConversation error");
-        console.log(error);
+        // console.log("ListChatPage getUserConversation error");
+        // console.log(error);
       });
 
     events.subscribe('zone:push', (conversation) => {
