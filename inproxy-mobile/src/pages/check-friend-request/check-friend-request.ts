@@ -31,15 +31,16 @@ export class CheckFriendRequestPage {
     //this.userRequestList = [];
     this.userService.getUserInfo().subscribe(success => {
         if (success) {
+          this.loadList();
           //this.showPopup("Succes", "Succefully retrieve user.");
         } else {
           this.showPopup("Error", "Problem retrieving user.");
+          this.navCtrl.pop();
         }
       },
       error => {
         this.showPopup("Error", error);
       });
-    this.loadList();
   }
 
   checkIt(id1: string, id2: string) {
@@ -66,7 +67,7 @@ export class CheckFriendRequestPage {
   }
 
   loadList() {
-    this.userService.refreshProvider();
+    //this.userService.refreshProvider();
     this.userService.getFriendRequests().subscribe(
       success => {
         if (success) {

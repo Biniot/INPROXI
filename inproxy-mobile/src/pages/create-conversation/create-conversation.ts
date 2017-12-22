@@ -81,6 +81,8 @@ export class CreateConversationPage {
 
   createConversation() {
     this.newConversation.members.push(localStorage.getItem('userId'));
+    console.log();
+    console.log();
     this.conversationService.createConversation(this.newConversation.members, this.newConversation.name).subscribe((result: any) => {
       this.navCtrl.pop();
       if (this.newConversation.members.length == 2) {

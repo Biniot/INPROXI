@@ -32,8 +32,11 @@ export class ListChatPage {
       });
 
     events.subscribe('zone:push', (conversation) => {
-      // user and time are the same arguments passed in `events.publish(user, time)`
       this.listConversation.push(conversation);
+    });
+
+    events.subscribe('zone:pop', (conversationId) => {
+      //this.listConversation.push(conversation);
     });
     // // TODO : a virer une fois quon a les init
     //this.listConversation = [{name: "David le poulet", members: [], id: ""}, {name: "La bande a bono", members: [], id: ""}];
@@ -42,10 +45,6 @@ export class ListChatPage {
   lunchChatPage(id: string) {
     this.navCtrl.push('ChatPage', {conversationId: id});
   }
-
-  // public addFriendRequest() {
-  //   this.navCtrl.push('AddFriendRequestPage');
-  // }
 
   public createConversation() {
     this.navCtrl.push('CreateConversationPage');
