@@ -16,7 +16,6 @@ import {
 
 import {Geolocation} from '@ionic-native/geolocation';
 import {IoServiceProvider} from "../../providers/io-service/io-service";
-import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 //import {GeofenceProvider} from "../../providers/geofence/geofence";
 
