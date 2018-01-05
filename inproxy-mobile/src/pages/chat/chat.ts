@@ -1,8 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {User} from "../../model/userModel";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
-import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 import {IoServiceProvider} from "../../providers/io-service/io-service";
 import {ChatType} from "../../model/ChatType";
 import { ConversationServiceProvider } from '../../providers/conversation-service/conversation-service';
@@ -34,8 +32,8 @@ export class ChatPage {
     this.haveMessage = false;
     let onPrivateMessage = (message: any) => {
       _ngZone.run(() => {
-        console.log("onPrivateMessage");
-        console.log(message);
+        // console.log("onPrivateMessage");
+        // console.log(message);
         if (message.author.id.localeCompare(localStorage.getItem('userId')) != 0) {
           this.userService.getUserInfoById(message.author.id).subscribe(success => {
               //console.log(success);
@@ -59,12 +57,12 @@ export class ChatPage {
       });};
     this.ioService.setPrivateMessageCallback(onPrivateMessage);
     this.userService.getUserInfo().subscribe(success => {
-        console.log('HomePage getUserInfo functionSuccess');
-        console.log(success);
+        // console.log('HomePage getUserInfo functionSuccess');
+        // console.log(success);
       },
       error => {
-        console.log('HomePage getUserInfo functionError');
-        console.log(error);
+        // console.log('HomePage getUserInfo functionError');
+        // console.log(error);
       });
 
     if (isUndefined(this.messageList)) {
@@ -77,8 +75,8 @@ export class ChatPage {
       this.ioService.connectSocket();
     }
     this.conversationService.getConversationById(this.navParams.get('conversationId')).subscribe(success => {
-        console.log("ChatPage getConversationById success");
-        console.log(success);
+        // console.log("ChatPage getConversationById success");
+        // console.log(success);
         this.currentConversation = success;
         this.pageTitle = this.currentConversation.name;
       },
@@ -88,8 +86,8 @@ export class ChatPage {
       });
 
     this.conversationService.getMessageConversation(this.navParams.get('conversationId')).subscribe((success: any) => {
-        console.log("ChatPage getMessageConversation success");
-        console.log(success);
+        // console.log("ChatPage getMessageConversation success");
+        // console.log(success);
         if (success.length > 0) {
           this.haveMessage = true;
           this.messageList = success;
@@ -103,7 +101,7 @@ export class ChatPage {
   }
 
   public sendMessage() {
-    console.log("ChatPage sendMessage");
+    // console.log("ChatPage sendMessage");
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
@@ -118,14 +116,14 @@ export class ChatPage {
       },
       id: ""
     };
-    console.log(newMessage);
+    // console.log(newMessage);
     this.ioService.sendMessage(newMessage.author.id, this.currentConversation.id, this.messageToSend);
     this.messageToSend = null;
     if (isUndefined(this.messageList)) {
       this.messageList = [];
     }
     this.messageList.push(newMessage);
-    console.log(this.messageList);
+    // console.log(this.messageList);
     this.haveMessage = true;
   }
 

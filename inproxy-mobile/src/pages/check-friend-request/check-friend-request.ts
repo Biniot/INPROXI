@@ -31,19 +31,20 @@ export class CheckFriendRequestPage {
     //this.userRequestList = [];
     this.userService.getUserInfo().subscribe(success => {
         if (success) {
+          this.loadList();
           //this.showPopup("Succes", "Succefully retrieve user.");
         } else {
           this.showPopup("Error", "Problem retrieving user.");
+          this.navCtrl.pop();
         }
       },
       error => {
         this.showPopup("Error", error);
       });
-    this.loadList();
   }
 
   checkIt(id1: string, id2: string) {
-    console.log("ID1 : " + id1 + "; ID2 : " + id2);
+    // console.log("ID1 : " + id1 + "; ID2 : " + id2);
     if (id1 === id2) {
       return true;
     }
@@ -56,6 +57,9 @@ export class CheckFriendRequestPage {
           if (success) {
             this.showPopup("Succes", "Succefully respond request.");
             this.loadList();
+            if (this.friendRequestList.length < 1) {
+              this.navCtrl.pop();
+            }
           } else {
             this.showPopup("Error", "Problem responding request.");
           }
@@ -66,7 +70,7 @@ export class CheckFriendRequestPage {
   }
 
   loadList() {
-    this.userService.refreshProvider();
+    //this.userService.refreshProvider();
     this.userService.getFriendRequests().subscribe(
       success => {
         if (success) {

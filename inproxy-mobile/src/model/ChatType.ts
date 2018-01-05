@@ -1,10 +1,8 @@
 export let ChatType = {
-  PRIVATE: 1,
-  GROUP: 2,
-  ROOM: 3,
+  STD_CONVERSATION: 1,
+  ROOM_CONVERSATION: 2,
   properties: {
-    1: {name: "Private", value: 1},
-    2: {name: "Group", value: 2},
-    3: {name: "Room", value: 3}
+    1: {name: "StdConversation", value: 1},
+    2: {name: "RoomConversation", value: 2}
   }
 };

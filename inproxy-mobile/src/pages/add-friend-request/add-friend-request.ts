@@ -54,11 +54,11 @@ export class AddFriendRequestPage {
       } else {
         firstName = value;
       }
-      console.log('firstName '+ firstName);
-      console.log('lastName '+ lastName);
+      // console.log('firstName '+ firstName);
+      // console.log('lastName '+ lastName);
       this.userService.searchUser(firstName, lastName).subscribe(success => {
           this.friendList = JSON.parse(localStorage.getItem('searchList'));
-          console.log(this.friendList);
+          // console.log(this.friendList);
           if (!this.showList) {
             this.showList = true;
           } else {

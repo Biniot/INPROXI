@@ -17,9 +17,9 @@
 
 <ion-content padding>
   <ion-list >
-    <ion-item *ngFor="let result of listConversation" (click)="lunchChatPage(result.conversation.id)">
-      {{result.conversation.name}} ({{result.conversation.members.length}})
-      <p>{{result.conversation.last_message}}</p>
+    <ion-item *ngFor="let conversation of listConversation" (click)="lunchChatPage(conversation.id, conversation.chatType)">
+      {{conversation.name}} ({{conversation.members.length}})
+      <p>{{conversation.last_message}}</p>
       <!--<button ion-button clear icon-only (click)="showInfoPage(1, privateChat.friendId)" item-end><ion-icon name="information-circle"></ion-icon></button>-->
       <!--<button ion-button clear icon-only (click)="lunchChatPage(1, privateChat.friendId, privateChat.friendName)" item-end><ion-icon name="chatbubbles"></ion-icon></button>-->
     </ion-item>

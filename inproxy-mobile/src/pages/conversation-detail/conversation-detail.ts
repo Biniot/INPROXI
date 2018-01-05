@@ -10,15 +10,15 @@ import {ChatType} from "../../model/ChatType";
  */
 @IonicPage()
 @Component({
-  selector: 'page-group-detail',
-  templateUrl: 'group-detail.html',
+  selector: 'page-conversation-detail',
+  templateUrl: 'conversation-detail.html',
 })
-export class GroupDetailPage {
-  currentGroup: any;
+export class ConversationDetailPage {
+  currentConversation: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    console.log("idRoom :" + this.navParams.get("idRoom"));
-    this.currentGroup = {name: "Le coin des écolos", userList: [
+    // console.log("idRoom :" + this.navParams.get("idRoom"));
+    this.currentConversation = {name: "Le coin des écolos", userList: [
       {fullName: "David lepoulet", userId: "David lepoulet", userAvatar: ""},
       {fullName: "Patate", userId: "Patate", userAvatar: ""}]};
   }
@@ -28,7 +28,7 @@ export class GroupDetailPage {
   }
 
   lunchChatPage(id: string, name: string) {
-    this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, id: id, pageTitle: name});
+    this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, id: id, pageTitle: name});
   }
 
   ionViewDidLoad() {

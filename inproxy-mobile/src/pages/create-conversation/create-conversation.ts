@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
 import {isUndefined} from "util";
@@ -20,12 +20,15 @@ export class CreateConversationPage {
   newConversation: {name: string, members: string[]};
   haveFriend: boolean;
   friendsList: Array<{id: string, first_name: string, last_name: string}>;
+  loader: any;
 
   constructor(public navCtrl: NavController, private userService: UserServiceProvider, private conversationService: ConversationServiceProvider,
-              private alertCtrl: AlertController) {
+              private alertCtrl: AlertController, public loadingCtrl: LoadingController) {
     this.haveFriend = false;
     this.newConversation = {name:"", members:[]};
+    this.presentLoading("Retrieving friend list...");
     userService.getFriends().subscribe(success => {
+        this.loader.dismiss();
         if (success) {
           let tab = localStorage.getItem('friends');
           if (tab === 'undefined' || tab === null) {
@@ -43,17 +46,26 @@ export class CreateConversationPage {
         }
       },
       error => {
+        this.loader.dismiss();
         this.showPopup("Error", error);
       });
   }
 
+  presentLoading(message: string) {
+    this.loader = this.loadingCtrl.create({
+      content: message
+    });
+
+    this.loader.present();
+  }
+
   updateMembersList(friendId: string, event: boolean, index: number) {
-    // console.log("updateMembersList");
-    // console.log(this.newConversation.members);
-    // console.log(index);
-    // console.log(this.friendsList[index]);
-    // console.log(friendId);
-    // console.log(event);
+    console.log("updateMembersList");
+    console.log(this.newConversation.members);
+    console.log(index);
+    console.log(this.friendsList[index]);
+    console.log(friendId);
+    console.log(event);
     if (event) {
       if (!isUndefined(this.newConversation.members) && this.newConversation.members !== null && this.newConversation.members.length > 0) {
         let findIt = false;
@@ -81,13 +93,17 @@ export class CreateConversationPage {
 
   createConversation() {
     this.newConversation.members.push(localStorage.getItem('userId'));
+    console.log();
+    console.log();
+    this.presentLoading("Creating conversation...");
     this.conversationService.createConversation(this.newConversation.members, this.newConversation.name).subscribe((result: any) => {
+      this.loader.dismiss();
       this.navCtrl.pop();
-      if (this.newConversation.members.length == 2) {
-        this.navCtrl.push('ChatPage', {chatType: ChatType.PRIVATE, conversationId: result.id});
-      } else {
-        this.navCtrl.push('ChatPage', {chatType: ChatType.GROUP, conversationId: result.id});
-      }
+      this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, conversationId: result.id});
+    }, error => {
+      this.loader.dismiss();
+      this.showPopup('Error', error);
+      this.navCtrl.pop();
     });
   }
 

@@ -16,7 +16,6 @@ import {
 
 import {Geolocation} from '@ionic-native/geolocation';
 import {IoServiceProvider} from "../../providers/io-service/io-service";
-import {PrivateMessageStorageProvider} from "../../providers/custom-storage/private-message-storage";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 //import {GeofenceProvider} from "../../providers/geofence/geofence";
 
@@ -37,25 +36,14 @@ export class HomePage {
       this._ioService.connectSocket();
     }
     this._userService.getUserInfo().subscribe(success => {
-        console.log('HomePage getUserInfo functionSuccess');
-        console.log(success);
+        // console.log('HomePage getUserInfo functionSuccess');
+        // console.log(success);
       },
       error => {
-        console.log('HomePage getUserInfo functionError');
-        console.log(error);
+        // console.log('HomePage getUserInfo functionError');
+        // console.log(error);
       });
-    // let self = this;
-    // let onPrivateMessage = (data: any) => {
-    //   console.log("onPrivateMessage");
-    //   console.log(data);
-    //   self._PMStorage.addElem(data);};
-    // this._ioService.setPrivateMessageCallback(onPrivateMessage);
   }
-
-  functionSuccess(succes: any) {
-    console.log('functionSuccess');
-    console.log(succes);
-  };
 
   ngAfterViewInit(){
     // this.initMap();
