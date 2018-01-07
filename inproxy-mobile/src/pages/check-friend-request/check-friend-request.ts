@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {isUndefined} from "util";
@@ -21,25 +21,29 @@ export class CheckFriendRequestPage {
   //userRequestList: Array<{id: string, from: string, to: string, message: string}>;
   //haveUserRequest: boolean;
   haveFriendRequest: boolean;
+  loading: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController,
-              private friendService: FriendServiceProvider, private userService: UserServiceProvider) {
+              private friendService: FriendServiceProvider, private userService: UserServiceProvider, public loadingCtrl: LoadingController) {
 
     this.haveFriendRequest = false;
     // TODO : trier la liste en deux et remettre la vu qui est commenter
     //this.haveUserRequest = false;
     //this.userRequestList = [];
+    this.presentLoadingText("Loading friends requests...");
     this.userService.getUserInfo().subscribe(success => {
         if (success) {
           this.loadList();
           //this.showPopup("Succes", "Succefully retrieve user.");
         } else {
+          this.loading.dismiss();
           this.showPopup("Error", "Problem retrieving user.");
           this.navCtrl.pop();
         }
       },
       error => {
         this.showPopup("Error", error);
+        this.loading.dismiss();
       });
   }
 
@@ -49,6 +53,15 @@ export class CheckFriendRequestPage {
       return true;
     }
     return false;
+  }
+
+  presentLoadingText(message: string) {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: message
+    });
+
+    this.loading.present();
   }
 
   public manageFriendRequest(idFriendRequest: string, isAccepted: boolean) {
@@ -76,6 +89,7 @@ export class CheckFriendRequestPage {
         if (success) {
           let stringRequest = localStorage.getItem('friendRequests');
           if (stringRequest === 'undefined') {
+            this.loading.dismiss();
             // TODO : TIPS TA PAS DAMIS
           } else {
             // TODO : trier la liste en deux et remettre la vu qui est commenter
@@ -106,15 +120,19 @@ export class CheckFriendRequestPage {
                 }
               });
             } else {
+              this.loading.dismiss();
               this.navCtrl.pop();
             }
             this.haveFriendRequest = true;
+            this.loading.dismiss();
           }
         } else {
           this.showPopup("Error", "Problem retriving friend request.");
+          this.loading.dismiss();
         }},
       error => {
         this.showPopup("Error", error);
+        this.loading.dismiss();
       });
   }
 

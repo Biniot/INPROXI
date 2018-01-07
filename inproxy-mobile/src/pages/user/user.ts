@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import { UserServiceProvider} from "../../providers/user-service/user-service";
 import { EditUserPage } from '../edit-user/edit-user';
 import {User} from "../../model/userModel";
@@ -20,24 +20,30 @@ import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
 })
 export class UserPage {
   currentUser: User;
+  loading: any;
   deleteUserSucces: boolean;
   isUser: boolean;
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController,
-              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider) {
+              private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider,
+              public loadingCtrl: LoadingController) {
     this.deleteUserSucces = false;
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
+      this.presentLoadingText("Loading friend info...");
       this.userService.getUserInfoById(navParams.get('userId')).subscribe(success => {
         // console.log(success);
         this.currentUser = new User(success.last_name, success.email);
         this.currentUser.firstName = success.first_name;
+          this.loading.dismiss();
       },
         error => {
           this.showPopup("Error", error);
+          this.loading.dismiss();
         });
     } else {
       this.isUser = true;
+      this.presentLoadingText("Loading your info...");
       this.userService.getUserInfo().subscribe(success => {
         if (success) {
             this.reloadUser();
@@ -45,9 +51,11 @@ export class UserPage {
           } else {
             this.showPopup("Error", "Problem retrieving user.");
           }
+          this.loading.dismiss();
         },
         error => {
           this.showPopup("Error", error);
+          this.loading.dismiss();
         });
     }
 
@@ -59,6 +67,15 @@ export class UserPage {
 
   public editUserNav() {
     this.navCtrl.push('EditUserPage', { "parentPage": this });
+  }
+
+  presentLoadingText(message: string) {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: message
+    });
+
+    this.loading.present();
   }
 
   public reloadUser() {

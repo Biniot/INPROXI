@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 //import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 import { UserPage } from '../user/user';
@@ -20,11 +20,12 @@ import {ChatType} from "../../model/ChatType";
 export class FriendsPage {
   haveRequest: boolean;
   haveFriend: boolean;
+  loading: any;
   friendsList: Array<{id: string, first_name: string, last_name: string}>;
 
   constructor(public navCtrl: NavController, /*public navParams: NavParams,*/ private alertCtrl: AlertController,
               public userService: UserServiceProvider, /*private friendRequestService: FriendServiceProvider,*/
-              private conversationService: ConversationServiceProvider) {
+              private conversationService: ConversationServiceProvider, public loadingCtrl: LoadingController) {
     // this.friendsList = [
     //   {name: 'Obi'},
     //   {name: 'Ani'},
@@ -37,7 +38,17 @@ export class FriendsPage {
     this.haveFriend = false;
   }
 
+  presentLoadingText(message: string) {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: message
+    });
+
+    this.loading.present();
+  }
+
   ionViewWillEnter() {
+    this.presentLoadingText("Loading friends...");
     this.userService.getFriends().subscribe(success => {
         if (success) {
           let tab = localStorage.getItem('friends');
@@ -52,9 +63,11 @@ export class FriendsPage {
         } else {
           this.showPopup("Error", "Problem retriving friends.");
         }
+        this.loading.dismiss();
       },
       error => {
         this.showPopup("Error", error);
+        this.loading.dismiss();
       });
     this.userService.getFriendRequests().subscribe(success => {
         if (success) {

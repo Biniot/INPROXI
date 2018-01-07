@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {ChatType} from "../../model/ChatType";
 
 /**
@@ -15,12 +15,25 @@ import {ChatType} from "../../model/ChatType";
 })
 export class ConversationDetailPage {
   currentConversation: any;
+  loading: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // console.log("idRoom :" + this.navParams.get("idRoom"));
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController) {
+    // console.log("idRoom :" + this.navParams.get("idConversation"));
     this.currentConversation = {name: "Le coin des écolos", userList: [
       {fullName: "David lepoulet", userId: "David lepoulet", userAvatar: ""},
       {fullName: "Patate", userId: "Patate", userAvatar: ""}]};
+
+    // this.presentLoadingText("Loading friends...");
+    // this.loading.dismiss();
+  }
+
+  presentLoadingText(message: string) {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: message
+    });
+
+    this.loading.present();
   }
 
   public showUserInfoPage(idUser: string) {
