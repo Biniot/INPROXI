@@ -113,7 +113,8 @@ export class FriendsPage {
           });
         });
         if (!findConversation) {
-           console.log("FriendsPage friendChat !findConversation");
+          console.log("FriendsPage friendChat !findConversation");
+          // TODO : forEach useless
           this.friendsList.forEach((element) => {
              console.log("FriendsPage friendChat this.friendsList.forEach");
              console.log(element);

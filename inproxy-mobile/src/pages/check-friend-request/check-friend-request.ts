@@ -68,11 +68,11 @@ export class CheckFriendRequestPage {
     this.friendService.answerFriendRequest(isAccepted, idFriendRequest).subscribe(
       success => {
           if (success) {
-            this.showPopup("Succes", "Succefully respond request.");
-            this.loadList();
-            if (this.friendRequestList.length < 1) {
+            if (this.friendRequestList.length == 1) {
               this.navCtrl.pop();
             }
+            this.showPopup("Succes", "Succefully respond request.");
+            this.loadList();
           } else {
             this.showPopup("Error", "Problem responding request.");
           }
