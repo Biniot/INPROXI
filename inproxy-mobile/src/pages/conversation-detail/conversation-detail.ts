@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {ChatType} from "../../model/ChatType";
+import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
+import {UserServiceProvider} from "../../providers/user-service/user-service";
 
 /**
  * Generated class for the groupDetailPage page.
@@ -17,14 +19,35 @@ export class ConversationDetailPage {
   currentConversation: any;
   loading: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController) {
-    // console.log("idRoom :" + this.navParams.get("idConversation"));
-    this.currentConversation = {name: "Le coin des écolos", userList: [
-      {fullName: "David lepoulet", userId: "David lepoulet", userAvatar: ""},
-      {fullName: "Patate", userId: "Patate", userAvatar: ""}]};
+  constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,
+              private alertCtrl: AlertController, private conversationService: ConversationServiceProvider, private userService: UserServiceProvider) {
+    // console.log("idConversation :" + this.navParams.get("idConversation"));
+    this.currentConversation = {name: "", members: [], id: ""};
 
-    // this.presentLoadingText("Loading friends...");
-    // this.loading.dismiss();
+    this.presentLoadingText("Loading conversation detail...");
+    this.conversationService.getConversationById(this.navParams.get('idConversation')).subscribe((success: any) => {
+        console.log("ConversationDetailPage getConversationById success");
+        console.log(success);
+        this.currentConversation = success;
+        let members = [];
+        success.members.forEach(elem => {
+          this.userService.getUserInfoById(elem).subscribe(success => {
+              // console.log(success);
+              let member = {last_name: success.last_name, first_name: success.first_name, id: success.id};
+              members.push(member);
+            },
+            error => {
+              this.showPopup("Error", error);
+            });
+        });
+        this.currentConversation.members = members;
+        this.loading.dismiss();
+      },
+      error => {
+        this.showPopup("Error", error);
+        this.loading.dismiss();
+        this.navCtrl.pop();
+      });
   }
 
   presentLoadingText(message: string) {
@@ -46,6 +69,19 @@ export class ConversationDetailPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad groupDetailPage');
+  }
+
+  showPopup(title, text) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: text,
+      buttons: [
+        {
+          text: 'OK'
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

@@ -81,6 +81,10 @@ export class ListChatPage {
     this.loading.present();
   }
 
+  public showInfoPage(idConversation: string) {
+    this.navCtrl.push('ConversationDetailPage', {idConversation: idConversation});
+  }
+
   lunchChatPage(id: string, chatType) {
     this.navCtrl.push('ChatPage', {chatType: chatType, conversationId: id});
   }

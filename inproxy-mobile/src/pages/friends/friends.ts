@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, LoadingController, NavController} from 'ionic-angular';
 import {UserServiceProvider} from "../../providers/user-service/user-service";
-//import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 import { UserPage } from '../user/user';
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
 import {ChatType} from "../../model/ChatType";
@@ -23,17 +22,9 @@ export class FriendsPage {
   loading: any;
   friendsList: Array<{id: string, first_name: string, last_name: string}>;
 
-  constructor(public navCtrl: NavController, /*public navParams: NavParams,*/ private alertCtrl: AlertController,
-              public userService: UserServiceProvider, /*private friendRequestService: FriendServiceProvider,*/
-              private conversationService: ConversationServiceProvider, public loadingCtrl: LoadingController) {
-    // this.friendsList = [
-    //   {name: 'Obi'},
-    //   {name: 'Ani'},
-    //   {name: 'Padme'},
-    //   {name: 'Yoda'},
-    //   {name: 'Luke'},
-    //   {name: 'Han'}
-    // ]
+  constructor(public navCtrl: NavController, private alertCtrl: AlertController,
+              public userService: UserServiceProvider, private conversationService: ConversationServiceProvider,
+              public loadingCtrl: LoadingController) {
     this.haveRequest = false;
     this.haveFriend = false;
   }
@@ -95,32 +86,32 @@ export class FriendsPage {
   }
 
   public friendChat(idFriend: string) {
-    console.log("FriendsPage friendChat idFriend");
-    console.log(idFriend);
+    // console.log("FriendsPage friendChat idFriend");
+    // console.log(idFriend);
     let findConversation = false;
     this.userService.getUserConversation().subscribe(success => {
-        console.log("FriendsPage friendChat getUserConversation");
-        console.log(success);
+        // console.log("FriendsPage friendChat getUserConversation");
+        // console.log(success);
         success.forEach((result) => {
           result.conversation.members.forEach((member) => {
             if (member.id.localeCompare(idFriend) == 0 && result.conversation.members.length == 2) {
               if (!findConversation) {
                 this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, conversationId: result.conversation.id});
               }
-              console.log("FriendsPage friendChat findConversation");
+              // console.log("FriendsPage friendChat findConversation");
               findConversation = true;
             }
           });
         });
         if (!findConversation) {
-          console.log("FriendsPage friendChat !findConversation");
+          // console.log("FriendsPage friendChat !findConversation");
           // TODO : forEach useless
           this.friendsList.forEach((element) => {
-             console.log("FriendsPage friendChat this.friendsList.forEach");
-             console.log(element);
+             // console.log("FriendsPage friendChat this.friendsList.forEach");
+             // console.log(element);
             if (element.id.localeCompare(idFriend) == 0) {
               let members = [localStorage.getItem('userId'), idFriend];
-               console.log("FriendsPage friendChat element.id.localeCompare(idFriend) == 0");
+               // console.log("FriendsPage friendChat element.id.localeCompare(idFriend) == 0");
               this.conversationService.createConversation(members, localStorage.getItem('firstName') + " " +
                 localStorage.getItem('lastName') + ", " + element.first_name + " " + element.last_name).subscribe((result: any) => {
                   this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, conversationId: result.id});

@@ -16,6 +16,7 @@ import {UserServiceProvider} from "../../providers/user-service/user-service";
 })
 export class AddFriendRequestPage {
   friendRequestCredentials = {name : '', firstName: '', lastName: '', idFriend : '', message: ''};
+  friendChoiceList: any;
   friendList: any;
   showList: boolean;
 
@@ -30,16 +31,48 @@ export class AddFriendRequestPage {
       error => {
         this.showPopup("Error", error);
       });
+    let tab = localStorage.getItem('friends');
+    if (tab === 'undefined' || tab === null) {
+      this.friendList = [
+      ]
+    } else {
+      this.friendList = JSON.parse(tab);
+    }
   }
 
   public addFriend() {
     console.log('addFriendRequest');
-    this.friendRequestProvider.addFriendRequest(this.friendRequestCredentials.idFriend, this.friendRequestCredentials.message).subscribe(success => {
-        this.showPopup("Succes", "Succefully add request friend.");
-      },
-      error => {
-        this.showPopup("Error", error);
+    let isCheat = false;
+    if (this.friendChoiceList == null) {
+      this.showPopup("Error", "You change the name after you select it, reselect your friend.");
+      return;
+    }
+    this.friendChoiceList.forEach(elem => {
+      if (elem.id.localeCompare(this.friendRequestCredentials.idFriend) == 0 && (elem.first_name.localeCompare(this.friendRequestCredentials.firstName) !== 0 || elem.last_name.localeCompare(this.friendRequestCredentials.lastName) !== 0)) {
+        isCheat = true;
+      }
+    });
+    if (!isCheat) {
+      let isFind = false;
+      this.friendList.forEach(elem => {
+        if (this.friendRequestCredentials.idFriend.localeCompare(elem.id) == 0) {
+          isFind = true;
+        }
       });
+      if (!isFind) {
+        this.friendRequestProvider.addFriendRequest(this.friendRequestCredentials.idFriend, this.friendRequestCredentials.message).subscribe(success => {
+            this.showPopup("Succes", "Succefully add request friend.");
+          },
+          error => {
+            this.showPopup("Error", error);
+          });
+      } else {
+        this.showPopup("Error", "You already have this friend.");
+      }
+    } else {
+      this.showPopup("Error", "You change the name after you select it, reselect your friend.");
+      this.friendRequestCredentials = {name : '', firstName: '', lastName: '', idFriend : '', message: ''};
+    }
   }
 
   public searchForIt(ev: any) {
@@ -57,8 +90,8 @@ export class AddFriendRequestPage {
       // console.log('firstName '+ firstName);
       // console.log('lastName '+ lastName);
       this.userService.searchUser(firstName, lastName).subscribe(success => {
-          this.friendList = JSON.parse(localStorage.getItem('searchList'));
-          // console.log(this.friendList);
+          this.friendChoiceList = JSON.parse(localStorage.getItem('searchList'));
+          // console.log(this.friendChoiceList);
           if (!this.showList) {
             this.showList = true;
           } else {
@@ -72,7 +105,7 @@ export class AddFriendRequestPage {
   }
 
   public updateForm(friendId: string) {
-    for (let friend of this.friendList) {
+    for (let friend of this.friendChoiceList) {
       if (friend.id === friendId) {
         this.friendRequestCredentials.name = friend.first_name + ' ' + friend.last_name;
         this.friendRequestCredentials.firstName = friend.first_name;

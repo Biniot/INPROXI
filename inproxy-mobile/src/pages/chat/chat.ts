@@ -32,11 +32,12 @@ export class ChatPage {
     this.haveMessage = false;
     let onPrivateMessage = (message: any) => {
       _ngZone.run(() => {
-        // console.log("onPrivateMessage");
-        // console.log(message);
+        console.log("onPrivateMessage");
+        console.log(message);
         if (message.author.id.localeCompare(localStorage.getItem('userId')) != 0) {
           this.userService.getUserInfoById(message.author.id).subscribe(success => {
-              //console.log(success);
+              console.log("onPrivateMessage getUserInfoById");
+              console.log(success);
               let newMessage = {
                 createdAt: new Date().toDateString(),
                 content: message.content,
@@ -101,7 +102,7 @@ export class ChatPage {
   }
 
   public sendMessage() {
-    // console.log("ChatPage sendMessage");
+    console.log("ChatPage sendMessage");
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
@@ -116,14 +117,14 @@ export class ChatPage {
       },
       id: ""
     };
-    // console.log(newMessage);
+    console.log(newMessage);
     this.ioService.sendMessage(newMessage.author.id, this.currentConversation.id, this.messageToSend);
     this.messageToSend = null;
     if (isUndefined(this.messageList)) {
       this.messageList = [];
     }
     this.messageList.push(newMessage);
-    // console.log(this.messageList);
+    console.log(this.messageList);
     this.haveMessage = true;
   }
 

@@ -46,7 +46,7 @@
 
       <div class="searchRes">
         <ion-list *ngIf="showList" >
-          <ion-item *ngFor="let friend of friendList" >
+          <ion-item *ngFor="let friend of friendChoiceList" >
             <h2 (click)="updateForm(friend.id)">{{friend.first_name}} {{friend.last_name}}</h2>
           </ion-item>
         </ion-list>
