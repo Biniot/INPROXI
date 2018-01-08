@@ -34,8 +34,8 @@ export class ChatPage {
       _ngZone.run(() => {
         console.log("onPrivateMessage");
         console.log(message);
-        if (message.author.id.localeCompare(localStorage.getItem('userId')) != 0) {
-          this.userService.getUserInfoById(message.author.id).subscribe(success => {
+        if (message.author.localeCompare(localStorage.getItem('userId')) != 0) {
+          this.userService.getUserInfoById(message.author).subscribe(success => {
               console.log("onPrivateMessage getUserInfoById");
               console.log(success);
               let newMessage = {
@@ -44,7 +44,7 @@ export class ChatPage {
                 author : {
                   first_name: success.first_name,
                   last_name: success.last_name,
-                  id: message.author.id
+                  id: message.author
                 },
                 id: ""
               };
