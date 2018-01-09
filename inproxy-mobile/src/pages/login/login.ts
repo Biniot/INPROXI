@@ -52,6 +52,10 @@ export class LoginPage {
     this.loading.present();
   }
 
+  forgotPassword() {
+    this.navCtrl.push('ForgotPasswordPage', {email: this.registerCredentials.email});
+  }
+
   showError(text) {
     this.loading.dismiss();
 
