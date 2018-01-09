@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, Injectable } from '@angular/core';
 import { Modal, NavController, IonicPage, ModalController } from 'ionic-angular';
 import { HttpRequestProvider } from '../../providers/http-request/http-request';
 import { API_ADDRESS, VERSION, ROOM_ENDPOINT_POST } from '../../providers/constants/constants';
