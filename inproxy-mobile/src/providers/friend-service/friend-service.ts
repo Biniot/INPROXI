@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpRequestProvider } from '../http-request/http-request';
-import {API_ADDRESS, VERSION, FRIENDREQUEST_ENDPOINT} from '../constants/constants';
+import {API_ADDRESS, VERSION, FRIENDREQUEST_ENDPOINT, FRIEND_ENDPOINT, USERS_ENDPOINT} from '../constants/constants';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/Rx';
@@ -48,6 +48,20 @@ export class FriendServiceProvider {
         err => {observer.error(err)},
         () => {
           observer.complete();
+        });
+    });
+  }
+
+  // Supprime le user connecter
+  public deleteFriend(idFriend: string) {
+    return Observable.create(observer => {
+      this.request.del(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + FRIEND_ENDPOINT + "/" + idFriend, {
+      }).subscribe(
+        result => {
+          observer.next(true);
+          observer.complete();
+        }, err => {
+          observer.error(err.message);
         });
     });
   }

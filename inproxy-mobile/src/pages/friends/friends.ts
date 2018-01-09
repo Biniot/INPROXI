@@ -4,6 +4,7 @@ import {UserServiceProvider} from "../../providers/user-service/user-service";
 import { UserPage } from '../user/user';
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
 import {ChatType} from "../../model/ChatType";
+import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 
 /**
  * Generated class for the FriendsPage page.
@@ -24,7 +25,7 @@ export class FriendsPage {
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController,
               public userService: UserServiceProvider, private conversationService: ConversationServiceProvider,
-              public loadingCtrl: LoadingController) {
+              public loadingCtrl: LoadingController, public friendService: FriendServiceProvider) {
     this.haveRequest = false;
     this.haveFriend = false;
   }
@@ -38,7 +39,7 @@ export class FriendsPage {
     this.loading.present();
   }
 
-  ionViewWillEnter() {
+  loadFriend() {
     this.presentLoadingText("Loading friends...");
     this.userService.getFriends().subscribe(success => {
         if (success) {
@@ -60,6 +61,10 @@ export class FriendsPage {
         this.showPopup("Error", error);
         this.loading.dismiss();
       });
+  }
+
+  ionViewWillEnter() {
+    this.loadFriend();
     this.userService.getFriendRequests().subscribe(success => {
         if (success) {
           let stringRequest = localStorage.getItem('friendRequests');
@@ -79,6 +84,25 @@ export class FriendsPage {
 
   public checkFriendRequest() {
     this.navCtrl.push('CheckFriendRequestPage');
+  }
+
+  public deleteFriend(idFriend: string) {
+    this.friendService.deleteFriend(idFriend).subscribe(success => {
+      console.log('FriendsPage deleteFriend success');
+        if (success) {
+          console.log('FriendsPage deleteFriend if (success)');
+          this.showPopup("Succes", "Friend deleted.");
+          this.loadFriend();
+        } else {
+          this.showPopup("Error", "Problem retriving friend request.");
+        }
+      },
+      error => {
+        console.log('FriendsPage deleteFriend error');
+        console.log(error);
+        this.loadFriend();
+        //this.showPopup("Error", error);
+      });
   }
 
   public friendInfo(idFriend: string) {

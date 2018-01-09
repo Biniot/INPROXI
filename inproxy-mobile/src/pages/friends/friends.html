@@ -26,6 +26,9 @@
       <button ion-button clear icon-only item-end (click)="friendChat(friend.id)">
         <ion-icon name="chatbubbles"></ion-icon>
       </button>
+      <button ion-button clear icon-only item-end (click)="deleteFriend(friend.id)">
+        <ion-icon name="trash"></ion-icon>
+      </button>
     </ion-item>
   </ion-list>
   <ion-card *ngIf="!haveFriend">
