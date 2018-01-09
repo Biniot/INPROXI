@@ -43,11 +43,10 @@ page-add-friend-request {
 
     .register-btn {
       color: #ffffff;
-      font-size: 0.8em;
+      font-size: 1em;
     }
 
       .item {
-
           font-weight:700 ;
           margin-bottom: 5px;
       }
@@ -63,5 +62,9 @@ page-add-friend-request {
           height: 270px;
           margin-bottom: 10px;
       }
+    
+    ion-toolbar {
+      padding: 0px;
+    }
   }
 }

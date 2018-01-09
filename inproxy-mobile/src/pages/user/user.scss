@@ -49,7 +49,10 @@ page-user {
       height: 0px;
     }
 
-    img {
+    ion-footer {
+      ion-toolbar {
+        background: transparent !important;
+      }
     }
   }
 }
