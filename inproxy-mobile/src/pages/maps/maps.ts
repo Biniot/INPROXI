@@ -301,9 +301,7 @@ export class MapsPage {
 
 
       // this.allZones.push(allData);
-
-        // this.createAllPolygons(this.allZones);
-
+    // this.createAllPolygons(this.allZones);
       // this.map.clear().then(res => {
       //   // console.log(this.allZones[i].polyPoints[0].toString());
       //   // this.createPolygon(this.allZones[i].polyPoints);

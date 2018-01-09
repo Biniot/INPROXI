@@ -92,6 +92,9 @@ export class ChatPage {
         if (success.length > 0) {
           this.haveMessage = true;
           this.messageList = success;
+          this.messageList.forEach((elem) => {
+
+          });
         }
         //this.showPopup("onMessageReceive", "Size of the data receive : " + this.messageList.length);
       },
