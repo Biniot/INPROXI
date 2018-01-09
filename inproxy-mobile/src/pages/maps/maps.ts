@@ -1,5 +1,7 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, Injectable } from '@angular/core';
 import { Modal, NavController, IonicPage, ModalController } from 'ionic-angular';
+import { HttpRequestProvider } from '../../providers/http-request/http-request';
+import { API_ADDRESS, VERSION, ROOM_ENDPOINT_POST } from '../../providers/constants/constants';
 
 import {
   GoogleMaps,
@@ -12,10 +14,12 @@ import {
   ILatLng,
   VisibleRegion,
   LatLngBounds,
-  BaseArrayClass, GoogleMapsEvent
+  BaseArrayClass,
+  GoogleMapsEvent
  } from '@ionic-native/google-maps';
 
 import { Geolocation } from '@ionic-native/geolocation';
+import { Observable } from "rxjs/Observable";
 
 @IonicPage()
 @Component({
@@ -31,29 +35,28 @@ export class MapsPage {
   recordPolyg: Boolean;
   iconAddPolyg: String;
   currentPolyg: ILatLng[];
+  post: HttpRequestProvider;
   // polyPoints: ILatLng[];
   subsRec: any;
   currentZone: {
-    polyPoints: ILatLng[],
-    zoneName: String,
-    isPublic: Boolean,
-    zoneAdm: String
+    coords: ILatLng[],
+    name: String,
+    admin_id: String
   };
   allZones: [{
-    polyPoints: ILatLng[],
-    zoneName: String,
-    isPublic: Boolean,
-    zoneAdm: String
+    coords: ILatLng[],
+    name: String,
+    admin_id: String
   }];
   // allZones: any;
-  // zoneAdm: String;
+  // admin_id: String;
   //zoneName: String;
 
   constructor(public navCtrl: NavController,
               private modal: ModalController,
               private googleMaps: GoogleMaps,
-              private geoLoc: Geolocation) {
-
+              private geoLoc: Geolocation,
+              private request : HttpRequestProvider) {
   }
 
   ngAfterViewInit(){
@@ -70,30 +73,20 @@ export class MapsPage {
     this.iconAddPolyg           = "add";
 
     this.currentZone = ({
-      polyPoints : points,
-      zoneName : name,
-      isPublic : true,
-      zoneAdm : adm
+      coords : points,
+      name : name,
+      admin_id : adm
     });
 
-    // this.currentZone.polyPoints = [];
-    // this.currentZone.zoneName   = "";
-    // this.currentZone.isPublic   = true;
-    // this.currentZone.zoneAdm    = "";
-
-    // this.allZones[0].polyPoints = this.currentZone.polyPoints;
-    // this.allZones[0].zoneName   = this.currentZone.zoneName;
-    // this.allZones[0].isPublic   = this.currentZone.isPublic;
-    // this.allZones[0].zoneAdm    = this.currentZone.zoneAdm;
-
     this.allZones = [{
-      polyPoints: this.currentZone.polyPoints,
-      zoneName: this.currentZone.zoneName,
-      isPublic: this.currentZone.isPublic,
-      zoneAdm: this.currentZone.zoneAdm
+      coords: this.currentZone.coords,
+      name: this.currentZone.name,
+      admin_id: this.currentZone.admin_id
     }];
     //
-    this.initMap();
+    let element = this.mapElement.nativeElement;
+    this.map = this.googleMaps.create(element);
+    // this.initMap();
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       this.map.setMyLocationEnabled(true);
       this.map.getMyLocation().then(location => {
@@ -125,7 +118,7 @@ export class MapsPage {
   //Load the groupMap
   initMap(){
     let element = this.mapElement.nativeElement;
-    this.map = this.googleMaps.create(element)
+    this.map = this.googleMaps.create(element);
   }
 
   getLocation(){
@@ -153,7 +146,7 @@ export class MapsPage {
       zoom: 15,
       tilt: 10
     };
-    this.map.moveCamera(options).then(res => {console.log("move camera: " + res);},
+    this.map.moveCamera(options).then(res => {console.log("move camera bloup: " + res);},
       err => { console.error("move camera: " + err); })
   }
 
@@ -199,59 +192,47 @@ export class MapsPage {
     }, err => { console.error("addPolygon: " + err); });
   }
 
-  createAllPolygons(allZones : [{ polyPoints : ILatLng[],
-    zoneName : String,
-    isPublic : Boolean,
-    zoneAdm : String }])
+  createAllPolygons(allZones : [{ coords : ILatLng[],
+    name : String,
+    admin_id : String }])
   {
-    // zoneAdm: createur de la zone, besoin de recuperer le nom (ou ID) de l'utilisateur
+    // admin_id: createur de la zone, besoin de recuperer le nom (ou ID) de l'utilisateur
 
     // allZones : [{ polyPoints : ILatLng[],
     //   zoneName : String,
     //   isPublic : Boolean,
-    //   zoneAdm : String }];
+    //   admin_id : String }];
     // let polyn : String;
     // let polyg : ILatLng[];
     this.map.clear().then(res => {
       console.log("mapClear: " + res);
       for (let i = 1; i <= allZones.length; i++){
         let polyg: ILatLng[];
-        polyg = allZones[i].polyPoints;
+        polyg = allZones[i].coords;
         this.createPolygon(polyg);
       }
     },err => { console.error("mapClear: " + err); });
-
   }
-
-  // centerMap() {
-  //   this.getLocation().then(res => {
-  //     this.loc = new LatLng(res.coords.latitude, res.coords.longitude);
-  //
-  //     this.map.clear().then(res => {
-  //       this.moveCam(this.loc);
-  //       console.log(res);
-  //       this.createMarker(this.loc).then((marker: Marker) => {
-  //         marker.hideInfoWindow();
-  //       }, err => { console.error(err); });
-  //     }, err=> {console.error(err);});
-  //   }, err => { console.error(err); });
-  // }
 
   createZone()
   {
+    // console.log("bloup pidi bloup bloup");
+    // console.log("formerstate1 : " + this.recordPolyg);
     let formerState: Boolean;
     formerState = this.recordPolyg;
+    // console.log("formerstate2: " + this.recordPolyg);
     this.recordPolyg = !formerState;
+    // console.log("formerstate3: " + this.recordPolyg);
     if (formerState === false)
     {
       this.iconAddPolyg = "square";
+      // console.log("formerstate: " + this.recordPolyg);
       this.getClickPos();
     }
     else
     {
       // this.recordPolyg = false;
       this.iconAddPolyg ="add";
-      // envoyer sur le serveur
       this.subsRec.unsubscribe();
       this.saveZone();
     }
@@ -264,7 +245,7 @@ export class MapsPage {
     let mkr = true;
     mpts = [];
 
-    this.currentZone.zoneName = "";
+    this.currentZone.name = "";
     this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
       spt = new LatLng(e.lat, e.lng);
       mpts.push(spt);
@@ -276,7 +257,7 @@ export class MapsPage {
             if (res != null) { mkr = false; }
           }, err => { console.error("createMarker" + err); });
         }
-        this.currentZone.polyPoints = mpts;
+        this.currentZone.coords = mpts;
         this.currentPolyg = mpts;
         this.createPolygon(mpts);
         console.log("mapClear: " + mpts);
@@ -286,25 +267,10 @@ export class MapsPage {
 
   saveZone()
   {
-    // const saveZoneOptions: ModalOptions = {
-    // };
-
-    // let i: number;
-    // i = this.allZones.length;
-    //
-    // let zoneData =
-    //   {
-    //   // this.currentZone;
-    //     polyPoints: this.currentZone.polyPoints,
-    //     zoneName: this.currentZone.zoneName,
-    //     isPublic: this.currentZone.isPublic,
-    //     zoneAdm: this.currentZone.zoneAdm
-    //   };
     const data = {
-          polyPoints: this.currentZone.polyPoints,
-          zoneName: this.currentZone.zoneName,
-          isPublic: this.currentZone.isPublic,
-          zoneAdm: this.currentZone.zoneAdm
+          coords: this.currentZone.coords,
+          name: this.currentZone.name,
+          admin_id: this.currentZone.admin_id
     };
 
     let saveZone: Modal = this.modal.create(
@@ -318,31 +284,32 @@ export class MapsPage {
     }, err => { console.error(err) });
 
     saveZone.onDidDismiss((allData : {
-      polyPoints : ILatLng[],
-      zoneName : String,
-      isPublic : Boolean,
-      zoneAdm : String
+      name : String,
+      admin_id : String,
+      coords : ILatLng[]
     }) => {
-      let i = this.allZones.length;
-      console.log('MODAL DATA', allData);
-      console.log('data ' + allData.isPublic);
-      this.allZones.push(allData);
-      // this.allZones[i] = {
-      //   polyPoints : allData.polyPoints,
-      //   zoneName : allData.zoneName,
-      //   isPublic : allData.isPublic,
-      //   zoneAdm : allData.zoneAdm
-      // };
-      console.log('manip :' + this.allZones[i].zoneName);
+      return Observable.create(observer => {
+        this.post.request.post(API_ADDRESS + VERSION + ROOM_ENDPOINT_POST, allData
+        ).subscribe(res => {
+          observer.next(true);
+          observer.complete();
+          }, err => {
+          observer.error(err.message);
+        });
+      });
+    });
 
-        this.createAllPolygons(this.allZones);
+
+      // this.allZones.push(allData);
+
+        // this.createAllPolygons(this.allZones);
 
       // this.map.clear().then(res => {
       //   // console.log(this.allZones[i].polyPoints[0].toString());
       //   // this.createPolygon(this.allZones[i].polyPoints);
       //   // this.createAllPolygons(this.allZones);
       // },err => { console.error("mapClear: " + err); });
-     });
+     // });
   }
 
   containsLocation(position : ILatLng, path: ILatLng[])
@@ -368,23 +335,18 @@ export class MapsPage {
       lat: pos.lat,
       lng: pos.lng
     };
-
     let wn = 0,
       bounds = new LatLngBounds(points),
       sw = bounds.southwest,
       ne = bounds.northeast,
       offsetLng360 = sw.lng <= 0 && ne.lng >= 0 && sw.lng < ne.lng ? 360 : 0;
-
     sw.lng += offsetLng360;
     point.lng += offsetLng360;
-
     points = points.map(function(vertex) {
       vertex.lng += +offsetLng360;
       return vertex;
     });
-
     let vt, a, b;
-
     for (let i = 0; i < points.length - 1; i++) {
       a = points[i];
       b = points[i + 1];

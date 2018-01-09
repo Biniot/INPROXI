@@ -23,3 +23,5 @@ export let CONVERSATION_ENDPOINT = "conversation/";
 export let CONVERSATION_ENDPOINT_POST = "conversation";
 export let MESSAGES_ENDPOINT = "/messages";
 export let MESSAGE_ENDPOINT = "/message";
+export let ROOM_ENDPOINT = "room/";
+export let ROOM_ENDPOINT_POST = "room";

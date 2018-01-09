@@ -10,11 +10,7 @@
 <ion-content padding>
   <div #map id="map">
     <ul>
-      <!--<li>-->
-        <!--<button ion-button (click)="centerMap()">-->
-          <!--<ion-icon name="locate"></ion-icon>-->
-        <!--</button>-->
-      <!--</li>-->
+
       <li>
       </li>
     </ul>
@@ -22,11 +18,9 @@
   <ion-fab bottom right>
 
     <button ion-fab (click)="createZone()">
-      <ion-icon [name]=this.iconAddPolyg ></ion-icon>
+      <ion-icon [name]={{iconAddPolyg}} ></ion-icon>
+      <!--<ion-icon [name]=this.iconAddPolyg ></ion-icon>-->
     </button>
 
   </ion-fab>
-  <!--<button ion-button (click)="addPolyPoints(this._recordPolyg)">-->
-    <!--<ion-icon [name]=this._iconAddPolyg ></ion-icon>-->
-  <!--</button>-->
 </ion-content>

@@ -16,16 +16,14 @@ import { ILatLng } from "@ionic-native/google-maps";
 })
 
 export class SaveZonePage {
-  polyPoints: ILatLng[];
-  zoneName: String;
-  isPublic: Boolean;
-  zoneAdm: String;
+  coords: ILatLng[];
+  name: String;
+  admin_id: String;
 
   allData : {
-    polyPoints: ILatLng[],
-    zoneName: String,
-    isPublic: Boolean,
-    zoneAdm: String
+    coords: ILatLng[],
+    name: String,
+    admin_id: String
   };
 
   constructor(private navParams: NavParams,
@@ -34,10 +32,9 @@ export class SaveZonePage {
 
   ionViewWillLoad() {
     this.allData = this.navParams.get('zone');
-    this.polyPoints = this.allData.polyPoints;
-    this.zoneName = this.allData.zoneName;
-    this.isPublic = this.allData.isPublic;
-    this.zoneAdm = this.allData.zoneAdm;
+    this.coords = this.allData.coords;
+    this.name = this.allData.name;
+    this.admin_id = this.allData.admin_id;
   }
 
   closeModal(){
@@ -49,10 +46,9 @@ export class SaveZonePage {
   public validateZone()
   {
     this.allData = {
-      polyPoints: this.polyPoints,
-      zoneName: this.allData.zoneName,
-      isPublic: this.isPublic,
-      zoneAdm: this.zoneAdm
+      coords: this.coords,
+      name: this.allData.name,
+      admin_id: this.admin_id
     };
     this.closeModal();
   }
