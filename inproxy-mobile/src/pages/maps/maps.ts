@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, Injectable } from '@angular/core';
-import { Modal, NavController, IonicPage, ModalController } from 'ionic-angular';
+import { Modal, NavController, IonicPage, ModalController, Events } from 'ionic-angular';
 import { HttpRequestProvider } from '../../providers/http-request/http-request';
 import { API_ADDRESS, VERSION, ROOM_ENDPOINT_POST } from '../../providers/constants/constants';
 
@@ -56,7 +56,8 @@ export class MapsPage {
               private modal: ModalController,
               private googleMaps: GoogleMaps,
               private geoLoc: Geolocation,
-              private request : HttpRequestProvider) {
+              private request : HttpRequestProvider,
+              private events: Events) {
   }
 
   ngAfterViewInit(){

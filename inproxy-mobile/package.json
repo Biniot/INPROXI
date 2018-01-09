@@ -51,8 +51,7 @@
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.12",
-    "inproxi-plugin-geofence": "file:///C:\\Users\\Erwin\\Documents\\Work\\INPROXI\\inproxy-plugin-geofence"
+    "zone.js": "0.8.12"
   },
   "devDependencies": {
     "@ionic/app-scripts": "1.3.7",
