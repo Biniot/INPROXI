@@ -25,16 +25,15 @@ page-edit-user {
       padding-bottom: 100px;
     }
     
-    .edit-user-box {
-      padding: 20px 20px 0px 20px;
-      margin-top: 30px;
-    }
-
     ion-row {
       align-items: center;
       text-align: center;
     }
 
+    .scroll-content {
+      background-color: white !important;
+    }
+    
     ion-item {
       padding-left: 30px !important;
       margin-bottom: 10px;
@@ -56,5 +55,6 @@ page-edit-user {
     .submit-btn {
       border: 1px solid #ffffff;
     }
+    
   }
 }
