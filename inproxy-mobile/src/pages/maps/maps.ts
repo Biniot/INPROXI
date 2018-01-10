@@ -156,12 +156,15 @@ export class MapsPage {
 
   createPolygon(mpts: ILatLng[]){
     let strkcolor = '';
+    console.log("createPolygon 1 ");
     this.map.getMyLocation().then(location => {
       this.loc = location.latLng;
       }, err => { console.error(err);});
 
+    console.log("createPolygon 2 ");
     let isUserIn = this.containsLocation(this.loc, mpts);
     (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
+    console.log("createPolygon 3 ");
     let polygOptions: PolygonOptions = {
       points: mpts,
       strokeColor: strkcolor,
@@ -169,21 +172,22 @@ export class MapsPage {
       strokeWidth: 3,
       visible: true
     };
+    console.log("createPolygon 4 ");
     this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
       polyg.setVisible(true);
       polyg.setClickable(false);
     }, err => { console.error("addPolygon: " + err); });
+    console.log("createPolygon 5 ");
   }
 
   createAllPolygons()
   {
     this.map.clear().then(res => {
       console.log("mapClear: " + res);
-      for (let i = 1; i <= this.allZones.length; i++){
-        let polyg: ILatLng[];
-        polyg = this.allZones[i].coords;
-        this.createPolygon(polyg);
-      }
+      this.allZones.forEach(elem => {
+        console.log(elem.toString());
+        this.createPolygon(elem.coords);
+      });
     },err => { console.error("mapClear: " + err); });
   }
 

@@ -11,4 +11,8 @@ export class Room {
   //   this.lastName = lastName;
   //   this.email = email;
   // }
+
+  public toString() {
+    return "id : " + this.id + ", name : " + name + ", adminId : " + this.admin_id + ", coords size : " + this.coords.length;
+  }
 }
