@@ -25,6 +25,7 @@ GoogleMapsEvent
 } from '@ionic-native/google-maps';
 import {RoomServiceProvider} from "../../providers/room-service/room-service";
 import {Room} from "../../model/roomModel";
+import {UserServiceProvider} from "../../providers/user-service/user-service";
 
 @IonicPage()
 @Component({
@@ -53,7 +54,16 @@ export class MapsPage {
 
   constructor(public navCtrl: NavController, private modal: ModalController, private googleMaps: GoogleMaps,
               private geoLoc: Geolocation, private request : HttpRequestProvider, private roomService : RoomServiceProvider,
-              private alertCtrl: AlertController, public loadingCtrl: LoadingController, public events: Events) {
+              private alertCtrl: AlertController, public loadingCtrl: LoadingController, public events: Events,
+              private _userService: UserServiceProvider) {
+    this._userService.getUserInfo().subscribe(success => {
+        // console.log('HomePage getUserInfo functionSuccess');
+        // console.log(success);
+      },
+      error => {
+        // console.log('HomePage getUserInfo functionError');
+        // console.log(error);
+      });
   }
 
   presentLoadingText(message: string) {
@@ -70,7 +80,7 @@ export class MapsPage {
     let name : String;
     let points: ILatLng[];
     let adm:  String;
-    this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
+    this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'), localStorage.getItem('firstName'), localStorage.getItem('avatarPath'));
     this.currentUser.userId = localStorage.getItem('userId');
 
     name = "";

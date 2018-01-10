@@ -24,11 +24,14 @@ export class EditUserPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera,
               private alertCtrl: AlertController, private userService: UserServiceProvider, private auth: AuthServiceProvider) {
+    this.currentUser = new User("", "", "", "");
     this.userService.getUserInfo().subscribe(success => {
         if (success) {
-          this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
-          this.currentUser.firstName = localStorage.getItem('firstName');
-          this.currentUser.avatarPath = localStorage.getItem('avatarPath');
+          this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'), localStorage.getItem('firstName'), localStorage.getItem('avatarPath'));
+          console.log("this.currentUser");
+          console.log(this.currentUser);
+          // this.currentUser.firstName = localStorage.getItem('firstName');
+          // this.currentUser.avatarPath = localStorage.getItem('avatarPath');
         } else {
           this.showPopup("Error", "Problem retriving all profile's information.");
         }
