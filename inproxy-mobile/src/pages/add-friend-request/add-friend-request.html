@@ -9,7 +9,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Add friend request</ion-title>
+    <ion-title>Add a friend</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -23,7 +23,7 @@
             <ion-list inset>
               <div class="item">
                 <ion-item>
-                  <ion-input type="text" placeholder="Nom d'utilisateur" name="name" [(ngModel)]="friendRequestCredentials.name" (input)="searchForIt($event)" required></ion-input>
+                  <ion-input type="text" placeholder="Username" name="name" [(ngModel)]="friendRequestCredentials.name" (input)="searchForIt($event)" required></ion-input>
                 </ion-item>
               </div>
               <div class="item">
@@ -52,7 +52,7 @@
         </ion-list>
       </div>
       <ion-toolbar>
-        <button ion-button block class="submit-btn" type="submit" [disabled]="!registerForm.form.valid">Submit</button>
+        <button ion-button block class="submit-btn" type="submit" [disabled]="!registerForm.form.valid">Send</button>
       </ion-toolbar>
     </form>
     </div>
