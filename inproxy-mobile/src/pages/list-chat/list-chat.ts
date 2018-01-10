@@ -4,6 +4,7 @@ import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {ChatType} from "../../model/ChatType";
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
 import {IoServiceProvider} from "../../providers/io-service/io-service";
+import {Observable} from "rxjs/Observable";
 
 /**
  * Generated class for the ListChatPage page.
@@ -48,6 +49,7 @@ export class ListChatPage {
         // console.log(error);
       });
 
+    Observable.interval(500).takeWhile(() => true).subscribe(() => this.updateListRoom());
 
     // events.subscribe('zone:push', (room) => {
     //   this.listConversationRoom.push(room);
@@ -63,6 +65,9 @@ export class ListChatPage {
   }
 
   ionViewWillEnter() {
+  }
+
+  updateListRoom() {
     this.listConversationRoom = this.ioService.getList();
   }
 

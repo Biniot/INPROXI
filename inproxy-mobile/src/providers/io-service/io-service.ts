@@ -75,6 +75,8 @@ export class IoServiceProvider {
   }
 
   public getList() {
+    // console.log("IoServiceProvider getList");
+    // console.log(this.listConversationRoom);
     return this.listConversationRoom;
   }
 

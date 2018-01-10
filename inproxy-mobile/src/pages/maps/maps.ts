@@ -115,11 +115,11 @@ export class MapsPage {
     });
     this.roomService.getRoom().subscribe(success => {
         if (success) {
-          console.log('getRoom if (success)');
+          // console.log('getRoom if (success)');
           this.allZones = [];
           success.forEach(elem => {
-            console.log('getRoom forEach');
-            console.log(elem);
+            // console.log('getRoom forEach');
+            // console.log(elem);
             let newElem = new Room();
             newElem.admin_id = elem.admin_id;
             newElem.name = elem.name;
@@ -131,7 +131,7 @@ export class MapsPage {
               i++;
             }
             this.allZones.push(newElem);
-            console.log('getRoom push(elem)');
+            // console.log('getRoom push(elem)');
           });
           this.createAllPolygons();
         } else {
@@ -182,6 +182,8 @@ export class MapsPage {
   createPolygon(mpts: ILatLng[], room : any, needPush: boolean){
     let strkcolor = '';
     console.log("createPolygon 1 ");
+    console.log(needPush);
+    console.log(room);
     this.map.getMyLocation().then(location => {
       this.loc = location.latLng;
       }, err => { console.error(err);});
@@ -190,10 +192,11 @@ export class MapsPage {
     let isUserIn = this.containsLocation(this.loc, mpts);
     if (/*isUserIn && */needPush) {
       console.log("createPolygon emit ");
+      console.log(room);
       this.ioService.addConversation(room);
     }
     (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
-    console.log("createPolygon 3 ");
+    // console.log("createPolygon 3 ");
     let polygOptions: PolygonOptions = {
       points: mpts,
       strokeColor: strkcolor,
@@ -201,20 +204,21 @@ export class MapsPage {
       strokeWidth: 3,
       visible: true
     };
-    console.log("createPolygon 4 ");
+    // console.log("createPolygon 4 ");
     this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
       polyg.setVisible(true);
       polyg.setClickable(false);
     }, err => { console.error("addPolygon: " + err); });
-    console.log("createPolygon 5 ");
+    // console.log("createPolygon 5 ");
   }
 
   createAllPolygons()
   {
+    console.log("createAllPolygons 1 ");
     this.map.clear().then(res => {
       console.log("mapClear: " + res);
       this.allZones.forEach(elem => {
-        console.log(elem.toString());
+        // console.log(elem.toString());
         this.createPolygon(elem.coords, elem, true);
       });
     },err => { console.error("mapClear: " + err); });
