@@ -21,6 +21,8 @@ import { RoomServiceProvider } from '../providers/room-service/room-service';
 import { IoServiceProvider } from '../providers/io-service/io-service';
 import { ConversationServiceProvider } from '../providers/conversation-service/conversation-service';
 import { GeofenceProvider } from '../providers/geofence/geofence';
+import { Base64 } from '@ionic-native/base64';
+import { RoomMessageServiceProvider } from '../providers/room-message-service/room-message-service';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,9 @@ import { GeofenceProvider } from '../providers/geofence/geofence';
     IoServiceProvider,
     ConversationServiceProvider,
     GeofenceProvider,
-    RoomServiceProvider
+    RoomServiceProvider,
+    Base64,
+    RoomMessageServiceProvider
   ]
 })
 export class AppModule {}
