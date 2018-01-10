@@ -29,9 +29,10 @@
           </ion-avatar>
           <h2>From : {{friendRequest.from}}</h2>
           <h2>To : {{friendRequest.to}}</h2>
-          <ion-label class="item item-text-wrap"><h3>Message : </h3>{{friendRequest.message}}</ion-label>
+          <div class="item" text-wrap><h3>Message : </h3>{{friendRequest.message}}</div>
           <button ion-button color="danger" (click)="manageFriendRequest(friendRequest.id, false)">Refuse</button>
           <button ion-button color="primary" (click)="manageFriendRequest(friendRequest.id, true)">Accept</button>
+          <hr>
         </ion-item>
       </ion-list>
     </ion-card-content>
