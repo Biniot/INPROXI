@@ -27,6 +27,16 @@
       <!--<button ion-button clear icon-only (click)="lunchChatPage(1, privateChat.friendId, privateChat.friendName)" item-end><ion-icon name="chatbubbles"></ion-icon></button>-->
     </ion-item>
   </ion-list>
+  <ion-list >
+    <ion-item *ngFor="let conversationRoom of listConversationRoom">
+      <h2 (click)="lunchChatRoomPage(conversationRoom)">{{conversationRoom.name}}</h2>
+      <!--<button ion-button clear icon-only item-end (click)="showInfoPage(conversationRoom.id)">-->
+        <!--<ion-icon name="information-circle"></ion-icon>-->
+      <!--</button>-->
+      <!--<button ion-button clear icon-only (click)="showInfoPage(1, privateChat.friendId)" item-end><ion-icon name="information-circle"></ion-icon></button>-->
+      <!--<button ion-button clear icon-only (click)="lunchChatPage(1, privateChat.friendId, privateChat.friendName)" item-end><ion-icon name="chatbubbles"></ion-icon></button>-->
+    </ion-item>
+  </ion-list>
   <ion-fab right bottom>
     <button ion-fab class="link-btn" (click)="createConversation()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>

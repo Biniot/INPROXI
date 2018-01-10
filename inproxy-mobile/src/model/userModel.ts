@@ -1,10 +1,3 @@
-/*
-  Generated class for the UserServiceProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
-
 export interface Friend {
   userId: string;
   email: string;
@@ -13,20 +6,22 @@ export interface Friend {
 }
 
 export class User {
-  email: string;
-  firstName: string;
-  lastName: string;
-  avatarPath: string;
+  public email: string;
+  public firstName: string;
+  public lastName: string;
+  public avatarPath: string;
   //pseudo: string;
-  token: string;
-  password: string;
-  userId: string;
-  friends: {Friend};
-  friendRequests: Array<{name: string, message: string, id: string}>;
+  public token: string;
+  public password: string;
+  public userId: string;
+  public friends: {Friend};
+  public friendRequests: Array<{name: string, message: string, id: string}>;
 
-  constructor(lastName: string, email: string) {
+  constructor(lastName: string, email: string, firstName: string, avatarPath: string) {
     console.log('User constructor lastName ' + lastName + '; email ' + email);
     this.lastName = lastName;
     this.email = email;
+    this.avatarPath = avatarPath;
+    this.firstName = firstName;
   }
 }

@@ -33,8 +33,8 @@ export class UserPage {
       this.presentLoadingText("Loading friend info...");
       this.userService.getUserInfoById(navParams.get('userId')).subscribe(success => {
         // console.log(success);
-        this.currentUser = new User(success.last_name, success.email);
-        this.currentUser.firstName = success.first_name;
+        this.currentUser = new User(success.last_name, success.email, success.first_name, "");
+        //this.currentUser.firstName = ;
           this.loading.dismiss();
       },
         error => {
@@ -61,7 +61,7 @@ export class UserPage {
 
     // TODO : Gestion d'erreur fouaitter
     if (this.currentUser === undefined) {
-      this.currentUser = new User("undefined", "undefined");
+      this.currentUser = new User("undefined", "undefined", "", "");
     }
   }
 
@@ -79,9 +79,11 @@ export class UserPage {
   }
 
   public reloadUser() {
-    this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
-    this.currentUser.firstName = localStorage.getItem('firstName');
-    this.currentUser.avatarPath = localStorage.getItem('avatarPath');
+    this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'), localStorage.getItem('firstName'), localStorage.getItem('avatarPath'));
+    console.log("this.currentUser");
+    console.log(this.currentUser);
+    // this.currentUser.firstName = localStorage.getItem('firstName');
+    // this.currentUser.avatarPath = localStorage.getItem('avatarPath');
   }
 
   public deleteUser(){

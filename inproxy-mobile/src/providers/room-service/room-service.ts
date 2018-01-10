@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-import {API_ADDRESS, ROOMS_ENDPOINT, VERSION} from "../constants/constants";
-import {Observable} from "rxjs/Observable";
 import {HttpRequestProvider} from "../http-request/http-request";
+import {Observable} from "rxjs/Observable";
+import {API_ADDRESS, ROOM_ENDPOINT, VERSION} from "../constants/constants";
 
 /*
   Generated class for the RoomServiceProvider provider.
@@ -12,48 +13,71 @@ import {HttpRequestProvider} from "../http-request/http-request";
 */
 @Injectable()
 export class RoomServiceProvider {
-  private isRoomLoad: boolean;
 
   constructor(private request : HttpRequestProvider) {
     console.log('Hello RoomServiceProvider Provider');
-    this.isRoomLoad = false;
   }
 
-  // public getRoom(idRoom: string) {
-  //   return Observable.create(observer => {
-  //     if (this.isRoomLoad) {
-  //       observer.next(true);
-  //       observer.complete();
-  //     } else {
-  //       this.request.get(API_ADDRESS + VERSION + ROOMS_ENDPOINT + idRoom, {
-  //       }).subscribe(
-  //         result => {
-  //           console.log(result);
-  //           //this.isRoomLoad = true;
-  //           observer.next(true);
-  //           observer.complete();
-  //         }, err => {
-  //           observer.error(err.message)
-  //         });
-  //     }
-  //   });
-  // }
-  //
-  // public postRoom(name: string, owner: string) {
-  //   return Observable.create(observer => {
-  //     this.request.post(API_ADDRESS + VERSION + ROOMS_ENDPOINT + localStorage.getItem('userId'), {
-  //       name: name,
-  //       owner: owner
-  //     }).subscribe(
-  //       result => {
-  //         console.log('postRoom result');
-  //         console.log(result);
-  //         observer.next(true);
-  //         observer.complete();
-  //       }, err => {
-  //         observer.error(err.message)
-  //       });
-  //   });
-  // }
+  public addRoom(room) {
+    return Observable.create(observer => {
+      this.request.post(API_ADDRESS + VERSION + ROOM_ENDPOINT, {
+        name : room.name,
+        admin_id : localStorage.getItem('userId'),
+        coords : room.coords
+      }).subscribe(
+        result => {
+          console.log('addRoom result');
+          console.log(result);
+          observer.next(result);
+          observer.complete();
+        }, err => {
+          observer.error(err.message);
+        });
+    });
+  }
+
+  public editRoom(room) {
+    return Observable.create(observer => {
+      this.request.put(API_ADDRESS + VERSION + ROOM_ENDPOINT + room.id, {
+        name : room.name,
+        coords: room.coords
+      }).subscribe(
+        result => {
+          console.log('editRoom result');
+          console.log(result);
+          observer.next(result);
+          observer.complete();
+        }, err => {
+          observer.error(err.message)
+        });
+    });
+  }
+
+  public getRoom() {
+    return Observable.create(observer => {
+      this.request.get(API_ADDRESS + VERSION + ROOM_ENDPOINT, {
+      }).subscribe(
+        result => {
+          console.log('getRoom result');
+          console.log(result);
+          observer.next(result);
+          observer.complete();
+        }, err => {
+          observer.error(err.message);
+        });
+    });
+  }
+
+  public deleteRoom(idRoom: string) {
+    return Observable.create(observer => {
+      this.request.del(API_ADDRESS + VERSION + ROOM_ENDPOINT + idRoom, {}).subscribe(
+        result => {
+          observer.next(true);
+          observer.complete();
+        }, err => {
+          observer.error(err.message);
+        });
+    });
+  }
 
 }

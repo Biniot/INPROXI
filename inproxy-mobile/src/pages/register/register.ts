@@ -16,13 +16,17 @@ export class RegisterPage {
   constructor(private navCtrl: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController) { }
 
   public register() {
-    this.auth.register(this.registerCredentials).subscribe(
-      success => {
+    if (this.registerCredentials.email.indexOf('@') != -1 && (this.registerCredentials.email.indexOf('@') < this.registerCredentials.email.lastIndexOf('.'))) {
+      this.auth.register(this.registerCredentials).subscribe(
+        success => {
           this.createSuccess = true;
           this.showPopup("Success", "Account created.");
-      },
-      error => this.showPopup("Error", error)
-    )
+        },
+        error => this.showPopup("Error", error)
+      )
+    } else {
+      this.showPopup("Error", "Need a valid email");
+    }
   }
 
   showPopup(title, text) {
@@ -32,7 +36,7 @@ export class RegisterPage {
       buttons: [
         {
           text: 'OK',
-          handler: () => {  
+          handler: () => {
             if (this.createSuccess) {
               this.navCtrl.popToRoot();
             }

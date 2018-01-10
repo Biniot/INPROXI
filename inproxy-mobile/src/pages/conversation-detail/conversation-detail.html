@@ -12,7 +12,11 @@
 
 
 <ion-content padding>
-<ion-label><h1>{{currentConversation.name}}</h1></ion-label>
+<ion-label><h1>{{currentConversation.name}}</h1>
+  <button ion-button clear icon-only item-end (click)="lunchChatPage(currentConversation.id, currentConversation.name)">
+    <ion-icon name="chatboxes"></ion-icon>
+  </button>
+</ion-label>
   <ion-list>
     <ion-item *ngFor="let user of currentConversation.members">
       <ion-avatar item-start>

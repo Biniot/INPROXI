@@ -90,8 +90,32 @@ export class ChatPage {
         // console.log("ChatPage getMessageConversation success");
         // console.log(success);
         if (success.length > 0) {
-          this.haveMessage = true;
-          this.messageList = success;
+          //this.haveMessage = true;
+          //this.messageList = success;
+          success.forEach((elem) => {
+
+            // [{
+            //     "createdAt": "2017-11-09T15:01:03.631Z",
+            //     "content": "Hi guys! How are u doing?",
+            //     "author": {
+            //       "first_name": "Boule",
+            //       "last_name": "Bill",
+            //       "id": "59df97d23659a438139749f9"
+            //     },
+            //     "id": "5a046daf4922651ef098e075"
+            // }]
+
+            let newMessage = {
+              createdAt: new Date(elem.createdAt).toDateString(),
+              content: elem.content,
+              author : elem.author,
+              id: elem.id
+            };
+            this.messageList.push(newMessage);
+             this.haveMessage = true;
+            // message.createdAt = elem.createdAt.toString();
+
+          });
         }
         //this.showPopup("onMessageReceive", "Size of the data receive : " + this.messageList.length);
       },

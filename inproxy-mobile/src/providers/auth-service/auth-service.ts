@@ -46,6 +46,20 @@ export class AuthServiceProvider {
 
   }
 
+  public askNewPassword(email) {
+    return Observable.create(observer => {
+      this.request.post(API_ADDRESS + VERSION + "auth/reset_password", {
+        email: email
+      }).subscribe(
+        result => {
+          observer.next(true);
+          observer.complete();
+        }, err => {
+          observer.error(err.message);
+        });
+    });
+  }
+
   public register(credentials) {
     if (credentials.email === undefined || credentials.password === undefined ||
         credentials.firstName === undefined || credentials.lastName === undefined) {
