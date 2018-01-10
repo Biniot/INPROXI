@@ -62,5 +62,22 @@ page-friends {
       color: #ffffff;
       font-size: 0.8em;
     }
+    
+    .cardHolder {
+      width: auto;
+      margin: none;
+      padding-top: 250px;
+    }
+    
+    ion-card {
+      box-shadow: none;
+      background: transparent;
+    }
+    
+    .messageError {
+      font-size: 1.1em;
+      font-weight: bolder;
+      text-align: center;
+    }
   }
 }
