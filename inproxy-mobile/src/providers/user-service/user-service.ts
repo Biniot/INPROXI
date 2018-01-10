@@ -151,6 +151,7 @@ export class UserServiceProvider {
 
   // Edit les informations du user connecter
   public editUser(user) {
+    console.log();
     return Observable.create(observer => {
       this.request.put(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {
         password: localStorage.getItem('password'),
@@ -161,6 +162,7 @@ export class UserServiceProvider {
         img: user.avatarPath != null ? user.avatarPath : null
       }).subscribe(
         result => {
+          console.log('editUser succes');
           localStorage.setItem('password', user.password);
           localStorage.setItem('firstName', user.firstName);
           localStorage.setItem('lastName', user.lastName);
@@ -169,6 +171,7 @@ export class UserServiceProvider {
           observer.next(true);
           observer.complete();
         }, err => {
+          console.log('editUser error');
           observer.error(err.message)
         });
     });

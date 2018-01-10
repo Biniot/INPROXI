@@ -67,17 +67,17 @@ export class EditUserPage {
         {
           // console.log(file_uri);
           // TODO : Est-ce un path ou autre chose ? Si autre chose revoir pour recup un path sinon cest good
-          console.log("uri");
-          console.log(file_uri);
+          // console.log("uri");
+          // console.log(file_uri);
           this.base64.encodeFile(file_uri).then((base64File: string) => {
-            console.log("base64File");
-            console.log(base64File);
+            // console.log("base64File");
+            // console.log(base64File);
 
           this.currentUser.avatarPath = base64File;
+          this.imageSrc = this.currentUser.avatarPath;
         }, (err) => {
           console.log(err);
         });
-          this.imageSrc = this.currentUser.avatarPath;
         },
         err => console.log(err));
   }
