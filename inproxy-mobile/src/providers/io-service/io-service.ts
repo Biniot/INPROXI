@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {API_ADDRESS} from "../constants/constants";
-import {ConversationRoomModel} from "../../model/conversationRoomModel";
+import {ConversationRoomModel, MessageRoomModel} from "../../model/conversationRoomModel";
 
 /*
   Generated class for the IoServiceProvider provider.
@@ -33,7 +33,29 @@ export class IoServiceProvider {
   }
 
   addConversation(room) {
-    this.listConversationRoom.push(new ConversationRoomModel());
+    let tab = [];
+    let isFind = false;
+    if (this.listConversationRoom.length < 1) {
+      this.receiveEventCallBack('conversation_message', data => {
+        this.listConversationRoom.forEach(elem => {
+          if (elem.id.localeCompare(data.conversation_id) == 0) {
+            elem.message.push(new MessageRoomModel(data.content, data.author));
+          } else {
+            console.log("addConversation");
+          }
+        });
+      });
+    }
+    this.listConversationRoom.forEach(elem => {
+      if (elem.id.localeCompare(room.id) == 0) {
+        isFind = true;
+      }
+    });
+    if (!isFind) {
+      this.listConversationRoom.push(new ConversationRoomModel(room.name, tab, room.id));
+      this.joinRoom(room.id);
+    }
+
   }
 
   /* Socket utiliy */
