@@ -2,24 +2,24 @@ import { Component, ViewChild, ElementRef, Injectable } from '@angular/core';
 import { Modal, NavController, IonicPage, ModalController } from 'ionic-angular';
 import { HttpRequestProvider } from '../../providers/http-request/http-request';
 import { API_ADDRESS, VERSION, ROOM_ENDPOINT_POST } from '../../providers/constants/constants';
-
-import {
-  GoogleMaps,
-  GoogleMap,
-  CameraPosition,
-  LatLng,
-  MarkerOptions,
-  Polygon,
-  PolygonOptions,
-  ILatLng,
-  VisibleRegion,
-  LatLngBounds,
-  BaseArrayClass,
-  GoogleMapsEvent
- } from '@ionic-native/google-maps';
-
 import { Geolocation } from '@ionic-native/geolocation';
 import { Observable } from "rxjs/Observable";
+import { User } from "../../model/userModel";
+
+import {
+GoogleMaps,
+GoogleMap,
+CameraPosition,
+LatLng,
+MarkerOptions,
+Polygon,
+PolygonOptions,
+ILatLng,
+VisibleRegion,
+LatLngBounds,
+BaseArrayClass,
+GoogleMapsEvent
+} from '@ionic-native/google-maps';
 
 @IonicPage()
 @Component({
@@ -36,6 +36,7 @@ export class MapsPage {
   iconAddPolyg: String;
   currentPolyg: ILatLng[];
   post: HttpRequestProvider;
+  currentUser: User;
   // polyPoints: ILatLng[];
   subsRec: any;
   currentZone: {
@@ -63,10 +64,14 @@ export class MapsPage {
     let name : String;
     let points: ILatLng[];
     let adm:  String;
+    this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
+    this.currentUser.userId = localStorage.getItem('userId');
 
     name = "";
     points = [];
-    adm = "";
+    adm = this.currentUser.userId;
+
+    console.log("CURRENT USER: " + this.currentUser.userId);
 
     this.currentPolyg           = [];
     this.recordPolyg            = false;
