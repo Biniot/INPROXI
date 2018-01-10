@@ -33,14 +33,15 @@ export class UserServiceProvider {
   // Recupere les information de lutilisateur connecter
   public getUserInfo() {
     return Observable.create(observer => {
-      if (this.isUserLoad) {
-        observer.next(true);
-        observer.complete();
-      } else {
+      // if (this.isUserLoad) {
+      //   observer.next(true);
+      //   observer.complete();
+      // } else {
         this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId'), {
           //id: this.auth.currentUser.id
         }).subscribe(
           result => {
+            console.log("UserServiceProvider getUserInfo");
             console.log(result);
             localStorage.setItem('firstName', result.first_name);
             localStorage.setItem('lastName', result.last_name);
@@ -51,7 +52,7 @@ export class UserServiceProvider {
           }, err => {
             observer.error(err.message)
           });
-      }
+      // }
     });
   }
 

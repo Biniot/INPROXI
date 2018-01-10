@@ -48,17 +48,27 @@ export class AddFriendRequestPage {
       return;
     }
     this.friendChoiceList.forEach(elem => {
-      if (elem.id.localeCompare(this.friendRequestCredentials.idFriend) == 0 && (elem.first_name.localeCompare(this.friendRequestCredentials.firstName) !== 0 || elem.last_name.localeCompare(this.friendRequestCredentials.lastName) !== 0)) {
+      if (elem.id.localeCompare(this.friendRequestCredentials.idFriend) == 0
+        && (elem.first_name.localeCompare(this.friendRequestCredentials.firstName) !== 0
+          || elem.last_name.localeCompare(this.friendRequestCredentials.lastName) !== 0)) {
         isCheat = true;
       }
     });
     if (!isCheat) {
       let isFind = false;
       this.friendList.forEach(elem => {
+        console.log("friendList forEach");
+        console.log(elem);
         if (this.friendRequestCredentials.idFriend.localeCompare(elem.id) == 0) {
           isFind = true;
+          console.log("friendList forEach");
         }
       });
+      if (this.friendRequestCredentials.idFriend.localeCompare(localStorage.getItem('userId')) == 0) {
+        isFind = true;
+        this.showPopup("Error", "You can't add yourself.");
+        return;
+      }
       if (!isFind) {
         this.friendRequestProvider.addFriendRequest(this.friendRequestCredentials.idFriend, this.friendRequestCredentials.message).subscribe(success => {
             this.showPopup("Succes", "Succefully add request friend.");
