@@ -21,25 +21,13 @@ BaseArrayClass,
 GoogleMapsEvent
 } from '@ionic-native/google-maps';
 import {RoomServiceProvider} from "../../providers/room-service/room-service";
+import {Room} from "../../model/roomModel";
 
 @IonicPage()
 @Component({
   selector: 'page-maps',
   templateUrl: 'maps.html'
 })
-
-export class Room {
-  id: string;
-  coords: ILatLng[];
-  name: string;
-  admin_id: string;
-
-  // constructor(lastName: string, email: string) {
-  //   console.log('User constructor lastName ' + lastName + '; email ' + email);
-  //   this.lastName = lastName;
-  //   this.email = email;
-  // }
-}
 
 export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
