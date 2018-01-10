@@ -65,7 +65,8 @@ export class MapsPage {
     this.loading.present();
   }
 
-  ngAfterViewInit(){
+  ionViewWillEnter() {
+    this.presentLoadingText("Downloading areas...");
     let name : String;
     let points: ILatLng[];
     let adm:  String;
@@ -99,12 +100,8 @@ export class MapsPage {
         this.moveCam(this.loc);
 
         this.getView();
-        }, err => { console.error(err); });
+      }, err => { console.error(err); });
     });
-  }
-
-  ionViewWillEnter() {
-    this.presentLoadingText("Downloading areas...");
     this.roomService.getRoom().subscribe(success => {
         if (success) {
           console.log('getRoom if (success)');
