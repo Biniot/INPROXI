@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import * as io from 'socket.io-client';
 import {API_ADDRESS} from "../constants/constants";
+import {ConversationRoomModel} from "../../model/conversationRoomModel";
 
 /*
   Generated class for the IoServiceProvider provider.
@@ -18,6 +19,7 @@ var sock = io(API_ADDRESS, {
 export class IoServiceProvider {
   _isConnected: boolean;
   mesasgeCallback: any;
+  listConversationRoom: ConversationRoomModel[];
 
   constructor() {
     this._isConnected = false;
@@ -26,7 +28,12 @@ export class IoServiceProvider {
     sock.on('disconnect', this.onDisconnect);
     sock.on('reconnect', this.sendAuth);
     this.mesasgeCallback = null;
+    this.listConversationRoom = [];
     // console.log(sock);
+  }
+
+  addConversation(room) {
+    this.listConversationRoom.push(new ConversationRoomModel());
   }
 
   /* Socket utiliy */

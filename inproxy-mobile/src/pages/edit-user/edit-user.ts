@@ -4,6 +4,7 @@ import { Camera } from '@ionic-native/camera';
 import { UserServiceProvider} from "../../providers/user-service/user-service";
 import {User} from "../../model/userModel";
 import {AuthServiceProvider} from "../../providers/auth-service/auth-service";
+import {Base64} from "@ionic-native/base64";
 
 /**
  * Generated class for the EditUserPage page.
@@ -23,7 +24,8 @@ export class EditUserPage {
   imageSrc: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private camera: Camera,
-              private alertCtrl: AlertController, private userService: UserServiceProvider, private auth: AuthServiceProvider) {
+              private alertCtrl: AlertController, private userService: UserServiceProvider, private auth: AuthServiceProvider,
+              private base64: Base64) {
     this.currentUser = new User("", "", "", "");
     this.userService.getUserInfo().subscribe(success => {
         if (success) {
@@ -65,6 +67,15 @@ export class EditUserPage {
         {
           // console.log(file_uri);
           // TODO : Est-ce un path ou autre chose ? Si autre chose revoir pour recup un path sinon cest good
+          console.log("uri");
+          console.log(file_uri);
+          this.base64.encodeFile(file_uri).then((base64File: string) => {
+            console.log("base64File");
+          console.log(base64File);
+          this.currentUser.avatarPath = base64File;
+        }, (err) => {
+          console.log(err);
+        });
           this.imageSrc = file_uri;
         },
         err => console.log(err));
