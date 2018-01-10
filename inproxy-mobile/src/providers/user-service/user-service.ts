@@ -158,14 +158,14 @@ export class UserServiceProvider {
         last_name: user.lastName != null ? user.lastName : null,
         email: user.email != null ? user.email : null,
         new_password: user.password != null ? user.password : null,
-        img: user.img != null ? user.img : null
+        img: user.avatarPath != null ? user.avatarPath : null
       }).subscribe(
         result => {
           localStorage.setItem('password', user.password);
           localStorage.setItem('firstName', user.firstName);
           localStorage.setItem('lastName', user.lastName);
           localStorage.setItem('email', user.email);
-          localStorage.setItem('img', user.img);
+          localStorage.setItem('img', user.avatarPath);
           observer.next(true);
           observer.complete();
         }, err => {

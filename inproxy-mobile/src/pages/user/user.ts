@@ -22,12 +22,15 @@ export class UserPage {
   currentUser: User;
   loading: any;
   deleteUserSucces: boolean;
+  haveAvatar: boolean;
   isUser: boolean;
+  avatar: any;
 
   constructor(public navCtrl: NavController, private alertCtrl: AlertController,
               private userService: UserServiceProvider, private navParams: NavParams, private auth: AuthServiceProvider,
               public loadingCtrl: LoadingController) {
     this.deleteUserSucces = false;
+    this.haveAvatar = false;
     if (!isUndefined(navParams.get('userId')) && navParams.get('userId') !== localStorage.getItem('userId')) {
       this.isUser = false;
       this.presentLoadingText("Loading friend info...");
@@ -47,6 +50,7 @@ export class UserPage {
       this.userService.getUserInfo().subscribe(success => {
         if (success) {
             this.reloadUser();
+            // console.log("userService");
             //this.showPopup("Succes", "Succefully retrieve user.");
           } else {
             this.showPopup("Error", "Problem retrieving user.");
@@ -80,8 +84,14 @@ export class UserPage {
 
   public reloadUser() {
     this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'), localStorage.getItem('firstName'), localStorage.getItem('avatarPath'));
-    console.log("this.currentUser");
-    console.log(this.currentUser);
+    // console.log("this.currentUser");
+    // console.log(this.currentUser);
+    if (localStorage.getItem('img').localeCompare('undefined') != 0) {
+      console.log("reloadUser !isUndefined");
+      console.log(localStorage.getItem('img'));
+      this.haveAvatar = true;
+      this.avatar = localStorage.getItem('img');
+    }
     // this.currentUser.firstName = localStorage.getItem('firstName');
     // this.currentUser.avatarPath = localStorage.getItem('avatarPath');
   }

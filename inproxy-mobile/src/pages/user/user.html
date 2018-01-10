@@ -26,12 +26,15 @@
                         <ion-col col-12><img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatarPath}}"/></ion-col>
             -->
             <div>
-            <ion-avatar item-start>
+            <ion-avatar item-start *ngIf="!haveAvatar">
               <img src="../../assets/img/avatar.png">
             </ion-avatar>
+              <ion-avatar item-start *ngIf="haveAvatar">
+                <img src="../../assets/img/avatar.png">
+              </ion-avatar>
             </div>
           </ion-item>
-          
+
           <div class="username"><h2>{{currentUser.firstName}} {{currentUser.lastName}} </h2>
           <h4>{{currentUser.email}}</h4>
           </div>

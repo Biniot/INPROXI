@@ -71,12 +71,13 @@ export class EditUserPage {
           console.log(file_uri);
           this.base64.encodeFile(file_uri).then((base64File: string) => {
             console.log("base64File");
-          console.log(base64File);
+            console.log(base64File);
+
           this.currentUser.avatarPath = base64File;
         }, (err) => {
           console.log(err);
         });
-          this.imageSrc = file_uri;
+          this.imageSrc = this.currentUser.avatarPath;
         },
         err => console.log(err));
   }
@@ -98,9 +99,9 @@ export class EditUserPage {
           handler: () => {
             this.userService.editUser(this.currentUser).subscribe(success => {
               if (success) {
-                if (this.imageSrc !== null) {
-                  localStorage.setItem('avatarPath', this.imageSrc);
-                }
+                // if (this.imageSrc !== null) {
+                //   localStorage.setItem('img', this.imageSrc);
+                // }
                 let alert = this.alertCtrl.create({
                   title: 'Save information',
                   subTitle: 'Information successfully change.',
