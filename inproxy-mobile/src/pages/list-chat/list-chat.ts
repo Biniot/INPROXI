@@ -3,6 +3,7 @@ import {Events, IonicPage, LoadingController, NavController} from 'ionic-angular
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {ChatType} from "../../model/ChatType";
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
+import {IoServiceProvider} from "../../providers/io-service/io-service";
 
 /**
  * Generated class for the ListChatPage page.
@@ -21,7 +22,7 @@ export class ListChatPage {
   loading: any;
 
   constructor(private userService: UserServiceProvider, public navCtrl: NavController, public events: Events,
-              public loadingCtrl: LoadingController, public conversationService: ConversationServiceProvider) {
+              public loadingCtrl: LoadingController, public conversationService: ConversationServiceProvider, private ioService : IoServiceProvider) {
     // console.log("ListChatPage constructor");
     this.listConversation = [];
     this.listConversationRoom = [];
@@ -47,17 +48,22 @@ export class ListChatPage {
         // console.log(error);
       });
 
-    events.subscribe('zone:push', (room) => {
-      this.listConversationRoom.push(room);
-    });
 
-    events.subscribe('zone:pop', (room) => {
-      this.listConversationRoom = this.remove(this.listConversationRoom, room.id);
-    });
+    // events.subscribe('zone:push', (room) => {
+    //   this.listConversationRoom.push(room);
+    // });
+    //
+    // events.subscribe('zone:pop', (room) => {
+    //   this.listConversationRoom = this.remove(this.listConversationRoom, room.id);
+    // });
   }
 
   remove(arrOriginal, conversationId: string){
     return arrOriginal.filter(function(el){return el.id !== conversationId});
+  }
+
+  ionViewWillEnter() {
+    this.listConversationRoom = this.ioService.getList();
   }
 
   presentLoadingText(message: string) {
