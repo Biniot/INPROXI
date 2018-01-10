@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, Injectable } from '@angular/core';
-import { Modal, NavController, IonicPage, ModalController } from 'ionic-angular';
+import {Modal, NavController, IonicPage, ModalController, AlertController, LoadingController} from 'ionic-angular';
 import { HttpRequestProvider } from '../../providers/http-request/http-request';
 import { API_ADDRESS, VERSION, ROOM_ENDPOINT_POST } from '../../providers/constants/constants';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -20,12 +20,26 @@ LatLngBounds,
 BaseArrayClass,
 GoogleMapsEvent
 } from '@ionic-native/google-maps';
+import {RoomServiceProvider} from "../../providers/room-service/room-service";
 
 @IonicPage()
 @Component({
   selector: 'page-maps',
   templateUrl: 'maps.html'
 })
+
+export class Room {
+  id: string;
+  coords: ILatLng[];
+  name: string;
+  admin_id: string;
+
+  // constructor(lastName: string, email: string) {
+  //   console.log('User constructor lastName ' + lastName + '; email ' + email);
+  //   this.lastName = lastName;
+  //   this.email = email;
+  // }
+}
 
 export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
@@ -37,27 +51,27 @@ export class MapsPage {
   currentPolyg: ILatLng[];
   post: HttpRequestProvider;
   currentUser: User;
-  // polyPoints: ILatLng[];
   subsRec: any;
   currentZone: {
     coords: ILatLng[],
     name: String,
     admin_id: String
   };
-  allZones: [{
-    coords: ILatLng[],
-    name: String,
-    admin_id: String
-  }];
-  // allZones: any;
-  // admin_id: String;
-  //zoneName: String;
+  allZones: Room[];
+  loading: any;
 
-  constructor(public navCtrl: NavController,
-              private modal: ModalController,
-              private googleMaps: GoogleMaps,
-              private geoLoc: Geolocation,
-              private request : HttpRequestProvider) {
+  constructor(public navCtrl: NavController, private modal: ModalController, private googleMaps: GoogleMaps,
+              private geoLoc: Geolocation, private request : HttpRequestProvider, private roomService : RoomServiceProvider,
+              private alertCtrl: AlertController, public loadingCtrl: LoadingController) {
+  }
+
+  presentLoadingText(message: string) {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: message
+    });
+
+    this.loading.present();
   }
 
   ngAfterViewInit(){
@@ -83,15 +97,10 @@ export class MapsPage {
       admin_id : adm
     });
 
-    this.allZones = [{
-      coords: this.currentZone.coords,
-      name: this.currentZone.name,
-      admin_id: this.currentZone.admin_id
-    }];
+    this.allZones = [];
     //
     let element = this.mapElement.nativeElement;
     this.map = this.googleMaps.create(element);
-    // this.initMap();
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
       this.map.setMyLocationEnabled(true);
       this.map.getMyLocation().then(location => {
@@ -99,32 +108,15 @@ export class MapsPage {
         this.moveCam(this.loc);
 
         this.getView();
-        // this.map.on(GoogleMapsEvent.CAMERA_MOVE).subscribe((e) => {
-        //   this.getView();
-        //   console.log(e);
-        // }, err => {console.error(err);});
-
-        // this.map.addEventListener('zoom_changed',this.visi=this.getView());
-        // this.map.on(GoogleMapsEvent.MAP_ZO)
-        //   {
-        //   this.visi = this.getView();
-        // }
-        //   console.log(res);
         }, err => { console.error(err); });
-      // button.addEventListener('click', function ()).then(res =>{
-      //   isEnabled = !isEnabled;
-      //   button.innerHTML = "<ion-icon name='remove'></ion-icon>";
-      //   this.getClickPos(isEnabled);
-      //   }, err => {console.error(err);});
-
     });
   }
 
-  //Load the groupMap
-  initMap(){
-    let element = this.mapElement.nativeElement;
-    this.map = this.googleMaps.create(element);
-  }
+  // //Load the groupMap
+  // initMap(){
+  //   let element = this.mapElement.nativeElement;
+  //   this.map = this.googleMaps.create(element);
+  // }
 
   getLocation(){
     return this.geoLoc.getCurrentPosition();
@@ -134,14 +126,6 @@ export class MapsPage {
   {
     let visible: VisibleRegion;
     visible = this.map.getVisibleRegion();
-    // console.log(
-    //   "NE lat "  + visible.northeast.lat  +
-    //   " NE lng "  + visible.northeast.lng
-    // );
-    // console.log(
-    //   "SW lat " + visible.southwest.lat  +
-    //   " SW lng "  + visible.southwest.lng
-    // );
    this.visi = visible;
   }
 
@@ -163,23 +147,10 @@ export class MapsPage {
     return  this.map.addMarker(markerOptions);
   }
 
-
-  // Pour edition de polygone: creation des markers des angles qu'on peut ensuite drag, recuperer la nvl pos puis modifier polyg
-  // createPolygMarkers(mpts: ILatLng[]){
-  //   for (let i = 0; i < mpts.length; i++){
-  //    let spt = new LatLng(mpts[i].lat, mpts[i].lng);
-  //
-  //     this.createMarker(spt).then((marker: Marker) => {
-  //         marker.showInfoWindow();
-  //       },err => { console.error(err); });
-  //   }
-  // }
-
   createPolygon(mpts: ILatLng[]){
     let strkcolor = '';
     this.map.getMyLocation().then(location => {
       this.loc = location.latLng;
-      // position.lng = location.latLng.lng;
       }, err => { console.error(err);});
 
     let isUserIn = this.containsLocation(this.loc, mpts);
@@ -197,23 +168,13 @@ export class MapsPage {
     }, err => { console.error("addPolygon: " + err); });
   }
 
-  createAllPolygons(allZones : [{ coords : ILatLng[],
-    name : String,
-    admin_id : String }])
+  createAllPolygons()
   {
-    // admin_id: createur de la zone, besoin de recuperer le nom (ou ID) de l'utilisateur
-
-    // allZones : [{ polyPoints : ILatLng[],
-    //   zoneName : String,
-    //   isPublic : Boolean,
-    //   admin_id : String }];
-    // let polyn : String;
-    // let polyg : ILatLng[];
     this.map.clear().then(res => {
       console.log("mapClear: " + res);
-      for (let i = 1; i <= allZones.length; i++){
+      for (let i = 1; i <= this.allZones.length; i++){
         let polyg: ILatLng[];
-        polyg = allZones[i].coords;
+        polyg = this.allZones[i].coords;
         this.createPolygon(polyg);
       }
     },err => { console.error("mapClear: " + err); });
@@ -288,41 +249,40 @@ export class MapsPage {
       console.log(res);
     }, err => { console.error(err) });
 
-    saveZone.onDidDismiss((allData : {
-      name : String,
-      admin_id : String,
-      coords : ILatLng[]
-    }) => {
-      // return Observable.create(observer => {
-      //   this.post.request.post(API_ADDRESS + VERSION + ROOM_ENDPOINT_POST, allData
-      //   ).subscribe(res => {
-      //     observer.next(true);
-      //     observer.complete();
-      //     }, err => {
-      //     observer.error(err.message);
-      //   });
-      // });
-
-      this.allZones.push(allData);
-      this.createAllPolygons(this.allZones);
-      this.map.clear().then(res => {
-        // console.log(this.allZones[i].polyPoints[0].toString());
-        // this.createPolygon(this.allZones[i].polyPoints);
-        this.createAllPolygons(this.allZones);
-      },err => { console.error("mapClear: " + err); });
-
-
+    saveZone.onDidDismiss((allData : any) => {
+      this.presentLoadingText("Uploading new area...");
+      this.roomService.addRoom(allData).subscribe(success => {
+          if (success) {
+            this.allZones.push(success);
+            this.createAllPolygons();
+          } else {
+            this.showPopup("Error", "Problem uploading new area.");
+          }
+          this.loading.dismiss();
+        },
+        error => {
+          this.showPopup("Error", error);
+          this.loading.dismiss();
+        });
     });
+  }
 
-
-      // this.allZones.push(allData);
-    // this.createAllPolygons(this.allZones);
-      // this.map.clear().then(res => {
-      //   // console.log(this.allZones[i].polyPoints[0].toString());
-      //   // this.createPolygon(this.allZones[i].polyPoints);
-      //   // this.createAllPolygons(this.allZones);
-      // },err => { console.error("mapClear: " + err); });
-     // });
+  showPopup(title, text) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: text,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            // if (this.deleteUserSucces) {
+            //   this.navCtrl.popToRoot();
+            // }
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   containsLocation(position : ILatLng, path: ILatLng[])

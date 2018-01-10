@@ -1,10 +1,3 @@
-/*
-  Generated class for the UserServiceProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
-
 export interface Friend {
   userId: string;
   email: string;
