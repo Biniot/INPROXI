@@ -76,6 +76,9 @@ export class ListChatPage {
   lunchChatPage(id: string, chatType) {
     this.navCtrl.push('ChatPage', {chatType: chatType, conversationId: id});
   }
+  lunchChatRoomPage(room) {
+    this.navCtrl.push('ChatZonePage', {room: room});
+  }
 
   public createConversation() {
     this.navCtrl.push('CreateConversationPage');

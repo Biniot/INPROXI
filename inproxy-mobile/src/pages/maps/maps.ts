@@ -117,7 +117,7 @@ export class MapsPage {
             newElem.name = elem.name;
             newElem.id = elem.id;
             newElem.coords = [];
-            let tabCoords = elem[0].split(',');
+            let tabCoords = elem.coords[0].split(',');
             for (let i = 0; i < tabCoords.length; i++) {
               newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
               i++;
