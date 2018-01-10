@@ -51,7 +51,8 @@ import { GeofenceProvider } from '../providers/geofence/geofence';
     RoomServiceProvider,
     IoServiceProvider,
     ConversationServiceProvider,
-    GeofenceProvider
+    GeofenceProvider,
+    RoomServiceProvider
   ]
 })
 export class AppModule {}

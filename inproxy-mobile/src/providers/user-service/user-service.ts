@@ -159,7 +159,7 @@ export class UserServiceProvider {
         //pseudo: user.pseudo != null ? user.pseudo : null
       }).subscribe(
         result => {
-          //localStorage.setItem('password', user.password);
+          localStorage.setItem('password', user.password);
           localStorage.setItem('firstName', user.firstName);
           localStorage.setItem('lastName', user.lastName);
           localStorage.setItem('email', user.email);
