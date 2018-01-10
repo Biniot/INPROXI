@@ -112,6 +112,25 @@ export class MapsPage {
     });
   }
 
+  ionViewWillEnter() {
+    this.presentLoadingText("Downloading areas...");
+    this.roomService.getRoom().subscribe(success => {
+        if (success) {
+          this.allZones = [];
+          success.forEach(elem => {
+            this.allZones.push(elem);
+          });
+          this.createAllPolygons();
+        } else {
+          this.showPopup("Error", "Problem downloading areas.");
+        }
+        this.loading.dismiss();
+      },
+      error => {
+        this.showPopup("Error", error);
+        this.loading.dismiss();
+      });
+  }
   // //Load the groupMap
   // initMap(){
   //   let element = this.mapElement.nativeElement;
