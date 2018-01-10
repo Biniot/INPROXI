@@ -10,7 +10,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Manage friend request</ion-title>
+    <ion-title>Friend request pending</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -18,18 +18,14 @@
 <ion-content class="check-friend-content" padding>
 
   <ion-card *ngIf="haveFriendRequest">
-    <ion-card-header>
-      Friend request pending
-    </ion-card-header>
     <ion-card-content>
       <ion-list>
         <ion-item *ngFor="let friendRequest of friendRequestList">
-          <ion-avatar item-start>
+          <div><ion-avatar item-start>
             <img src="../../assets/img/avatar.png">
-          </ion-avatar>
-          <h2>From : {{friendRequest.from}}</h2>
-          <h2>To : {{friendRequest.to}}</h2>
-          <div class="item" text-wrap><h3>Message : </h3>{{friendRequest.message}}</div>
+          </ion-avatar></div>
+          <h2 class="friendName">{{friendRequest.from}}</h2><br/>
+          <div class="item" text-wrap><h3>Message : </h3>{{friendRequest.message}}</div><br/>
           <button ion-button color="danger" (click)="manageFriendRequest(friendRequest.id, false)">Refuse</button>
           <button ion-button color="primary" (click)="manageFriendRequest(friendRequest.id, true)">Accept</button>
           <hr>
