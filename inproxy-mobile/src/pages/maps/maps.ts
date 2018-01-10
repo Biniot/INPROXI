@@ -26,6 +26,7 @@ GoogleMapsEvent
 import {RoomServiceProvider} from "../../providers/room-service/room-service";
 import {Room} from "../../model/roomModel";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
+import {IoServiceProvider} from "../../providers/io-service/io-service";
 
 @IonicPage()
 @Component({
@@ -55,7 +56,7 @@ export class MapsPage {
   constructor(public navCtrl: NavController, private modal: ModalController, private googleMaps: GoogleMaps,
               private geoLoc: Geolocation, private request : HttpRequestProvider, private roomService : RoomServiceProvider,
               private alertCtrl: AlertController, public loadingCtrl: LoadingController, public events: Events,
-              private _userService: UserServiceProvider) {
+              private _userService: UserServiceProvider, private ioService: IoServiceProvider) {
     this._userService.getUserInfo().subscribe(success => {
         // console.log('HomePage getUserInfo functionSuccess');
         // console.log(success);
@@ -189,7 +190,7 @@ export class MapsPage {
     let isUserIn = this.containsLocation(this.loc, mpts);
     if (isUserIn && needPush) {
       console.log("createPolygon emit ");
-      this.events.publish("zone:push", room);
+      this.ioService.addConversation(room);
     }
     (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
     console.log("createPolygon 3 ");

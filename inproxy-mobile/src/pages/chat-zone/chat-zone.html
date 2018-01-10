@@ -7,12 +7,32 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>chat-zone</ion-title>
+    <ion-title>Chat</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content class="chat-content" padding>
+  <div>
+    <h1>{{currentRoom.name}}</h1>
+    <ion-label *ngIf="!haveMessage" floating>No message</ion-label>
+  </div>
+  <div *ngIf="haveMessage">
+    <ion-list>
+      <ion-item *ngFor="let message of currentRoom.message" style="border-radius: 25px;">
+        <div>
+          <div item-start>{{message.author}}</div>
+        </div>
+        <div>{{message.content}}</div>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
+
+<ion-footer>
+  <ion-item>
+    <ion-input type="text" placeholder="Type your message" [(ngModel)]="messageToSend"></ion-input>
+    <button ion-button clear item-end icon-only (click)="sendMessage()"><ion-icon name="send"></ion-icon></button>
+  </ion-item>
+</ion-footer>

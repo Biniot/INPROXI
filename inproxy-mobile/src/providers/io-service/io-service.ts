@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import * as io from 'socket.io-client';
 import {API_ADDRESS} from "../constants/constants";
 import {ConversationRoomModel, MessageRoomModel} from "../../model/conversationRoomModel";
@@ -21,7 +21,7 @@ export class IoServiceProvider {
   mesasgeCallback: any;
   listConversationRoom: ConversationRoomModel[];
 
-  constructor() {
+  constructor(public zone: NgZone) {
     this._isConnected = false;
 
     sock.on('connect', this.sendAuth);
@@ -32,17 +32,20 @@ export class IoServiceProvider {
     // console.log(sock);
   }
 
-  addConversation(room) {
+  public addConversation(room) {
     let tab = [];
     let isFind = false;
     if (this.listConversationRoom.length < 1) {
-      this.receiveEventCallBack('conversation_message', data => {
-        this.listConversationRoom.forEach(elem => {
-          if (elem.id.localeCompare(data.conversation_id) == 0) {
-            elem.message.push(new MessageRoomModel(data.content, data.author));
-          } else {
-            console.log("addConversation");
-          }
+      this.receiveEventCallBack('room_message', data => {
+        this.zone.run(() => {
+          this.listConversationRoom.forEach(elem => {
+            if (elem.id.localeCompare(data.conversation_id) == 0) {
+              elem.message.push(new MessageRoomModel(data.content, data.author));
+            } else {
+              console.log("addConversation receiveEventCallBack fail for :");
+              console.log(data);
+            }
+          });
         });
       });
     }
@@ -55,8 +58,26 @@ export class IoServiceProvider {
       this.listConversationRoom.push(new ConversationRoomModel(room.name, tab, room.id));
       this.joinRoom(room.id);
     }
-
   }
+
+  public getConversationRoomById(idRoom: string) {
+    let result = null;
+    this.listConversationRoom.forEach(elem => {
+      if (elem.id.localeCompare(idRoom) == 0) {
+        result = elem;
+      }
+    });
+    return result;
+  }
+
+  sendMessageToConversationRoom(idRoom: string, content: string, author: string) {
+    sock.emit('room_message', {room_id: idRoom, author: author, content: content}, function(){console.log("emit room_message")})
+  }
+
+  public getList() {
+    return this.listConversationRoom;
+  }
+
 
   /* Socket utiliy */
   sendAuth() {
