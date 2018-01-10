@@ -10,7 +10,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>User</ion-title>
+    <ion-title>Your profile</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -25,25 +25,16 @@
             <!--
                         <ion-col col-12><img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatarPath}}"/></ion-col>
             -->
+            <div>
             <ion-avatar item-start>
               <img src="../../assets/img/avatar.png">
             </ion-avatar>
+            </div>
           </ion-item>
-
-          <ion-item no-lines>
-            <ion-col col-4>First name :</ion-col>
-            <ion-col col-8 >{{currentUser.firstName}}</ion-col>
-          </ion-item>
-
-          <ion-item no-lines>
-            <ion-col col-4>Last name :</ion-col>
-            <ion-col col-8 >{{currentUser.lastName}}</ion-col>
-          </ion-item>
-
-          <ion-item no-lines>
-            <ion-col col-4>Email :</ion-col>
-            <ion-col col-8 >{{currentUser.email}}</ion-col>
-          </ion-item>
+          
+          <div class="username"><h2>{{currentUser.firstName}} {{currentUser.lastName}} </h2>
+          <h4>{{currentUser.email}}</h4>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>

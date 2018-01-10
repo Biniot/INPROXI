@@ -1,7 +1,7 @@
 page-chat {
   .chat-content {
 
-    background: #E6E6E6;
+    background: white;
 
     .noMessage {
       padding-left: 10px;
@@ -14,7 +14,7 @@ page-chat {
 
     ion-item {
       padding-left: 30px !important;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
       //border: 1px solid #ffffff;
       border-bottom: 0px !important;
       box-shadow: black !important;
@@ -27,7 +27,6 @@ page-chat {
     }
 
     .item-inner {
-      border-bottom-color: #7B4397 !important;
       box-shadow: none !important;
     }
 
