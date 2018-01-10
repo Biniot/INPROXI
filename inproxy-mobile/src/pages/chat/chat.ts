@@ -90,9 +90,9 @@ export class ChatPage {
         // console.log("ChatPage getMessageConversation success");
         // console.log(success);
         if (success.length > 0) {
-          this.haveMessage = true;
-          this.messageList = success;
-          this.messageList.forEach((elem) => {
+          //this.haveMessage = true;
+          //this.messageList = success;
+          success.forEach((elem) => {
 
             // [{
             //     "createdAt": "2017-11-09T15:01:03.631Z",
@@ -106,13 +106,13 @@ export class ChatPage {
             // }]
 
             let newMessage = {
-              createdAt: elem.createdAt.toDateString(),
+              createdAt: new Date(elem.createdAt).toDateString(),
               content: elem.content,
               author : elem.author,
               id: elem.id
             };
-            // this.messageList.push(newMessage);
-            // this.haveMessage = true;
+            this.messageList.push(newMessage);
+             this.haveMessage = true;
             // message.createdAt = elem.createdAt.toString();
 
           });

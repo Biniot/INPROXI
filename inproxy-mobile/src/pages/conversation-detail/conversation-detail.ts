@@ -64,7 +64,7 @@ export class ConversationDetailPage {
   }
 
   lunchChatPage(id: string, name: string) {
-    this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, id: id, pageTitle: name});
+    this.navCtrl.push('ChatPage', {chatType: ChatType.STD_CONVERSATION, conversationId: id, pageTitle: name});
   }
 
   ionViewDidLoad() {
