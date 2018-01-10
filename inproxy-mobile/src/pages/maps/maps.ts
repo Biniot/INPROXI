@@ -104,9 +104,23 @@ export class MapsPage {
     this.presentLoadingText("Downloading areas...");
     this.roomService.getRoom().subscribe(success => {
         if (success) {
+          console.log('getRoom if (success)');
           this.allZones = [];
           success.forEach(elem => {
-            this.allZones.push(elem);
+            console.log('getRoom forEach');
+            console.log(elem);
+            let newElem = new Room();
+            newElem.admin_id = elem.admin_id;
+            newElem.name = elem.name;
+            newElem.id = elem.id;
+            newElem.coords = [];
+            let tabCoords = elem[0].split(',');
+            for (let i = 0; i < tabCoords.length; i++) {
+              newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
+              i++;
+            }
+            this.allZones.push(newElem);
+            console.log('getRoom push(elem)');
           });
           this.createAllPolygons();
         } else {
@@ -264,6 +278,9 @@ export class MapsPage {
       this.presentLoadingText("Uploading new area...");
       this.roomService.addRoom(allData).subscribe(success => {
           if (success) {
+            console.log('onDidDismiss addRoom');
+            console.log(success);
+            console.log(success.coords[0]);
             this.allZones.push(success);
             this.createAllPolygons();
           } else {
