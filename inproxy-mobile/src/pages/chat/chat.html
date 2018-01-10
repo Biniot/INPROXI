@@ -18,7 +18,7 @@
   </div>
   <div *ngIf="haveMessage">
     <ion-list>
-      <ion-item *ngFor="let message of messageList" style="border-radius: 25px; margin-bottom: 10px; background:#E6E6E6">
+      <ion-item *ngFor="let message of messageList" style="border-radius: 25px; margin-bottom: 10px; background:#E6E6E6" text-wrap>
         <div>
           <div item-start style="font-weight: 800; float:left;">{{message.author.first_name + " " + message.author.last_name}}</div>
           <div item-end style="font-size: 0.8em; margin-top: 10px; float:right;">{{message.createdAt}}</div>
