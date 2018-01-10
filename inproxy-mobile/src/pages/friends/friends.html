@@ -31,9 +31,11 @@
       </button>
     </ion-item>
   </ion-list>
+  <div class="cardHolder">
   <ion-card *ngIf="!haveFriend">
-      You have no friend yet. Go talk to some people !
+      <p class="messageError">You have no friend yet. <br/>Go talk to some people ! </p>
   </ion-card>
+  </div>
   <ion-fab right bottom>
     <button ion-fab class="link-btn" (click)="addFriendRequest()"><ion-icon name="add"></ion-icon></button>
     <button ion-fab class="link-btn" *ngIf="haveRequest" (click)="checkFriendRequest()"><ion-icon name="alert"></ion-icon></button>

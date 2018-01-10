@@ -8,12 +8,19 @@ page-user {
       height: 520px;
     }
 
-
+    .user-box > ion-grid {
+      background: white !important;
+      height: 100% !important;
+    }
+    
+    .label label-md {
+    }
+    
     ion-row {
       align-items: center;
       text-align: center;
     }
-
+    
     ion-item {
       padding-left: 30px !important;
       margin-bottom: 10px;
@@ -48,8 +55,20 @@ page-user {
     span {
       height: 0px;
     }
-
-    img {
+    
+    ion-avatar > img {
+      width: 100px;
+      height: 100px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 40%;
+      height: 40%;
     }
+
+  }
+  
+  ion-footer {
+    background: transparent !important;
   }
 }
