@@ -65,13 +65,13 @@ export class MapsPage {
     let points: ILatLng[];
     let adm:  String;
     this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'));
-    this.currentUser.firstName = localStorage.getItem('firstName');
+    this.currentUser.userId = localStorage.getItem('userId');
 
     name = "";
     points = [];
-    adm = "";
+    adm = this.currentUser.userId;
 
-    console.log("CURRENT USER: " + this.currentUser.firstName);
+    console.log("CURRENT USER: " + this.currentUser.userId);
 
     this.currentPolyg           = [];
     this.recordPolyg            = false;
