@@ -1,5 +1,8 @@
 import { Component, ViewChild, ElementRef, Injectable } from '@angular/core';
-import {Modal, NavController, IonicPage, ModalController, AlertController, LoadingController} from 'ionic-angular';
+import {
+  Modal, NavController, IonicPage, ModalController, AlertController, LoadingController,
+  Events
+} from 'ionic-angular';
 import { HttpRequestProvider } from '../../providers/http-request/http-request';
 import { API_ADDRESS, VERSION, ROOM_ENDPOINT_POST } from '../../providers/constants/constants';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -50,7 +53,7 @@ export class MapsPage {
 
   constructor(public navCtrl: NavController, private modal: ModalController, private googleMaps: GoogleMaps,
               private geoLoc: Geolocation, private request : HttpRequestProvider, private roomService : RoomServiceProvider,
-              private alertCtrl: AlertController, public loadingCtrl: LoadingController) {
+              private alertCtrl: AlertController, public loadingCtrl: LoadingController, public events: Events) {
   }
 
   presentLoadingText(message: string) {
@@ -168,7 +171,7 @@ export class MapsPage {
     return  this.map.addMarker(markerOptions);
   }
 
-  createPolygon(mpts: ILatLng[]){
+  createPolygon(mpts: ILatLng[], room : any, needPush: boolean){
     let strkcolor = '';
     console.log("createPolygon 1 ");
     this.map.getMyLocation().then(location => {
@@ -177,6 +180,10 @@ export class MapsPage {
 
     console.log("createPolygon 2 ");
     let isUserIn = this.containsLocation(this.loc, mpts);
+    if (isUserIn && needPush) {
+      console.log("createPolygon emit ");
+      this.events.publish("zone:push", room);
+    }
     (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
     console.log("createPolygon 3 ");
     let polygOptions: PolygonOptions = {
@@ -200,7 +207,7 @@ export class MapsPage {
       console.log("mapClear: " + res);
       this.allZones.forEach(elem => {
         console.log(elem.toString());
-        this.createPolygon(elem.coords);
+        this.createPolygon(elem.coords, elem, true);
       });
     },err => { console.error("mapClear: " + err); });
   }
@@ -250,7 +257,7 @@ export class MapsPage {
         }
         this.currentZone.coords = mpts;
         this.currentPolyg = mpts;
-        this.createPolygon(mpts);
+        this.createPolygon(mpts, null, false);
         console.log("mapClear: " + mpts);
       },err => { console.error("mapClear: " + err); });
     },err => { console.error("getClickPos: " + err); });

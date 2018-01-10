@@ -17,12 +17,14 @@ import {ConversationServiceProvider} from "../../providers/conversation-service/
 })
 export class ListChatPage {
   listConversation: any;
+  listConversationRoom: any;
   loading: any;
 
   constructor(private userService: UserServiceProvider, public navCtrl: NavController, public events: Events,
               public loadingCtrl: LoadingController, public conversationService: ConversationServiceProvider) {
     // console.log("ListChatPage constructor");
     this.listConversation = [];
+    this.listConversationRoom = [];
     this.presentLoadingText("Loading conversation...");
     userService.getUserConversation().subscribe(success => {
         // console.log("ListChatPage getUserConversation success");
@@ -45,27 +47,13 @@ export class ListChatPage {
         // console.log(error);
       });
 
-    events.subscribe('zone:push', (conversationId) => {
-      this.conversationService.getConversationById(conversationId).subscribe((success:any) => {
-        let newConversation = {
-          name: success.name,
-          id: success.id,
-          members: success.members,
-          last_message: success.last_message,
-          chatType: ChatType.ROOM_CONVERSATION
-        };
-        this.listConversation.push(newConversation);
-      }, error => {
-        console.log("ListChatPage constructor getConversationById");
-        console.log(error);
-      });
+    events.subscribe('zone:push', (room) => {
+      this.listConversationRoom.push(room);
     });
 
-    events.subscribe('zone:pop', (conversationId) => {
-      this.listConversation = this.remove(this.listConversation, conversationId);
+    events.subscribe('zone:pop', (room) => {
+      this.listConversationRoom = this.remove(this.listConversationRoom, room.id);
     });
-    // // TODO : a virer une fois quon a les init
-    //this.listConversation = [{name: "David le poulet", members: [], id: ""}, {name: "La bande a bono", members: [], id: ""}];
   }
 
   remove(arrOriginal, conversationId: string){
