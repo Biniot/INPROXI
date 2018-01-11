@@ -75,6 +75,7 @@ export class EditUserPage {
 
           this.currentUser.avatarPath = base64File;
           this.imageSrc = this.currentUser.avatarPath;
+          localStorage.setItem('img', base64File);
         }, (err) => {
           console.log(err);
         });
