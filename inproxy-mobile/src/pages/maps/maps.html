@@ -9,18 +9,26 @@
 
 <ion-content padding>
   <div #map id="map">
-    <ul>
+    <!--<ul>-->
 
-      <li>
-      </li>
-    </ul>
+      <!--<li>-->
+        <ion-fab bottom right>
+
+          <button ion-fab (click)="createZone()">
+            <ion-icon [name]=iconAddPolyg ></ion-icon>
+            <!--<ion-icon [name]=this.iconAddPolyg ></ion-icon>-->
+          </button>
+
+        </ion-fab>
+      <!--</li>-->
+    <!--</ul>-->
   </div>
-  <ion-fab bottom right>
+  <!--<ion-fab bottom right>-->
 
-    <button ion-fab (click)="createZone()">
-      <ion-icon [name]=iconAddPolyg ></ion-icon>
-      <!--<ion-icon [name]=this.iconAddPolyg ></ion-icon>-->
-    </button>
+    <!--<button ion-fab (click)="createZone()">-->
+      <!--<ion-icon [name]=iconAddPolyg ></ion-icon>-->
+      <!--&lt;!&ndash;<ion-icon [name]=this.iconAddPolyg ></ion-icon>&ndash;&gt;-->
+    <!--</button>-->
 
-  </ion-fab>
+  <!--</ion-fab>-->
 </ion-content>
