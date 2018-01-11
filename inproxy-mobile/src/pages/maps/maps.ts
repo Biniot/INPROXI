@@ -190,12 +190,26 @@ export class MapsPage {
 
     console.log("createPolygon 2 ");
     let isUserIn = this.containsLocation(this.loc, mpts);
-    if (isUserIn && needPush) {
-      console.log("createPolygon emit ");
-      console.log(room);
-      this.ioService.addConversation(room);
+    // if (isUserIn === true && needPush === true) {
+    //   console.log("createPolygon emit ");
+    //   console.log(room);
+    //   this.ioService.addConversation(room);
+    // }
+    // (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
+
+    if (isUserIn === true) {
+      (strkcolor = '#0000FF');
+      if (needPush === true) {
+        console.log("createPolygon emit ");
+        console.log(room);
+        this.ioService.addConversation(room);
+      }
     }
-    (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
+     else {
+      (strkcolor = '#e60000');
+    }
+
+
     // console.log("createPolygon 3 ");
     let polygOptions: PolygonOptions = {
       points: mpts,
