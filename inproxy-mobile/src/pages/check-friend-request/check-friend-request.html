@@ -10,7 +10,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Pending friend requests</ion-title>
+    <ion-title>Friend request pending</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -20,7 +20,7 @@
   <ion-card *ngIf="haveFriendRequest">
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let friendRequest of friendRequestList">
+        <ion-item *ngFor="let friendRequest of friendRequestList" text-wrap>
           <div><ion-avatar item-start>
             <img src="../../assets/img/avatar.png">
           </ion-avatar></div>
