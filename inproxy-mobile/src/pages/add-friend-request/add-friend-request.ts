@@ -54,6 +54,7 @@ export class AddFriendRequestPage {
         isCheat = true;
       }
     });
+
     if (!isCheat) {
       let isFind = false;
       this.friendList.forEach(elem => {

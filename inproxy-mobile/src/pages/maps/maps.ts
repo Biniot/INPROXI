@@ -190,7 +190,7 @@ export class MapsPage {
 
     console.log("createPolygon 2 ");
     let isUserIn = this.containsLocation(this.loc, mpts);
-    if (/*isUserIn && */needPush) {
+    if (isUserIn && needPush) {
       console.log("createPolygon emit ");
       console.log(room);
       this.ioService.addConversation(room);
