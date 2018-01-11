@@ -96,6 +96,10 @@ export class UserPage {
     // this.currentUser.avatarPath = localStorage.getItem('avatarPath');
   }
 
+  ionViewWillEnter() {
+    this.reloadUser();
+  }
+
   public deleteUser(){
     this.userService.deleteUser().subscribe(success => {
         if (success) {
