@@ -273,11 +273,11 @@ export class MapsPage {
           mpts.push(latLng);
           //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
           //  (err) => {console.log('addMarker err')});
-          if (mkr === true) {
-            this.createMarker(latLng).then(res => {
-              if (res != null) { mkr = false; }
-            }, err => { console.error("createMarker err :" + err); });
-          }
+          // if (mkr === true) {
+          //   this.createMarker(latLng).then(res => {
+          //     if (res != null) { mkr = false; }
+          //   }, err => { console.error("createMarker err :" + err); });
+          // }
           // this.currentZone.coords = mpts;
           // this.currentPolyg = mpts;
           // this.createPolygon(mpts, null, false);
