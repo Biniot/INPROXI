@@ -271,6 +271,14 @@ export class MapsPage {
         this.map.clear().then(res => {
           let mpts = [];
           mpts.push(latLng);
+          this.map.addMarker({
+            'position': {
+              lat: latLng.lat,
+              lng: latLng.lng
+            }
+          });
+
+
           //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
           //  (err) => {console.log('addMarker err')});
           // if (mkr === true) {
