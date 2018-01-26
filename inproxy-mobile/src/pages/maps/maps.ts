@@ -180,50 +180,51 @@ export class MapsPage {
   }
 
   createPolygon(mpts: ILatLng[], room : any, needPush: boolean){
-    let strkcolor = '';
     console.log("createPolygon 1 ");
     console.log(needPush);
     console.log(room);
     this.map.getMyLocation().then(location => {
+      let strkcolor = '';
       this.loc = location.latLng;
-      }, err => { console.error(err);});
+      console.log("createPolygon 2 ");
+      let isUserIn = this.containsLocation(this.loc, mpts);
+      // if (isUserIn === true && needPush === true) {
+      //   console.log("createPolygon emit ");
+      //   console.log(room);
+      //   this.ioService.addConversation(room);
+      // }
+      (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
 
-    console.log("createPolygon 2 ");
-    let isUserIn = this.containsLocation(this.loc, mpts);
-    // if (isUserIn === true && needPush === true) {
-    //   console.log("createPolygon emit ");
-    //   console.log(room);
-    //   this.ioService.addConversation(room);
-    // }
-    (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
-
-    if (isUserIn === true) {
-      (strkcolor = '#0000FF');
-      if (needPush === true) {
-        console.log("createPolygon emit needPush === true");
-        console.log(room);
-        // this.ioService.addConversation(room);
+      console.log("createPolygon 3 ");
+      if (isUserIn === true) {
+        (strkcolor = '#0000FF');
+        if (needPush === true) {
+          console.log("createPolygon emit needPush === true");
+          console.log(room);
+          // this.ioService.addConversation(room);
+        }
       }
-    }
-     else {
-      (strkcolor = '#e60000');
-    }
+      else {
+        (strkcolor = '#e60000');
+      }
 
 
-    console.log("createPolygon 3 ");
-    let polygOptions: PolygonOptions = {
-      points: mpts,
-      strokeColor: strkcolor,
-      fillColor: 'rgba(0,0,0,0)',
-      strokeWidth: 3,
-      visible: true
-    };
-    console.log("createPolygon 4 ");
-    this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
-      polyg.setVisible(true);
-      polyg.setClickable(false);
-    }, err => { console.error("addPolygon: " + err); });
-    console.log("createPolygon 5 ");
+      console.log("createPolygon 4 ");
+      let polygOptions: PolygonOptions = {
+        points: mpts,
+        strokeColor: strkcolor,
+        fillColor: 'rgba(0,0,0,0)',
+        strokeWidth: 3,
+        visible: true
+      };
+      console.log("createPolygon 5 ");
+      this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
+        polyg.setVisible(true);
+        polyg.setClickable(false);
+        console.log("createPolygon 6 ");
+      }, err => { console.error("addPolygon: error" + err); });
+    }, err => { console.error('getMyLocation err');console.error(err);});
+
   }
 
   createAllPolygons()
