@@ -41,11 +41,6 @@ export class MapsPage {
   visi: VisibleRegion;
   iconAddPolyg: String;
   currentUser: User;
-  currentZone: {
-    coords: ILatLng[],
-    name: String,
-    admin_id: String
-  };
 
   coordNewArea:any;
   allZones: Room[];
@@ -68,17 +63,18 @@ export class MapsPage {
     this.isMapLoad = false;
     this.isAddingArea = false;
     this.coordNewArea = [];
+    this.allZones = [];
     this.iconAddPolyg ="add";
   }
 
 
   addMarkerToMap(latLng: any) {
     this.zone.run(() => {
-      console.log("addMarkerToMap");
+      // console.log("addMarkerToMap");
       if (this.isAddingArea) {
-        console.log("this.isAddingArea");
+        // console.log("this.isAddingArea");
         this.map.clear().then(res => {
-          console.log("map.clear().then");
+          // console.log("map.clear().then");
           let lat = parseFloat(latLng.toString().split(" ")[1].split(",")[0]);
           let lng = parseFloat(latLng.toString().split(" ")[3].split("}")[0]);
           this.coordNewArea.push({lat: lat, lng: lng});
@@ -94,28 +90,25 @@ export class MapsPage {
                 console.log("addMarker err");
                 console.log(err);
               });
-          } else  {//#0000FF
-            this.map.addPolygon({
-              'points': this.coordNewArea,
-              'strokeColor' : '#e60000',
-              'strokeWidth': 3,
-              'fillColor' : 'rgba(0,0,0,0)',
-              'visible': true
-            });
+          } else  {
+            if (this.containsLocation(this.loc, this.coordNewArea)) {
+              this.map.addPolygon({
+                'points': this.coordNewArea,
+                'strokeColor' : '#0000FF',
+                'strokeWidth': 3,
+                'fillColor' : 'rgba(0,0,0,0)',
+                'visible': true
+              });
+            } else {
+              this.map.addPolygon({
+                'points': this.coordNewArea,
+                'strokeColor' : '#e60000',
+                'strokeWidth': 3,
+                'fillColor' : 'rgba(0,0,0,0)',
+                'visible': true
+              });
+            }
           }
-
-
-          //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
-          //  (err) => {console.log('addMarker err')});
-          // if (mkr === true) {
-          //   this.createMarker(latLng).then(res => {
-          //     if (res != null) { mkr = false; }
-          //   }, err => { console.error("createMarker err :" + err); });
-          // }
-          // this.currentZone.coords = mpts;
-          // this.currentPolyg = mpts;
-          // this.createPolygon(mpts, null, false);
-          // console.log("mapClear: " + mpts);
         },err => { console.error("mapClear err: " + err); });
       }
     });
@@ -137,6 +130,30 @@ export class MapsPage {
     this.isAddingArea = !this.isAddingArea;
   }
 
+  updateAreas() {
+    this.allZones.forEach(elem => {
+      this.map.clear().then(res => {
+        if (this.containsLocation(this.loc, elem.coords)) {
+          this.map.addPolygon({
+            'points': elem.coords,
+            'strokeColor' : '#0000FF',
+            'strokeWidth': 3,
+            'fillColor' : 'rgba(0,0,0,0)',
+            'visible': true
+          });
+        } else {
+          this.map.addPolygon({
+            'points': elem.coords,
+            'strokeColor' : '#e60000',
+            'strokeWidth': 3,
+            'fillColor' : 'rgba(0,0,0,0)',
+            'visible': true
+          });
+        }
+      },err => { console.error("mapClear err: " + err); });
+    });
+  }
+
   centerView() {
     if (this.isMapLoad) {
       this.map.setMyLocationEnabled(true);
@@ -153,7 +170,6 @@ export class MapsPage {
   }
 
   ionViewWillEnter() {
-
     if (!this.isMapLoad) {
       let element = this.mapElement.nativeElement;
       this.map = this.googleMaps.create(element);
@@ -174,6 +190,8 @@ export class MapsPage {
     } else {
       this.centerView();
     }
+
+    this.updateAreas();
 
 
     //this.presentLoadingText("Downloading areas...");
@@ -383,7 +401,13 @@ export class MapsPage {
     saveZone.onDidDismiss((allData : any) => {
       console.log('saveZone.onDidDismiss');
       console.log(allData.toString());
+      let newRoom = new Room();
+      newRoom.name = allData.name;
+      newRoom.coords = this.coordNewArea;
+      newRoom.admin_id = localStorage.getItem('userId');
+      this.allZones.push(newRoom);
       this.coordNewArea = [];
+      this.updateAreas();
       // this.presentLoadingText("Uploading new area...");
       // this.allZones.push(allData);
       // this.createAllPolygons();
