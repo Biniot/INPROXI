@@ -221,31 +221,6 @@ export class MapsPage {
     }
 
     this.updateAreas();
-
-
-    // let name : String;
-    // let points: ILatLng[];
-    // let adm:  String;
-    // this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'), localStorage.getItem('firstName'), localStorage.getItem('avatarPath'));
-    // this.currentUser.userId = localStorage.getItem('userId');
-    //
-    // name = "";
-    // points = [];
-    // adm = this.currentUser.userId;
-    //
-    // console.log("CURRENT USER: " + this.currentUser.userId);
-    //
-    // this.currentPolyg           = [];
-    // this.recordPolyg            = false;
-    // this.iconAddPolyg           = "add";
-    //
-    // this.currentZone = ({
-    //   coords : points,
-    //   name : name,
-    //   admin_id : adm
-    // });
-    // this.allZones = [];
-    //
   }
   // //Load the groupMap
   // initMap(){
@@ -399,32 +374,30 @@ export class MapsPage {
     saveZone.onDidDismiss((allData : any) => {
       console.log('saveZone.onDidDismiss');
       console.log(allData.toString());
-      let newRoom = new Room();
-      newRoom.name = allData.name;
-      newRoom.coords = this.coordNewArea;
-      newRoom.admin_id = localStorage.getItem('userId');
-      this.allZones.push(newRoom);
+      // let newRoom = new Room();
+      // newRoom.name = allData.name;
+      // newRoom.coords = this.coordNewArea;
+      // newRoom.admin_id = localStorage.getItem('userId');
+      //this.allZones.push(newRoom);
       this.coordNewArea = [];
-      this.updateAreas();
-      // this.presentLoadingText("Uploading new area...");
-      // this.allZones.push(allData);
-      // this.createAllPolygons();
-    //   this.roomService.addRoom(allData).subscribe(success => {
-    //       if (success) {
-    //         console.log('onDidDismiss addRoom');
-    //         console.log(success);
-    //         console.log(success.coords[0]);
-    //         this.allZones.push(success);
-    //         this.createAllPolygons();
-    //       } else {
-    //         this.showPopup("Error", "Problem uploading new area.");
-    //       }
-    //       this.loading.dismiss();
-    //     },
-    //     error => {
-    //       this.showPopup("Error", error);
-    //       this.loading.dismiss();
-    //     });
+      this.presentLoadingText("Uploading new area...");
+      this.allZones.push(allData);
+      this.roomService.addRoom(allData).subscribe(success => {
+          if (success) {
+            console.log('onDidDismiss addRoom success');
+            console.log(JSON.stringify(success));
+            console.log(success.coords[0]);
+            this.allZones.push(success);
+            this.updateAreas();
+          } else {
+            this.showPopup("Error", "Problem uploading new area.");
+          }
+          this.loading.dismiss();
+        },
+        error => {
+          this.showPopup("Error", error);
+          this.loading.dismiss();
+        });
     });
   }
 
