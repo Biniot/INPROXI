@@ -271,11 +271,15 @@ export class MapsPage {
 
     this.currentZone.name = "";
     this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
+      console.log("on(GoogleMapsEvent.MAP_CLICK)");
+      console.log(e.toString());
+      console.log(e.lat);
+      console.log(e.lng);
       spt = new LatLng(e.lat, e.lng);
       mpts.push(spt);
       console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
       this.map.clear().then(res => {
-        console.debug(res);
+        console.log(res);
         if (mkr === true) {
           this.createMarker(spt).then(res => {
             if (res != null) { mkr = false; }
