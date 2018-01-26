@@ -185,8 +185,11 @@ export class MapsPage {
     console.log(room);
     this.map.getMyLocation().then(location => {
       let strkcolor = '';
+      console.log(location.toString());
       this.loc = location.latLng;
       console.log("createPolygon 2 ");
+      console.log(this.loc.toString());
+      console.log(mpts.toString());
       let isUserIn = this.containsLocation(this.loc, mpts);
       // if (isUserIn === true && needPush === true) {
       //   console.log("createPolygon emit ");
