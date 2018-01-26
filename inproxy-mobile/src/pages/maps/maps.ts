@@ -264,12 +264,15 @@ export class MapsPage {
     let mkr = true;
 
     this.currentZone.name = "";
-    this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng) => {
+    this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng: any) => {
       this.zone.run(() => {
         console.log("on(GoogleMapsEvent.MAP_CLICK)");
         console.log(latLng.toString());
         console.log(latLng.lat);
         console.log(latLng.lng);
+        let test = JSON.parse(latLng.toString());
+        console.log(test.lat);
+        console.log(test.lng);
         this.map.clear().then(res => {
           let mpts = [];
           mpts.push(latLng);
@@ -278,7 +281,7 @@ export class MapsPage {
               lat: latLng.lat,
               lng: latLng.lng
             }
-          }).then(() => {console.log("addMarker success");}, (err) => {console.log("addMarker err");console.log(err);});
+          }).then((data) => {console.log("addMarker success");console.log(data);}, (err) => {console.log("addMarker err");console.log(err);});
 
 
           //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
