@@ -270,21 +270,19 @@ export class MapsPage {
     mpts = [];
 
     this.currentZone.name = "";
-    this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((e) => {
+    this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng) => {
       console.log("on(GoogleMapsEvent.MAP_CLICK)");
-      console.log(e.toString());
-      console.log(e.lat);
-      console.log(e.lng);
-      spt = new LatLng(e.lat, e.lng);
-      mpts.push(e);
-      console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
+      console.log(latLng.toString());
+      //spt = new LatLng(e.lat, e.lng);
+      mpts.push(latLng);
+      //console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
       this.map.clear().then(res => {
-        console.log(res);
-        if (mkr === true) {
-          this.createMarker(spt).then(res => {
-            if (res != null) { mkr = false; }
-          }, err => { console.error("createMarker err :" + err); });
-        }
+        this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')}, (err) => {console.log('addMarker err')});
+        // if (mkr === true) {
+        //   this.createMarker(spt).then(res => {
+        //     if (res != null) { mkr = false; }
+        //   }, err => { console.error("createMarker err :" + err); });
+        // }
         this.currentZone.coords = mpts;
         this.currentPolyg = mpts;
         this.createPolygon(mpts, null, false);
