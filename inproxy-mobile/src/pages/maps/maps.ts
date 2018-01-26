@@ -77,7 +77,7 @@ export class MapsPage {
   }
 
   ionViewWillEnter() {
-    this.presentLoadingText("Downloading areas...");
+    //this.presentLoadingText("Downloading areas...");
     let name : String;
     let points: ILatLng[];
     let adm:  String;
@@ -111,38 +111,38 @@ export class MapsPage {
         this.moveCam(this.loc);
 
         this.getView();
-      }, err => { console.error(err); });
+      }, err => { console.error("getMyLocation err");console.error(err); });
     });
-    this.roomService.getRoom().subscribe(success => {
-        if (success) {
-          // console.log('getRoom if (success)');
-          this.allZones = [];
-          success.forEach(elem => {
-            // console.log('getRoom forEach');
-            // console.log(elem);
-            let newElem = new Room();
-            newElem.admin_id = elem.admin_id;
-            newElem.name = elem.name;
-            newElem.id = elem.id;
-            newElem.coords = [];
-            let tabCoords = elem.coords[0].split(',');
-            for (let i = 0; i < tabCoords.length; i++) {
-              newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
-              i++;
-            }
-            this.allZones.push(newElem);
-            // console.log('getRoom push(elem)');
-          });
-          this.createAllPolygons();
-        } else {
-          this.showPopup("Error", "Problem downloading areas.");
-        }
-        this.loading.dismiss();
-      },
-      error => {
-        this.showPopup("Error", error);
-        this.loading.dismiss();
-      });
+    // this.roomService.getRoom().subscribe(success => {
+    //     if (success) {
+    //       console.log('getRoom if (success)');
+    //       this.allZones = [];
+    //       success.forEach(elem => {
+    //         console.log('getRoom forEach');
+    //         console.log(elem);
+    //         let newElem = new Room();
+    //         newElem.admin_id = elem.admin_id;
+    //         newElem.name = elem.name;
+    //         newElem.id = elem.id;
+    //         newElem.coords = [];
+    //         let tabCoords = elem.coords[0].split(',');
+    //         for (let i = 0; i < tabCoords.length; i++) {
+    //           newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
+    //           i++;
+    //         }
+    //         this.allZones.push(newElem);
+    //         // console.log('getRoom push(elem)');
+    //       });
+    //       this.createAllPolygons();
+    //     } else {
+    //       this.showPopup("Error", "Problem downloading areas.");
+    //     }
+    //     this.loading.dismiss();
+    //   },
+    //   error => {
+    //     this.showPopup("Error", error);
+    //     this.loading.dismiss();
+    //   });
   }
   // //Load the groupMap
   // initMap(){
@@ -158,7 +158,7 @@ export class MapsPage {
   {
     let visible: VisibleRegion;
     visible = this.map.getVisibleRegion();
-   this.visi = visible;
+    this.visi = visible;
   }
 
   moveCam(loc : LatLng){
@@ -167,8 +167,8 @@ export class MapsPage {
       zoom: 15,
       tilt: 10
     };
-    this.map.moveCamera(options).then(res => {console.log("move camera bloup: " + res);},
-      err => { console.error("move camera: " + err); })
+    this.map.moveCamera(options).then(res => {console.log("move camera success: " + res);},
+      err => { console.error("move camera err: " + err); })
   }
 
   createMarker(loc: LatLng){
@@ -195,14 +195,14 @@ export class MapsPage {
     //   console.log(room);
     //   this.ioService.addConversation(room);
     // }
-    // (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
+    (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
 
     if (isUserIn === true) {
       (strkcolor = '#0000FF');
       if (needPush === true) {
-        console.log("createPolygon emit ");
+        console.log("createPolygon emit needPush === true");
         console.log(room);
-        this.ioService.addConversation(room);
+        // this.ioService.addConversation(room);
       }
     }
      else {
@@ -210,7 +210,7 @@ export class MapsPage {
     }
 
 
-    // console.log("createPolygon 3 ");
+    console.log("createPolygon 3 ");
     let polygOptions: PolygonOptions = {
       points: mpts,
       strokeColor: strkcolor,
@@ -218,12 +218,12 @@ export class MapsPage {
       strokeWidth: 3,
       visible: true
     };
-    // console.log("createPolygon 4 ");
+    console.log("createPolygon 4 ");
     this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
       polyg.setVisible(true);
       polyg.setClickable(false);
     }, err => { console.error("addPolygon: " + err); });
-    // console.log("createPolygon 5 ");
+    console.log("createPolygon 5 ");
   }
 
   createAllPolygons()
@@ -232,10 +232,10 @@ export class MapsPage {
     this.map.clear().then(res => {
       console.log("mapClear: " + res);
       this.allZones.forEach(elem => {
-        // console.log(elem.toString());
+        console.log(elem.toString());
         this.createPolygon(elem.coords, elem, true);
       });
-    },err => { console.error("mapClear: " + err); });
+    },err => { console.error("mapClear err: " + err); });
   }
 
   createZone()
@@ -279,14 +279,14 @@ export class MapsPage {
         if (mkr === true) {
           this.createMarker(spt).then(res => {
             if (res != null) { mkr = false; }
-          }, err => { console.error("createMarker" + err); });
+          }, err => { console.error("createMarker err :" + err); });
         }
         this.currentZone.coords = mpts;
         this.currentPolyg = mpts;
         this.createPolygon(mpts, null, false);
         console.log("mapClear: " + mpts);
-      },err => { console.error("mapClear: " + err); });
-    },err => { console.error("getClickPos: " + err); });
+      },err => { console.error("mapClear err: " + err); });
+    },err => { console.error("getClickPos err: " + err); });
   }
 
   saveZone()
@@ -308,23 +308,25 @@ export class MapsPage {
     }, err => { console.error(err) });
 
     saveZone.onDidDismiss((allData : any) => {
-      this.presentLoadingText("Uploading new area...");
-      this.roomService.addRoom(allData).subscribe(success => {
-          if (success) {
-            console.log('onDidDismiss addRoom');
-            console.log(success);
-            console.log(success.coords[0]);
-            this.allZones.push(success);
-            this.createAllPolygons();
-          } else {
-            this.showPopup("Error", "Problem uploading new area.");
-          }
-          this.loading.dismiss();
-        },
-        error => {
-          this.showPopup("Error", error);
-          this.loading.dismiss();
-        });
+      // this.presentLoadingText("Uploading new area...");
+      this.allZones.push(allData);
+      this.createAllPolygons();
+    //   this.roomService.addRoom(allData).subscribe(success => {
+    //       if (success) {
+    //         console.log('onDidDismiss addRoom');
+    //         console.log(success);
+    //         console.log(success.coords[0]);
+    //         this.allZones.push(success);
+    //         this.createAllPolygons();
+    //       } else {
+    //         this.showPopup("Error", "Problem uploading new area.");
+    //       }
+    //       this.loading.dismiss();
+    //     },
+    //     error => {
+    //       this.showPopup("Error", error);
+    //       this.loading.dismiss();
+    //     });
     });
   }
 
