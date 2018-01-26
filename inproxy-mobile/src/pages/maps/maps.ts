@@ -73,19 +73,25 @@ export class MapsPage {
 
   addMarkerToMap(latLng: any) {
     this.zone.run(() => {
-      console.log("on(GoogleMapsEvent.MAP_CLICK)");
-      console.log(latLng.toString());
-      console.log(latLng.lat);
-      console.log(latLng.lng);
+      console.log("addMarkerToMap");
       if (this.isAddingArea) {
+        console.log("this.isAddingArea");
         this.map.clear().then(res => {
+          console.log("map.clear().then");
+          console.log(latLng.toString());
+          console.log(latLng.lat);
+          console.log(latLng.lng);
+          let lat = parseFloat(latLng.toString().split(" ")[1].split(",")[0]);
+          let lng = parseFloat(latLng.toString().split(" ")[3].split("}")[0]);
+          console.log(lat);
+          console.log(lng);
           this.map.addMarker({
-            'position': latLng,
+            'position': {lat: lat, lng: lng},
             'icon': 'magenta'
           }).then((data) => {
             console.log("addMarker success");
             console.log(data);
-            this.coordNewArea.push(latLng);
+            this.coordNewArea.push({lat: lat, lng: lng});
             },
             (err) => {console.log("addMarker err");console.log(err);});
 
