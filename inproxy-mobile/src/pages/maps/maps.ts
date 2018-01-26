@@ -68,20 +68,6 @@ export class MapsPage {
     this.isMapLoad = false;
     this.isAddingArea = false;
     this.coordNewArea = [];
-    let element = this.mapElement.nativeElement;
-    this.map = this.googleMaps.create(element);
-    this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
-      this.isMapLoad = true;
-      this.map.setMyLocationEnabled(true);
-      this.map.getMyLocation().then(location => {
-        this.loc = location.latLng;
-        this.moveCam(this.loc);
-        this.addMarkerToMap(location);
-        this.getView();
-        this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng: any) => {
-        },err => { console.error("getClickPos err: " + err); });
-      }, err => { console.error("getMyLocation err");console.error(err); });
-    });
   }
 
   addMarkerToMap(latLng: any) {
@@ -168,7 +154,25 @@ export class MapsPage {
   }
 
   ionViewWillEnter() {
-    this.centerView();
+
+    if (!this.isMapLoad) {
+      let element = this.mapElement.nativeElement;
+      this.map = this.googleMaps.create(element);
+      this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+        this.isMapLoad = true;
+        this.map.setMyLocationEnabled(true);
+        this.map.getMyLocation().then(location => {
+          this.loc = location.latLng;
+          this.moveCam(this.loc);
+          this.addMarkerToMap(location);
+          this.getView();
+          this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng: any) => {
+          },err => { console.error("getClickPos err: " + err); });
+        }, err => { console.error("getMyLocation err");console.error(err); });
+      });
+    } else {
+      this.centerView();
+    }
 
 
     //this.presentLoadingText("Downloading areas...");
