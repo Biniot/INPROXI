@@ -277,15 +277,15 @@ export class MapsPage {
         console.log("on(GoogleMapsEvent.MAP_CLICK)");
         console.log(latLng.toString());
         this.map.clear().then(res => {
-          this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
+          let mpts = [];
+          mpts.push(latLng);
+          this.map.addMarker({position: latLng[0], icon: 'magenta'}).then(() => {console.log('addMarker success')},
             (err) => {console.log('addMarker err')});
           // if (mkr === true) {
           //   this.createMarker(spt).then(res => {
           //     if (res != null) { mkr = false; }
           //   }, err => { console.error("createMarker err :" + err); });
           // }
-          // let mpts = [];
-          // mpts.push(latLng);
           // this.currentZone.coords = mpts;
           // this.currentPolyg = mpts;
           // this.createPolygon(mpts, null, false);
