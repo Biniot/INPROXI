@@ -71,6 +71,7 @@ export class MapsPage {
     this.iconAddPolyg ="add";
   }
 
+
   addMarkerToMap(latLng: any) {
     this.zone.run(() => {
       console.log("addMarkerToMap");
@@ -78,22 +79,30 @@ export class MapsPage {
         console.log("this.isAddingArea");
         this.map.clear().then(res => {
           console.log("map.clear().then");
-          console.log(latLng.toString());
-          console.log(latLng.lat);
-          console.log(latLng.lng);
           let lat = parseFloat(latLng.toString().split(" ")[1].split(",")[0]);
           let lng = parseFloat(latLng.toString().split(" ")[3].split("}")[0]);
-          console.log(lat);
-          console.log(lng);
-          this.map.addMarker({
-            'position': {lat: lat, lng: lng},
-            'icon': 'magenta'
-          }).then((data) => {
-            console.log("addMarker success");
-            console.log(data);
-            this.coordNewArea.push({lat: lat, lng: lng});
-            },
-            (err) => {console.log("addMarker err");console.log(err);});
+          this.coordNewArea.push({lat: lat, lng: lng});
+          if (this.coordNewArea.length == 1) {
+            this.map.addMarker({
+              'position': {lat: lat, lng: lng},
+              'icon': 'magenta'
+            }).then((data) => {
+                console.log("addMarker success");
+                console.log(data);
+              },
+              (err) => {
+                console.log("addMarker err");
+                console.log(err);
+              });
+          } else  {//#0000FF
+            this.map.addPolygon({
+              'points': this.coordNewArea,
+              'strokeColor' : '#e60000',
+              'strokeWidth': 3,
+              'fillColor' : 'rgba(0,0,0,0)',
+              'visible': true
+            });
+          }
 
 
           //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
@@ -119,7 +128,7 @@ export class MapsPage {
     } else {
       this.iconAddPolyg ="add";
       // TODO : re init si lenght < 3
-      if (this.coordNewArea.length() < 3) {
+      if (this.coordNewArea.length < 3) {
         this.isAddingArea = !this.isAddingArea;
       } else {
         this.saveZone();
