@@ -170,14 +170,6 @@ export class MapsPage {
       err => { console.error("move camera err: " + err); })
   }
 
-  createMarker(loc: LatLng){
-    let markerOptions: MarkerOptions = {
-      position: loc,
-      icon: 'magenta'
-    };
-    return  this.map.addMarker(markerOptions);
-  }
-
   createPolygon(mpts: any, room : any, needPush: boolean){
     console.log("createPolygon 1 ");
     console.log(needPush);
@@ -279,13 +271,13 @@ export class MapsPage {
         this.map.clear().then(res => {
           let mpts = [];
           mpts.push(latLng);
-          this.map.addMarker({position: latLng[0], icon: 'magenta'}).then(() => {console.log('addMarker success')},
-            (err) => {console.log('addMarker err')});
-          // if (mkr === true) {
-          //   this.createMarker(spt).then(res => {
-          //     if (res != null) { mkr = false; }
-          //   }, err => { console.error("createMarker err :" + err); });
-          // }
+          //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
+          //  (err) => {console.log('addMarker err')});
+          if (mkr === true) {
+            this.createMarker(latLng).then(res => {
+              if (res != null) { mkr = false; }
+            }, err => { console.error("createMarker err :" + err); });
+          }
           // this.currentZone.coords = mpts;
           // this.currentPolyg = mpts;
           // this.createPolygon(mpts, null, false);
@@ -293,6 +285,14 @@ export class MapsPage {
         },err => { console.error("mapClear err: " + err); });
       });
     },err => { console.error("getClickPos err: " + err); });
+  }
+
+  createMarker(loc: LatLng){
+    let markerOptions: MarkerOptions = {
+      position: loc,
+      icon: 'magenta'
+    };
+    return  this.map.addMarker(markerOptions);
   }
 
   saveZone()
