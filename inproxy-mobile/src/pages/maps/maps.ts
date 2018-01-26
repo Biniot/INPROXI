@@ -276,7 +276,7 @@ export class MapsPage {
       console.log(e.lat);
       console.log(e.lng);
       spt = new LatLng(e.lat, e.lng);
-      mpts.push(spt);
+      mpts.push(e);
       console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
       this.map.clear().then(res => {
         console.log(res);
