@@ -37,12 +37,11 @@ import {IoServiceProvider} from "../../providers/io-service/io-service";
 export class MapsPage {
   @ViewChild('map') mapElement: ElementRef;
   map: GoogleMap;
-  loc: LatLng;
+  loc: any;
   visi: VisibleRegion;
   recordPolyg: Boolean;
   iconAddPolyg: String;
   currentPolyg: ILatLng[];
-  post: HttpRequestProvider;
   currentUser: User;
   subsRec: any;
   currentZone: {
@@ -187,46 +186,46 @@ export class MapsPage {
       let strkcolor = '';
       console.log(location.toString());
       this.loc = location.latLng;
-      console.log("createPolygon 2 ");
-      console.log(this.loc.toString());
-      console.log(mpts.toString());
-      //let isUserIn = this.containsLocation(this.loc, mpts);
-      let isUserIn = true;
-      // if (isUserIn === true && needPush === true) {
-      //   console.log("createPolygon emit ");
-      //   console.log(room);
-      //   this.ioService.addConversation(room);
+      // console.log("createPolygon 2 ");
+      // console.log(this.loc.toString());
+      // console.log(mpts.toString());
+      // //let isUserIn = this.containsLocation(this.loc, mpts);
+      // let isUserIn = true;
+      // // if (isUserIn === true && needPush === true) {
+      // //   console.log("createPolygon emit ");
+      // //   console.log(room);
+      // //   this.ioService.addConversation(room);
+      // // }
+      // (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
+      //
+      // console.log("createPolygon 3 ");
+      // if (isUserIn === true) {
+      //   (strkcolor = '#0000FF');
+      //   if (needPush === true) {
+      //     console.log("createPolygon emit needPush === true");
+      //     console.log(room);
+      //     // this.ioService.addConversation(room);
+      //   }
       // }
-      (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
-
-      console.log("createPolygon 3 ");
-      if (isUserIn === true) {
-        (strkcolor = '#0000FF');
-        if (needPush === true) {
-          console.log("createPolygon emit needPush === true");
-          console.log(room);
-          // this.ioService.addConversation(room);
-        }
-      }
-      else {
-        (strkcolor = '#e60000');
-      }
-
-
-      console.log("createPolygon 4 ");
-      let polygOptions: PolygonOptions = {
-        points: mpts,
-        strokeColor: strkcolor,
-        fillColor: 'rgba(0,0,0,0)',
-        strokeWidth: 3,
-        visible: true
-      };
-      console.log("createPolygon 5 ");
-      this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
-        polyg.setVisible(true);
-        polyg.setClickable(false);
-        console.log("createPolygon 6 ");
-      }, err => { console.error("addPolygon: error" + err); });
+      // else {
+      //   (strkcolor = '#e60000');
+      // }
+      //
+      //
+      // console.log("createPolygon 4 ");
+      // let polygOptions: PolygonOptions = {
+      //   points: mpts,
+      //   strokeColor: strkcolor,
+      //   fillColor: 'rgba(0,0,0,0)',
+      //   strokeWidth: 3,
+      //   visible: true
+      // };
+      // console.log("createPolygon 5 ");
+      // this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
+      //   polyg.setVisible(true);
+      //   polyg.setClickable(false);
+      //   console.log("createPolygon 6 ");
+      // }, err => { console.error("addPolygon: error" + err); });
     }, err => { console.error('getMyLocation err');console.error(err);});
 
   }
@@ -285,12 +284,12 @@ export class MapsPage {
           //     if (res != null) { mkr = false; }
           //   }, err => { console.error("createMarker err :" + err); });
           // }
-          let mpts = [];
-          mpts.push(latLng);
-          this.currentZone.coords = mpts;
-          this.currentPolyg = mpts;
-          this.createPolygon(mpts, null, false);
-          console.log("mapClear: " + mpts);
+          // let mpts = [];
+          // mpts.push(latLng);
+          // this.currentZone.coords = mpts;
+          // this.currentPolyg = mpts;
+          // this.createPolygon(mpts, null, false);
+          // console.log("mapClear: " + mpts);
         },err => { console.error("mapClear err: " + err); });
       });
     },err => { console.error("getClickPos err: " + err); });
