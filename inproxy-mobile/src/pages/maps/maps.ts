@@ -278,7 +278,7 @@ export class MapsPage {
               lat: latLng.lat,
               lng: latLng.lng
             }
-          }).then(() => {}, (err) => {console.log("addMarker err");console.log(err);});
+          }).then(() => {console.log("addMarker success");}, (err) => {console.log("addMarker err");console.log(err);});
 
 
           //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
