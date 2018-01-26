@@ -68,6 +68,7 @@ export class MapsPage {
     this.isMapLoad = false;
     this.isAddingArea = false;
     this.coordNewArea = [];
+    this.iconAddPolyg ="add";
   }
 
   addMarkerToMap(latLng: any) {
@@ -112,30 +113,13 @@ export class MapsPage {
     } else {
       this.iconAddPolyg ="add";
       // TODO : re init si lenght < 3
-      this.saveZone();
+      if (this.coordNewArea.length() < 3) {
+        this.isAddingArea = !this.isAddingArea;
+      } else {
+        this.saveZone();
+      }
     }
     this.isAddingArea = !this.isAddingArea;
-    //
-    // // console.log("bloup pidi bloup bloup");
-    // console.log("formerstate1 : " + this.recordPolyg);
-    // let formerState: Boolean;
-    // formerState = this.recordPolyg;
-    // console.log("formerstate2 : " + this.recordPolyg);
-    // this.recordPolyg = !formerState;
-    // console.log("formerstate3 : " + this.recordPolyg);
-    // if (formerState === false)
-    // {
-    //   this.iconAddPolyg = "square";
-    //   console.log("formerstate : " + this.recordPolyg);
-    //   this.getClickPos();
-    // }
-    // else
-    // {
-    //   // this.recordPolyg = false;
-    //   this.iconAddPolyg ="add";
-    //   this.subsRec.unsubscribe();
-    //   this.saveZone();
-    // }
   }
 
   centerView() {
@@ -160,6 +144,7 @@ export class MapsPage {
       this.map = this.googleMaps.create(element);
       this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
         this.isMapLoad = true;
+        console.log("this.isMapLoad = true;");
         this.map.setMyLocationEnabled(true);
         this.map.getMyLocation().then(location => {
           this.loc = location.latLng;
@@ -167,6 +152,7 @@ export class MapsPage {
           this.addMarkerToMap(location);
           this.getView();
           this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng: any) => {
+            this.addMarkerToMap(latLng);
           },err => { console.error("getClickPos err: " + err); });
         }, err => { console.error("getMyLocation err");console.error(err); });
       });
