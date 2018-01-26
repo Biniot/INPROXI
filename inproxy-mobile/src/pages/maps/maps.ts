@@ -39,18 +39,19 @@ export class MapsPage {
   map: GoogleMap;
   loc: any;
   visi: VisibleRegion;
-  recordPolyg: Boolean;
   iconAddPolyg: String;
-  currentPolyg: ILatLng[];
   currentUser: User;
-  subsRec: any;
   currentZone: {
     coords: ILatLng[],
     name: String,
     admin_id: String
   };
+
+  coordNewArea:any;
   allZones: Room[];
   loading: any;
+  isMapLoad: boolean;
+  isAddingArea: boolean;
 
   constructor(public navCtrl: NavController, private modal: ModalController, private googleMaps: GoogleMaps,
               private geoLoc: Geolocation, private request : HttpRequestProvider, private roomService : RoomServiceProvider,
@@ -64,54 +65,136 @@ export class MapsPage {
         // console.log('HomePage getUserInfo functionError');
         // console.log(error);
       });
-  }
-
-  presentLoadingText(message: string) {
-    this.loading = this.loadingCtrl.create({
-      spinner: 'hide',
-      content: message
-    });
-
-    this.loading.present();
-  }
-
-  ionViewWillEnter() {
-    //this.presentLoadingText("Downloading areas...");
-    let name : String;
-    let points: ILatLng[];
-    let adm:  String;
-    this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'), localStorage.getItem('firstName'), localStorage.getItem('avatarPath'));
-    this.currentUser.userId = localStorage.getItem('userId');
-
-    name = "";
-    points = [];
-    adm = this.currentUser.userId;
-
-    console.log("CURRENT USER: " + this.currentUser.userId);
-
-    this.currentPolyg           = [];
-    this.recordPolyg            = false;
-    this.iconAddPolyg           = "add";
-
-    this.currentZone = ({
-      coords : points,
-      name : name,
-      admin_id : adm
-    });
-
-    this.allZones = [];
-    //
+    this.isMapLoad = false;
+    this.isAddingArea = false;
+    this.coordNewArea = [];
     let element = this.mapElement.nativeElement;
     this.map = this.googleMaps.create(element);
     this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+      this.isMapLoad = true;
+      this.map.setMyLocationEnabled(true);
+      this.map.getMyLocation().then(location => {
+        this.loc = location.latLng;
+        this.moveCam(this.loc);
+        this.addMarkerToMap(location);
+        this.getView();
+        this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng: any) => {
+        },err => { console.error("getClickPos err: " + err); });
+      }, err => { console.error("getMyLocation err");console.error(err); });
+    });
+  }
+
+  addMarkerToMap(latLng: any) {
+    this.zone.run(() => {
+      console.log("on(GoogleMapsEvent.MAP_CLICK)");
+      console.log(latLng.toString());
+      console.log(latLng.lat);
+      console.log(latLng.lng);
+      if (this.isAddingArea) {
+        this.map.clear().then(res => {
+          this.map.addMarker({
+            'position': latLng,
+            'icon': 'magenta'
+          }).then((data) => {
+            console.log("addMarker success");
+            console.log(data);
+            this.coordNewArea.push(latLng);
+            },
+            (err) => {console.log("addMarker err");console.log(err);});
+
+
+          //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
+          //  (err) => {console.log('addMarker err')});
+          // if (mkr === true) {
+          //   this.createMarker(latLng).then(res => {
+          //     if (res != null) { mkr = false; }
+          //   }, err => { console.error("createMarker err :" + err); });
+          // }
+          // this.currentZone.coords = mpts;
+          // this.currentPolyg = mpts;
+          // this.createPolygon(mpts, null, false);
+          // console.log("mapClear: " + mpts);
+        },err => { console.error("mapClear err: " + err); });
+      }
+    });
+  }
+
+  createArea() {
+
+    if (!this.isAddingArea) {
+      this.iconAddPolyg = "square";
+    } else {
+      this.iconAddPolyg ="add";
+      // TODO : re init si lenght < 3
+      this.saveZone();
+    }
+    this.isAddingArea = !this.isAddingArea;
+    //
+    // // console.log("bloup pidi bloup bloup");
+    // console.log("formerstate1 : " + this.recordPolyg);
+    // let formerState: Boolean;
+    // formerState = this.recordPolyg;
+    // console.log("formerstate2 : " + this.recordPolyg);
+    // this.recordPolyg = !formerState;
+    // console.log("formerstate3 : " + this.recordPolyg);
+    // if (formerState === false)
+    // {
+    //   this.iconAddPolyg = "square";
+    //   console.log("formerstate : " + this.recordPolyg);
+    //   this.getClickPos();
+    // }
+    // else
+    // {
+    //   // this.recordPolyg = false;
+    //   this.iconAddPolyg ="add";
+    //   this.subsRec.unsubscribe();
+    //   this.saveZone();
+    // }
+  }
+
+  centerView() {
+    if (this.isMapLoad) {
       this.map.setMyLocationEnabled(true);
       this.map.getMyLocation().then(location => {
         this.loc = location.latLng;
         this.moveCam(this.loc);
 
         this.getView();
-      }, err => { console.error("getMyLocation err");console.error(err); });
-    });
+      }, err => {
+        console.error("centerView err");
+        console.error(err);
+      });
+    }
+  }
+
+  ionViewWillEnter() {
+    this.centerView();
+
+
+    //this.presentLoadingText("Downloading areas...");
+    // let name : String;
+    // let points: ILatLng[];
+    // let adm:  String;
+    // this.currentUser = new User(localStorage.getItem('lastName'), localStorage.getItem('email'), localStorage.getItem('firstName'), localStorage.getItem('avatarPath'));
+    // this.currentUser.userId = localStorage.getItem('userId');
+    //
+    // name = "";
+    // points = [];
+    // adm = this.currentUser.userId;
+    //
+    // console.log("CURRENT USER: " + this.currentUser.userId);
+    //
+    // this.currentPolyg           = [];
+    // this.recordPolyg            = false;
+    // this.iconAddPolyg           = "add";
+    //
+    // this.currentZone = ({
+    //   coords : points,
+    //   name : name,
+    //   admin_id : adm
+    // });
+    // this.allZones = [];
+    //
     // this.roomService.getRoom().subscribe(success => {
     //     if (success) {
     //       console.log('getRoom if (success)');
@@ -170,135 +253,101 @@ export class MapsPage {
       err => { console.error("move camera err: " + err); })
   }
 
-  createPolygon(mpts: any, room : any, needPush: boolean){
-    console.log("createPolygon 1 ");
-    console.log(needPush);
-    console.log(room);
-    this.map.getMyLocation().then(location => {
-      let strkcolor = '';
-      console.log(location.toString());
-      this.loc = location.latLng;
-      // console.log("createPolygon 2 ");
-      // console.log(this.loc.toString());
-      // console.log(mpts.toString());
-      // //let isUserIn = this.containsLocation(this.loc, mpts);
-      // let isUserIn = true;
-      // // if (isUserIn === true && needPush === true) {
-      // //   console.log("createPolygon emit ");
-      // //   console.log(room);
-      // //   this.ioService.addConversation(room);
-      // // }
-      // (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
-      //
-      // console.log("createPolygon 3 ");
-      // if (isUserIn === true) {
-      //   (strkcolor = '#0000FF');
-      //   if (needPush === true) {
-      //     console.log("createPolygon emit needPush === true");
-      //     console.log(room);
-      //     // this.ioService.addConversation(room);
-      //   }
-      // }
-      // else {
-      //   (strkcolor = '#e60000');
-      // }
-      //
-      //
-      // console.log("createPolygon 4 ");
-      // let polygOptions: PolygonOptions = {
-      //   points: mpts,
-      //   strokeColor: strkcolor,
-      //   fillColor: 'rgba(0,0,0,0)',
-      //   strokeWidth: 3,
-      //   visible: true
-      // };
-      // console.log("createPolygon 5 ");
-      // this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
-      //   polyg.setVisible(true);
-      //   polyg.setClickable(false);
-      //   console.log("createPolygon 6 ");
-      // }, err => { console.error("addPolygon: error" + err); });
-    }, err => { console.error('getMyLocation err');console.error(err);});
+  // createPolygon(mpts: any, room : any, needPush: boolean){
+  //   console.log("createPolygon 1 ");
+  //   console.log(needPush);
+  //   console.log(room);
+  //   this.map.getMyLocation().then(location => {
+  //     let strkcolor = '';
+  //     console.log(location.toString());
+  //     this.loc = location.latLng;
+  //     // console.log("createPolygon 2 ");
+  //     // console.log(this.loc.toString());
+  //     // console.log(mpts.toString());
+  //     // //let isUserIn = this.containsLocation(this.loc, mpts);
+  //     // let isUserIn = true;
+  //     // // if (isUserIn === true && needPush === true) {
+  //     // //   console.log("createPolygon emit ");
+  //     // //   console.log(room);
+  //     // //   this.ioService.addConversation(room);
+  //     // // }
+  //     // (isUserIn === true) ? (strkcolor = '#0000FF') : (strkcolor = '#e60000');
+  //     //
+  //     // console.log("createPolygon 3 ");
+  //     // if (isUserIn === true) {
+  //     //   (strkcolor = '#0000FF');
+  //     //   if (needPush === true) {
+  //     //     console.log("createPolygon emit needPush === true");
+  //     //     console.log(room);
+  //     //     // this.ioService.addConversation(room);
+  //     //   }
+  //     // }
+  //     // else {
+  //     //   (strkcolor = '#e60000');
+  //     // }
+  //     //
+  //     //
+  //     // console.log("createPolygon 4 ");
+  //     // let polygOptions: PolygonOptions = {
+  //     //   points: mpts,
+  //     //   strokeColor: strkcolor,
+  //     //   fillColor: 'rgba(0,0,0,0)',
+  //     //   strokeWidth: 3,
+  //     //   visible: true
+  //     // };
+  //     // console.log("createPolygon 5 ");
+  //     // this.map.addPolygon(polygOptions).then((polyg : Polygon) => {
+  //     //   polyg.setVisible(true);
+  //     //   polyg.setClickable(false);
+  //     //   console.log("createPolygon 6 ");
+  //     // }, err => { console.error("addPolygon: error" + err); });
+  //   }, err => { console.error('getMyLocation err');console.error(err);});
+  //
+  // }
+  //
+  // createAllPolygons()
+  // {
+  //   console.log("createAllPolygons 1 ");
+  //   this.map.clear().then(res => {
+  //     console.log("mapClear: " + res);
+  //     this.allZones.forEach(elem => {
+  //       console.log(elem.toString());
+  //       this.createPolygon(elem.coords, elem, true);
+  //     });
+  //   },err => { console.error("mapClear err: " + err); });
+  // }
 
-  }
+  // createZone()
+  // {
+  //   // console.log("bloup pidi bloup bloup");
+  //   console.log("formerstate1 : " + this.recordPolyg);
+  //   let formerState: Boolean;
+  //   formerState = this.recordPolyg;
+  //   console.log("formerstate2 : " + this.recordPolyg);
+  //   this.recordPolyg = !formerState;
+  //   console.log("formerstate3 : " + this.recordPolyg);
+  //   if (formerState === false)
+  //   {
+  //     this.iconAddPolyg = "square";
+  //     console.log("formerstate : " + this.recordPolyg);
+  //     this.getClickPos();
+  //   }
+  //   else
+  //   {
+  //     // this.recordPolyg = false;
+  //     this.iconAddPolyg ="add";
+  //     this.subsRec.unsubscribe();
+  //     this.saveZone();
+  //   }
+  // }
 
-  createAllPolygons()
-  {
-    console.log("createAllPolygons 1 ");
-    this.map.clear().then(res => {
-      console.log("mapClear: " + res);
-      this.allZones.forEach(elem => {
-        console.log(elem.toString());
-        this.createPolygon(elem.coords, elem, true);
-      });
-    },err => { console.error("mapClear err: " + err); });
-  }
-
-  createZone()
-  {
-    // console.log("bloup pidi bloup bloup");
-    console.log("formerstate1 : " + this.recordPolyg);
-    let formerState: Boolean;
-    formerState = this.recordPolyg;
-    console.log("formerstate2 : " + this.recordPolyg);
-    this.recordPolyg = !formerState;
-    console.log("formerstate3 : " + this.recordPolyg);
-    if (formerState === false)
-    {
-      this.iconAddPolyg = "square";
-      console.log("formerstate : " + this.recordPolyg);
-      this.getClickPos();
-    }
-    else
-    {
-      // this.recordPolyg = false;
-      this.iconAddPolyg ="add";
-      this.subsRec.unsubscribe();
-      this.saveZone();
-    }
-  }
-
-  getClickPos()
-  {
-    let spt : LatLng;
-    let mkr = true;
-
-    this.currentZone.name = "";
-    this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng: any) => {
-      this.zone.run(() => {
-        console.log("on(GoogleMapsEvent.MAP_CLICK)");
-        console.log(latLng.toString());
-        console.log(latLng.lat);
-        console.log(latLng.lng);
-        let test = JSON.parse(latLng.toString());
-        console.log(test.lat);
-        console.log(test.lng);
-        this.map.clear().then(res => {
-          let mpts = [];
-          mpts.push(latLng);
-          this.map.addMarker({
-            'position': {
-              lat: latLng.lat,
-              lng: latLng.lng
-            }
-          }).then((data) => {console.log("addMarker success");console.log(data);}, (err) => {console.log("addMarker err");console.log(err);});
-
-
-          //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
-          //  (err) => {console.log('addMarker err')});
-          // if (mkr === true) {
-          //   this.createMarker(latLng).then(res => {
-          //     if (res != null) { mkr = false; }
-          //   }, err => { console.error("createMarker err :" + err); });
-          // }
-          // this.currentZone.coords = mpts;
-          // this.currentPolyg = mpts;
-          // this.createPolygon(mpts, null, false);
-          // console.log("mapClear: " + mpts);
-        },err => { console.error("mapClear err: " + err); });
-      });
-    },err => { console.error("getClickPos err: " + err); });
-  }
+  // getClickPos()
+  // {
+  //   let spt : LatLng;
+  //   let mkr = true;
+  //
+  //   this.currentZone.name = "";
+  // }
 
   createMarker(loc: LatLng){
     let markerOptions: MarkerOptions = {
@@ -311,9 +360,9 @@ export class MapsPage {
   saveZone()
   {
     const data = {
-          coords: this.currentZone.coords,
-          name: this.currentZone.name,
-          admin_id: this.currentZone.admin_id
+          coords: this.coordNewArea,
+          name: "",
+          admin_id: localStorage.getItem('userId')
     };
 
     let saveZone: Modal = this.modal.create(
@@ -327,9 +376,12 @@ export class MapsPage {
     }, err => { console.error(err) });
 
     saveZone.onDidDismiss((allData : any) => {
+      console.log('saveZone.onDidDismiss');
+      console.log(allData.toString());
+      this.coordNewArea = [];
       // this.presentLoadingText("Uploading new area...");
-      this.allZones.push(allData);
-      this.createAllPolygons();
+      // this.allZones.push(allData);
+      // this.createAllPolygons();
     //   this.roomService.addRoom(allData).subscribe(success => {
     //       if (success) {
     //         console.log('onDidDismiss addRoom');
@@ -347,24 +399,6 @@ export class MapsPage {
     //       this.loading.dismiss();
     //     });
     });
-  }
-
-  showPopup(title, text) {
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: text,
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-            // if (this.deleteUserSucces) {
-            //   this.navCtrl.popToRoot();
-            // }
-          }
-        }
-      ]
-    });
-    alert.present();
   }
 
   containsLocation(position : ILatLng, path: ILatLng[])
@@ -421,5 +455,32 @@ export class MapsPage {
     return (wn !== 0);
   }
 
+  showPopup(title, text) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: text,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            // if (this.deleteUserSucces) {
+            //   this.navCtrl.popToRoot();
+            // }
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+
+  presentLoadingText(message: string) {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: message
+    });
+
+    this.loading.present();
+  }
 
 }
