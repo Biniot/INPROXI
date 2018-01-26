@@ -65,6 +65,35 @@ export class MapsPage {
     this.coordNewArea = [];
     this.allZones = [];
     this.iconAddPolyg ="add";
+
+    this.roomService.getRoom().subscribe(success => {
+        if (success) {
+          console.log('getRoom if (success)');
+          success.forEach(elem => {
+            console.log('getRoom forEach');
+            console.log(elem);
+            let newElem = new Room();
+            newElem.admin_id = elem.admin_id;
+            newElem.name = elem.name;
+            newElem.id = elem.id;
+            newElem.coords = [];
+            let tabCoords = elem.coords[0].split(',');
+            for (let i = 0; i < tabCoords.length; i++) {
+              newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
+              i++;
+            }
+            console.log(JSON.stringify(newElem));
+            this.allZones.push(newElem);
+          });
+        } else {
+          this.showPopup("Error", "Problem downloading areas.");
+        }
+        // this.loading.dismiss();
+      },
+      error => {
+        this.showPopup("Error", error);
+        // this.loading.dismiss();
+      });
   }
 
 
@@ -115,7 +144,6 @@ export class MapsPage {
   }
 
   createArea() {
-
     if (!this.isAddingArea) {
       this.iconAddPolyg = "square";
     } else {
@@ -170,6 +198,7 @@ export class MapsPage {
   }
 
   ionViewWillEnter() {
+    //this.presentLoadingText("Downloading areas...");
     if (!this.isMapLoad) {
       let element = this.mapElement.nativeElement;
       this.map = this.googleMaps.create(element);
@@ -194,7 +223,6 @@ export class MapsPage {
     this.updateAreas();
 
 
-    //this.presentLoadingText("Downloading areas...");
     // let name : String;
     // let points: ILatLng[];
     // let adm:  String;
@@ -218,36 +246,6 @@ export class MapsPage {
     // });
     // this.allZones = [];
     //
-    // this.roomService.getRoom().subscribe(success => {
-    //     if (success) {
-    //       console.log('getRoom if (success)');
-    //       this.allZones = [];
-    //       success.forEach(elem => {
-    //         console.log('getRoom forEach');
-    //         console.log(elem);
-    //         let newElem = new Room();
-    //         newElem.admin_id = elem.admin_id;
-    //         newElem.name = elem.name;
-    //         newElem.id = elem.id;
-    //         newElem.coords = [];
-    //         let tabCoords = elem.coords[0].split(',');
-    //         for (let i = 0; i < tabCoords.length; i++) {
-    //           newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
-    //           i++;
-    //         }
-    //         this.allZones.push(newElem);
-    //         // console.log('getRoom push(elem)');
-    //       });
-    //       this.createAllPolygons();
-    //     } else {
-    //       this.showPopup("Error", "Problem downloading areas.");
-    //     }
-    //     this.loading.dismiss();
-    //   },
-    //   error => {
-    //     this.showPopup("Error", error);
-    //     this.loading.dismiss();
-    //   });
   }
   // //Load the groupMap
   // initMap(){
