@@ -179,7 +179,7 @@ export class MapsPage {
     return  this.map.addMarker(markerOptions);
   }
 
-  createPolygon(mpts: ILatLng[], room : any, needPush: boolean){
+  createPolygon(mpts: any, room : any, needPush: boolean){
     console.log("createPolygon 1 ");
     console.log(needPush);
     console.log(room);
@@ -268,19 +268,14 @@ export class MapsPage {
 
   getClickPos()
   {
-    let mpts: ILatLng[];
     let spt : LatLng;
     let mkr = true;
-    mpts = [];
 
     this.currentZone.name = "";
     this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng) => {
       this.zone.run(() => {
         console.log("on(GoogleMapsEvent.MAP_CLICK)");
         console.log(latLng.toString());
-        //spt = new LatLng(e.lat, e.lng);
-        mpts.push(latLng);
-        //console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
         this.map.clear().then(res => {
           this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
             (err) => {console.log('addMarker err')});
@@ -289,6 +284,8 @@ export class MapsPage {
           //     if (res != null) { mkr = false; }
           //   }, err => { console.error("createMarker err :" + err); });
           // }
+          let mpts = [];
+          mpts.push(latLng);
           this.currentZone.coords = mpts;
           this.currentPolyg = mpts;
           this.createPolygon(mpts, null, false);
