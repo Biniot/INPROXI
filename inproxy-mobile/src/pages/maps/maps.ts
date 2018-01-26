@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, Injectable } from '@angular/core';
+import {Component, ViewChild, ElementRef, Injectable, NgZone} from '@angular/core';
 import {
   Modal, NavController, IonicPage, ModalController, AlertController, LoadingController,
   Events
@@ -56,7 +56,7 @@ export class MapsPage {
   constructor(public navCtrl: NavController, private modal: ModalController, private googleMaps: GoogleMaps,
               private geoLoc: Geolocation, private request : HttpRequestProvider, private roomService : RoomServiceProvider,
               private alertCtrl: AlertController, public loadingCtrl: LoadingController, public events: Events,
-              private _userService: UserServiceProvider, private ioService: IoServiceProvider) {
+              private _userService: UserServiceProvider, private ioService: IoServiceProvider, public zone: NgZone) {
     this._userService.getUserInfo().subscribe(success => {
         // console.log('HomePage getUserInfo functionSuccess');
         // console.log(success);
@@ -271,23 +271,26 @@ export class MapsPage {
 
     this.currentZone.name = "";
     this.subsRec = this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng) => {
-      console.log("on(GoogleMapsEvent.MAP_CLICK)");
-      console.log(latLng.toString());
-      //spt = new LatLng(e.lat, e.lng);
-      mpts.push(latLng);
-      //console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
-      this.map.clear().then(res => {
-        this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')}, (err) => {console.log('addMarker err')});
-        // if (mkr === true) {
-        //   this.createMarker(spt).then(res => {
-        //     if (res != null) { mkr = false; }
-        //   }, err => { console.error("createMarker err :" + err); });
-        // }
-        this.currentZone.coords = mpts;
-        this.currentPolyg = mpts;
-        this.createPolygon(mpts, null, false);
-        console.log("mapClear: " + mpts);
-      },err => { console.error("mapClear err: " + err); });
+      this.zone.run(() => {
+        console.log("on(GoogleMapsEvent.MAP_CLICK)");
+        console.log(latLng.toString());
+        //spt = new LatLng(e.lat, e.lng);
+        mpts.push(latLng);
+        //console.log("Lat: " + spt.lat + "Lng: " + spt.lng);
+        this.map.clear().then(res => {
+          this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
+            (err) => {console.log('addMarker err')});
+          // if (mkr === true) {
+          //   this.createMarker(spt).then(res => {
+          //     if (res != null) { mkr = false; }
+          //   }, err => { console.error("createMarker err :" + err); });
+          // }
+          this.currentZone.coords = mpts;
+          this.currentPolyg = mpts;
+          this.createPolygon(mpts, null, false);
+          console.log("mapClear: " + mpts);
+        },err => { console.error("mapClear err: " + err); });
+      });
     },err => { console.error("getClickPos err: " + err); });
   }
 
