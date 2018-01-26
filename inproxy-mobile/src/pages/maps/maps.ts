@@ -268,6 +268,8 @@ export class MapsPage {
       this.zone.run(() => {
         console.log("on(GoogleMapsEvent.MAP_CLICK)");
         console.log(latLng.toString());
+        console.log(latLng.lat);
+        console.log(latLng.lng);
         this.map.clear().then(res => {
           let mpts = [];
           mpts.push(latLng);
@@ -276,7 +278,7 @@ export class MapsPage {
               lat: latLng.lat,
               lng: latLng.lng
             }
-          });
+          }).then(() => {}, (err) => {console.log("addMarker err");console.log(err);});
 
 
           //this.map.addMarker({position: latLng, icon: 'magenta'}).then(() => {console.log('addMarker success')},
