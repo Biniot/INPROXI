@@ -4,9 +4,7 @@ import {
   Events
 } from 'ionic-angular';
 import { HttpRequestProvider } from '../../providers/http-request/http-request';
-import { API_ADDRESS, VERSION, ROOM_ENDPOINT_POST } from '../../providers/constants/constants';
 import { Geolocation } from '@ionic-native/geolocation';
-import { Observable } from "rxjs/Observable";
 import { User } from "../../model/userModel";
 
 import {
@@ -49,8 +47,8 @@ export class MapsPage {
   isAddingArea: boolean;
 
   constructor(public navCtrl: NavController, private modal: ModalController, private googleMaps: GoogleMaps,
-              private geoLoc: Geolocation, private request : HttpRequestProvider, private roomService : RoomServiceProvider,
-              private alertCtrl: AlertController, public loadingCtrl: LoadingController, public events: Events,
+              private geoLoc: Geolocation, private roomService : RoomServiceProvider,
+              private alertCtrl: AlertController, public loadingCtrl: LoadingController,
               private _userService: UserServiceProvider, private ioService: IoServiceProvider, public zone: NgZone) {
     this._userService.getUserInfo().subscribe(success => {
         // console.log('HomePage getUserInfo functionSuccess');
@@ -64,14 +62,14 @@ export class MapsPage {
     this.isAddingArea = false;
     this.coordNewArea = [];
     this.allZones = [];
-    this.iconAddPolyg ="add";
+    this.iconAddPolyg = "add";
 
     this.roomService.getRoom().subscribe(success => {
         if (success) {
-          console.log('getRoom if (success)');
+          console.log('roomService.getRoom success');
           success.forEach(elem => {
             console.log('getRoom forEach');
-            console.log(elem);
+            console.log(JSON.stringify(elem));
             let newElem = new Room();
             newElem.admin_id = elem.admin_id;
             newElem.name = elem.name;
@@ -99,15 +97,16 @@ export class MapsPage {
 
   addMarkerToMap(latLng: any) {
     this.zone.run(() => {
-      // console.log("addMarkerToMap");
+      console.log("addMarkerToMap");
       if (this.isAddingArea) {
-        // console.log("this.isAddingArea");
+        console.log("this.isAddingArea");
         this.map.clear().then(res => {
-          // console.log("map.clear().then");
+          console.log("map.clear().then");
           let lat = parseFloat(latLng.toString().split(" ")[1].split(",")[0]);
           let lng = parseFloat(latLng.toString().split(" ")[3].split("}")[0]);
           this.coordNewArea.push({lat: lat, lng: lng});
           if (this.coordNewArea.length == 1) {
+            console.log("print marker");
             this.map.addMarker({
               'position': {lat: lat, lng: lng},
               'icon': 'magenta'
@@ -120,7 +119,9 @@ export class MapsPage {
                 console.log(err);
               });
           } else  {
+            console.log("print area");
             if (this.containsLocation(this.loc, this.coordNewArea)) {
+              console.log("print area in");
               this.map.addPolygon({
                 'points': this.coordNewArea,
                 'strokeColor' : '#0000FF',
@@ -129,6 +130,7 @@ export class MapsPage {
                 'visible': true
               });
             } else {
+              console.log("print area out");
               this.map.addPolygon({
                 'points': this.coordNewArea,
                 'strokeColor' : '#e60000',
@@ -159,27 +161,29 @@ export class MapsPage {
   }
 
   updateAreas() {
-    this.allZones.forEach(elem => {
+    console.log("updateAreas");
       this.map.clear().then(res => {
-        if (this.containsLocation(this.loc, elem.coords)) {
-          this.map.addPolygon({
-            'points': elem.coords,
-            'strokeColor' : '#0000FF',
-            'strokeWidth': 3,
-            'fillColor' : 'rgba(0,0,0,0)',
-            'visible': true
-          });
-        } else {
-          this.map.addPolygon({
-            'points': elem.coords,
-            'strokeColor' : '#e60000',
-            'strokeWidth': 3,
-            'fillColor' : 'rgba(0,0,0,0)',
-            'visible': true
-          });
-        }
+        this.allZones.forEach(elem => {
+          console.log(JSON.stringify(elem));
+          if (this.containsLocation(this.loc, elem.coords)) {
+            this.map.addPolygon({
+              'points': elem.coords,
+              'strokeColor' : '#0000FF',
+              'strokeWidth': 3,
+              'fillColor' : 'rgba(0,0,0,0)',
+              'visible': true
+            });
+          } else {
+            this.map.addPolygon({
+              'points': elem.coords,
+              'strokeColor' : '#e60000',
+              'strokeWidth': 3,
+              'fillColor' : 'rgba(0,0,0,0)',
+              'visible': true
+            });
+          }
+        });
       },err => { console.error("mapClear err: " + err); });
-    });
   }
 
   centerView() {
@@ -373,20 +377,14 @@ export class MapsPage {
 
     saveZone.onDidDismiss((allData : any) => {
       console.log('saveZone.onDidDismiss');
-      console.log(allData.toString());
-      // let newRoom = new Room();
-      // newRoom.name = allData.name;
-      // newRoom.coords = this.coordNewArea;
-      // newRoom.admin_id = localStorage.getItem('userId');
-      //this.allZones.push(newRoom);
+      console.log(JSON.stringify(allData));
       this.coordNewArea = [];
       this.presentLoadingText("Uploading new area...");
-      this.allZones.push(allData);
+      //this.allZones.push(allData);
       this.roomService.addRoom(allData).subscribe(success => {
           if (success) {
             console.log('onDidDismiss addRoom success');
             console.log(JSON.stringify(success));
-            console.log(success.coords[0]);
             this.allZones.push(success);
             this.updateAreas();
           } else {
@@ -472,7 +470,6 @@ export class MapsPage {
     });
     alert.present();
   }
-
 
   presentLoadingText(message: string) {
     this.loading = this.loadingCtrl.create({
