@@ -11,12 +11,14 @@ import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 
 export class RegisterPage {
   createSuccess = false;
-  registerCredentials = { fistName: '', lastName: '', email: '', password: '' };
+  registerCredentials = { fistName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 
   constructor(private navCtrl: NavController, private auth: AuthServiceProvider, private alertCtrl: AlertController) { }
 
   public register() {
-    if (this.registerCredentials.email.indexOf('@') != -1 && (this.registerCredentials.email.indexOf('@') < this.registerCredentials.email.lastIndexOf('.'))) {
+    if (this.registerCredentials.confirmPassword.localeCompare(this.registerCredentials.password) !== 0) {
+      this.showPopup("Error", "The password and his confirmation must be the same");
+    } else if (this.registerCredentials.email.indexOf('@') != -1 && (this.registerCredentials.email.indexOf('@') < this.registerCredentials.email.lastIndexOf('.'))) {
       this.auth.register(this.registerCredentials).subscribe(
         success => {
           this.createSuccess = true;
