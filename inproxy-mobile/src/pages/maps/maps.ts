@@ -74,7 +74,6 @@ export class MapsPage {
             console.log(elem.coords[0].lat);
             console.log(elem.coords[0].lng);
             console.log(JSON.stringify(elem.coords[0]));
-            // if (elem.coords[0].lat)
             // let newElem = new Room();
             // newElem.admin_id = elem.admin_id;
             // newElem.name = elem.name;

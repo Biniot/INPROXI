@@ -101,11 +101,11 @@ export class UserServiceProvider {
   // Recupere une liste de demande damis emise ou recu par le user connecter
   public getFriendRequests() {
     return Observable.create(observer => {
-      if (this.isFriendRequestLoad) {
-        console.log('getFriendRequests already load');
-        observer.next(true);
-        observer.complete();
-      } else {
+      // if (this.isFriendRequestLoad) {
+      //   console.log('getFriendRequests already load');
+      //   observer.next(true);
+      //   observer.complete();
+      // } else {
         this.request.get(API_ADDRESS + VERSION + USERS_ENDPOINT + localStorage.getItem('userId') + GET_FRIENDREQUEST_ENDPOINT, {
         }).subscribe(
           result => {
@@ -121,7 +121,8 @@ export class UserServiceProvider {
           err => {
             observer.error(err.message)
           });
-      }});
+      // }
+    });
   }
 
   // Recupere une liste damis a partir de lid du user connecter

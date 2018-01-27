@@ -27,27 +27,6 @@ export class ListChatPage {
     // console.log("ListChatPage constructor");
     this.listConversation = [];
     this.listConversationRoom = [];
-    this.presentLoadingText("Loading conversation...");
-    userService.getUserConversation().subscribe(success => {
-        // console.log("ListChatPage getUserConversation success");
-        // console.log(success);
-      success.forEach((element) => {
-        let newConversation = {
-          name: element.conversation.name,
-          id: element.conversation.id,
-          members: element.conversation.members,
-          last_message: element.conversation.last_message,
-          chatType: ChatType.STD_CONVERSATION
-        };
-        this.listConversation.push(newConversation);
-      });
-        this.loading.dismiss();
-      },
-      error => {
-        this.loading.dismiss();
-        // console.log("ListChatPage getUserConversation error");
-        // console.log(error);
-      });
 
     Observable.interval(500).takeWhile(() => true).subscribe(() => this.updateListRoom());
 
@@ -65,6 +44,27 @@ export class ListChatPage {
   }
 
   ionViewWillEnter() {
+    this.presentLoadingText("Loading conversation...");
+    this.userService.getUserConversation().subscribe(success => {
+        // console.log("ListChatPage getUserConversation success");
+        // console.log(success);
+        success.forEach((element) => {
+          let newConversation = {
+            name: element.conversation.name,
+            id: element.conversation.id,
+            members: element.conversation.members,
+            last_message: element.conversation.last_message,
+            chatType: ChatType.STD_CONVERSATION
+          };
+          this.listConversation.push(newConversation);
+        });
+        this.loading.dismiss();
+      },
+      error => {
+        this.loading.dismiss();
+        // console.log("ListChatPage getUserConversation error");
+        // console.log(error);
+      });
   }
 
   updateListRoom() {
