@@ -45,6 +45,7 @@ export class ListChatPage {
 
   ionViewWillEnter() {
     this.presentLoadingText("Loading conversation...");
+    this.listConversation = [];
     this.userService.getUserConversation().subscribe(success => {
         // console.log("ListChatPage getUserConversation success");
         // console.log(success);
