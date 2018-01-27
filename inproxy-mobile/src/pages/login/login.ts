@@ -58,12 +58,20 @@ export class LoginPage {
 
   showError(text) {
     this.loading.dismiss();
-
-    let alert = this.alertCtrl.create({
-      title: 'Login Fail',
-      subTitle: text,
-      buttons: ['OK']
-    });
+    let alert;
+    if (text.localeCompare("Passwords don't match.") == 0) {
+      alert = this.alertCtrl.create({
+        title: 'Login Fail',
+        subTitle: "Problem with your credential.",
+        buttons: ['OK']
+      });
+    } else {
+      alert = this.alertCtrl.create({
+        title: 'Login Fail',
+        subTitle: text,
+        buttons: ['OK']
+      });
+    }
     alert.present(prompt);
   }
 }
