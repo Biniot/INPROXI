@@ -2,17 +2,17 @@ page-login {
 
   .login-content {
 
-    @keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
-
-    @-webkit-keyframes animatedBackground {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
+    //@keyframes animatedBackground {
+    //  0% { background-position: 0 0; }
+    //  50% { background-position: 100% 0; }
+    //  100% { background-position: 0 0; }
+    //}
+    //
+    //@-webkit-keyframes animatedBackground {
+    //  0% { background-position: 0 0; }
+    //  50% { background-position: 100% 0; }
+    //  100% { background-position: 0 0; }
+    //}
 
     background-size:cover;
     //-webkit-animation:animatedBackground 80s linear infinite;
