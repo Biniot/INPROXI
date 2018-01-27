@@ -67,9 +67,13 @@ export class MapsPage {
     this.roomService.getRoom().subscribe(success => {
         if (success) {
           console.log('roomService.getRoom success');
+          console.log(success);
           success.forEach(elem => {
             console.log('getRoom forEach');
             console.log(JSON.stringify(elem));
+            console.log(elem.coords[0].lat);
+            console.log(elem.coords[0].lng);
+            console.log(JSON.stringify(elem.coords[0]));
             // if (elem.coords[0].lat)
             // let newElem = new Room();
             // newElem.admin_id = elem.admin_id;
