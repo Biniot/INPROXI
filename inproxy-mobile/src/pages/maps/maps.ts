@@ -70,18 +70,19 @@ export class MapsPage {
           success.forEach(elem => {
             console.log('getRoom forEach');
             console.log(JSON.stringify(elem));
-            let newElem = new Room();
-            newElem.admin_id = elem.admin_id;
-            newElem.name = elem.name;
-            newElem.id = elem.id;
-            newElem.coords = [];
-            let tabCoords = elem.coords[0].split(',');
-            for (let i = 0; i < tabCoords.length; i++) {
-              newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
-              i++;
-            }
-            console.log(JSON.stringify(newElem));
-            this.allZones.push(newElem);
+            // if (elem.coords[0].lat)
+            // let newElem = new Room();
+            // newElem.admin_id = elem.admin_id;
+            // newElem.name = elem.name;
+            // newElem.id = elem.id;
+            // newElem.coords = [];
+            // let tabCoords = elem.coords[0].split(',');
+            // for (let i = 0; i < tabCoords.length; i++) {
+            //   newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
+            //   i++;
+            // }
+            // console.log(JSON.stringify(newElem));
+            // this.allZones.push(newElem);
           });
         } else {
           this.showPopup("Error", "Problem downloading areas.");
