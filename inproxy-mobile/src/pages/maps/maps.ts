@@ -129,7 +129,7 @@ export class MapsPage {
               'icon': 'magenta'
             }).then((data) => {
                 console.log("addMarker success");
-                console.log(data);
+                console.log(JSON.stringify(data));
               },
               (err) => {
                 console.log("addMarker err");

@@ -27,7 +27,7 @@ export class RoomServiceProvider {
       }).subscribe(
         result => {
           console.log('addRoom result');
-          console.log(result);
+          console.log(JSON.stringify(result));
           observer.next(result);
           observer.complete();
         }, err => {
@@ -44,7 +44,7 @@ export class RoomServiceProvider {
       }).subscribe(
         result => {
           console.log('editRoom result');
-          console.log(result);
+          console.log(JSON.stringify(result));
           observer.next(result);
           observer.complete();
         }, err => {
@@ -59,7 +59,7 @@ export class RoomServiceProvider {
       }).subscribe(
         result => {
           console.log('getRoom result');
-          console.log(result);
+          console.log(JSON.stringify(result));
           observer.next(result);
           observer.complete();
         }, err => {

@@ -11,6 +11,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <allow-intent href="*" />
     <access launch-external="yes" origin="tel:*" />
     <allow-navigation href="*" />
     <allow-navigation href="http://*/*" />

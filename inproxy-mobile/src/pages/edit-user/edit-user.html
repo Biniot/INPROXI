@@ -32,16 +32,12 @@
               <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="currentUser.email" required></ion-input>
             </ion-item>
 
-            <!--<ion-item>-->
-              <!--<ion-input type="text" placeholder="Pseudo" name="pseudo" [(ngModel)]="currentUser.pseudo" required></ion-input>-->
-            <!--</ion-item>-->
-
             <ion-item>
               <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="currentUser.password"></ion-input>
             </ion-item>
 
             <ion-item (click)="openGallery()">
-              <img alt="UserAvatar" height="42" width="42" src="{{currentUser.avatarPath}}"/>
+              <img alt="UserAvatar" height="42" width="42" [src]="currentUser.avatarPath"/>
               <ion-icon name="images" ></ion-icon>
               <p>Choose a Photo</p>
             </ion-item>
