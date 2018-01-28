@@ -99,6 +99,18 @@ export class MapsPage {
       });
   }
 
+  checkCoordClean(coord: any) {
+    try {
+      coord.forEach(elem => {
+        if (elem.lat == null || elem.lng == null) {
+          return false;
+        }
+      });
+    } catch (Ex) {
+      return false;
+    }
+    return true;
+  }
 
   addMarkerToMap(latLng: any) {
     this.zone.run(() => {
