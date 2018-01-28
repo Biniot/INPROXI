@@ -30,21 +30,25 @@ export class ForgotPasswordPage {
   }
 
   askNewPassword() {
-    this.auth.askNewPassword(this.email).subscribe(success => {
-        console.log('ForgotPasswordPage askNewPassword success');
-        if (success) {
-          console.log('FriendsPage askNewPassword if (success)');
-          this.showPopup("Succes", "New password send.");
-        } else {
-          this.showPopup("Error", "Problem reseting your password.");
-        }
-      },
-      error => {
-        console.log('ForgotPasswordPage askNewPassword error');
-        console.log(error);
-        //this.showPopup("Error", error);
-      });
-    this.navCtrl.pop();
+    if (this.email.indexOf('@') != -1 && (this.email.indexOf('@') < this.email.lastIndexOf('.'))) {
+      this.auth.askNewPassword(this.email).subscribe(success => {
+          console.log('ForgotPasswordPage askNewPassword success');
+          if (success) {
+            console.log('FriendsPage askNewPassword if (success)');
+            this.showPopup("Succes", "New password send.");
+          } else {
+            this.showPopup("Error", "Problem reseting your password.");
+          }
+        },
+        error => {
+          console.log('ForgotPasswordPage askNewPassword error');
+          console.log(error);
+          //this.showPopup("Error", error);
+        });
+      this.navCtrl.pop();
+    } else {
+      this.showPopup("Error", "Need a valid email");
+    }
   }
 
   showPopup(title, text) {
