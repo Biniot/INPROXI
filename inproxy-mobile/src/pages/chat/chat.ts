@@ -32,13 +32,13 @@ export class ChatPage {
     this.haveMessage = false;
     let onPrivateMessage = (message: any) => {
       _ngZone.run(() => {
-        console.log("onPrivateMessage");
-        console.log(JSON.stringify(message));
+        // console.log("onPrivateMessage");
+        // console.log(JSON.stringify(message));
         if (message.author.localeCompare(localStorage.getItem('userId')) != 0) {
-          console.log("onPrivateMessage not from myself");
+          // console.log("onPrivateMessage not from myself");
           this.userService.getUserInfoById(message.author).subscribe(success => {
-              console.log("onPrivateMessage getUserInfoById");
-              console.log(JSON.stringify(success));
+              // console.log("onPrivateMessage getUserInfoById");
+              // console.log(JSON.stringify(success));
               let newMessage = {
                 createdAt: new Date().toDateString(),
                 content: message.content,
@@ -49,7 +49,7 @@ export class ChatPage {
                 },
                 id: ""
               };
-              console.log(JSON.stringify(newMessage));
+              // console.log(JSON.stringify(newMessage));
               this.messageList.push(newMessage);
               this.haveMessage = true;
             },
@@ -128,11 +128,11 @@ export class ChatPage {
   }
 
   public sendMessage() {
-    console.log("ChatPage sendMessage");
+    // console.log("ChatPage sendMessage");
     if (!this.ioService.isConnected()) {
       this.ioService.connectSocket();
     }
-    console.log(this.messageToSend);
+    // console.log(this.messageToSend);
     let newMessage = {
       createdAt: new Date().toDateString(),
       content: this.messageToSend,
@@ -143,14 +143,14 @@ export class ChatPage {
       },
       id: ""
     };
-    console.log(newMessage);
+    // console.log(newMessage);
     this.ioService.sendMessage(newMessage.author.id, this.currentConversation.id, this.messageToSend);
     this.messageToSend = null;
     if (isUndefined(this.messageList)) {
       this.messageList = [];
     }
     this.messageList.push(newMessage);
-    console.log(this.messageList);
+    // console.log(this.messageList);
     this.haveMessage = true;
   }
 
