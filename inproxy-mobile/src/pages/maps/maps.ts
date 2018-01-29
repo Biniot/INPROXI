@@ -84,6 +84,7 @@ export class MapsPage {
             // }
             console.log(JSON.stringify(newElem));
             this.allZones.push(newElem);
+            this.updateAreas();
             //this.ioService.addConversation(newElem);
           });
         } else {
@@ -178,6 +179,7 @@ export class MapsPage {
   updateAreas() {
     console.log("updateAreas");
     console.log(JSON.stringify(this.allZones));
+    if (this.isMapLoad) {
       this.map.clear().then(res => {
         console.log("updateAreas map.clear().then");
         this.allZones.forEach(elem => {
@@ -186,9 +188,9 @@ export class MapsPage {
             //this.ioService.addConversation(elem);
             this.map.addPolygon({
               'points': elem.coords,
-              'strokeColor' : '#0000FF',
+              'strokeColor': '#0000FF',
               'strokeWidth': 3,
-              'fillColor' : 'rgba(0,0,0,0)',
+              'fillColor': 'rgba(0,0,0,0)',
               'visible': true
             });
           } else {
@@ -196,14 +198,19 @@ export class MapsPage {
             //this.ioService.userOut(elem);
             this.map.addPolygon({
               'points': elem.coords,
-              'strokeColor' : '#e60000',
+              'strokeColor': '#e60000',
               'strokeWidth': 3,
-              'fillColor' : 'rgba(0,0,0,0)',
+              'fillColor': 'rgba(0,0,0,0)',
               'visible': true
             });
           }
         });
-      },err => { console.error("mapClear err: " + err); });
+      }, err => {
+        console.error("mapClear err: " + err);
+      });
+    } else {
+      console.log("updateAreas will not update map not ready");
+    }
   }
 
   centerView() {
