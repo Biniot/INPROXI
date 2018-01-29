@@ -295,7 +295,7 @@ export class MapsPage {
       this.roomService.addRoom(allData).subscribe(success => {
           if (success) {
             console.log('onDidDismiss addRoom success');
-
+            success.coords = JSON.parse(success.coords);
             this.allZones.push(success);
             this.updateAreas();
           } else {console.log(JSON.stringify(success));
