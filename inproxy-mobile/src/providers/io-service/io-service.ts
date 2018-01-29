@@ -70,17 +70,15 @@ export class IoServiceProvider {
     }
   }
 
-  // public userOut(room) {
-  //   this.listConversationRoom.forEach(elem => {
-  //     if (elem.id.localeCompare(room.room_id) == 0) {
-  //       console.log('room_message updated');
-  //       console.log(JSON.stringify(data));
-  //       elem.isUserIn = false;
-  //       console.log('room_message userOut');
-  //       console.log(JSON.stringify(elem));
-  //     }
-  //   });
-  // }
+  public userOut(room) {
+    this.listConversationRoom.forEach(elem => {
+      if (elem.id.localeCompare(room.room_id) == 0) {
+        elem.isUserIn = false;
+        console.log('room_message userOut');
+        console.log(JSON.stringify(elem));
+      }
+    });
+  }
 
   public getConversationRoomById(idRoom: string) {
     let result = null;

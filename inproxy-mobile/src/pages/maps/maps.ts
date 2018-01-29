@@ -193,7 +193,7 @@ export class MapsPage {
             });
           } else {
             // TODO : removeConversation
-            //this.ioService.removeConversation(elem);
+            //this.ioService.userOut(elem);
             this.map.addPolygon({
               'points': elem.coords,
               'strokeColor' : '#e60000',
@@ -227,6 +227,7 @@ export class MapsPage {
       let element = this.mapElement.nativeElement;
       this.map = this.googleMaps.create(element);
       this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
+        this.updateAreas();
         this.isMapLoad = true;
         console.log("this.isMapLoad = true;");
         this.map.setMyLocationEnabled(true);
@@ -241,10 +242,10 @@ export class MapsPage {
         }, err => { console.error("getMyLocation err");console.error(err); });
       });
     } else {
+      this.updateAreas();
       this.centerView();
     }
 
-    this.updateAreas();
   }
   // //Load the groupMap
   // initMap(){
