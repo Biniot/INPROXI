@@ -140,6 +140,7 @@ export class IoServiceProvider {
   public joinRoom(idRoom: string) {
     console.log('joinRoom');
     console.log(idRoom);
+    console.log(JSON.stringify(sock));
     sock.emit('join_room', {room_id: idRoom}, function(){console.log("joinRoom success")});
   }
 
