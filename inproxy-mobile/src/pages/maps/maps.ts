@@ -86,7 +86,7 @@ export class MapsPage {
             console.log(JSON.stringify(newElem));
             this.allZones.push(newElem);
             this.updateAreas();
-            //this.ioService.addConversation(newElem);
+            // this.ioService.addConversation(newElem);
           });
         } else {
           this.showPopup("Error", "Problem downloading areas.");
@@ -186,7 +186,7 @@ export class MapsPage {
         this.allZones.forEach(elem => {
           console.log(JSON.stringify(elem));
           if (this.containsLocation(this.loc, elem.coords)) {
-            //this.ioService.addConversation(elem);
+            this.ioService.addConversation(elem);
             this.map.addPolygon({
               'points': elem.coords,
               'strokeColor': '#0000FF',
@@ -196,7 +196,7 @@ export class MapsPage {
             });
           } else {
             // TODO : removeConversation
-            //this.ioService.userOut(elem);
+            this.ioService.userOut(elem);
             this.map.addPolygon({
               'points': elem.coords,
               'strokeColor': '#e60000',
