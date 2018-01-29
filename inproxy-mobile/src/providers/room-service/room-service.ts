@@ -19,7 +19,9 @@ export class RoomServiceProvider {
   }
 
   public addRoom(room) {
-    console.log("ROOM Coords: " + room.coords);
+    console.log("addRoom(room)");
+    console.log(JSON.stringify(room.coords));
+    console.log(room.coords);
     return Observable.create(observer => {
       this.request.post(API_ADDRESS + VERSION + ROOM_ENDPOINT, {
         name : room.name,

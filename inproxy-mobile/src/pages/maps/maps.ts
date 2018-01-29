@@ -293,7 +293,7 @@ export class MapsPage {
     saveZone.onDidDismiss((allData : any) => {
       console.log('saveZone.onDidDismiss');
       console.log(JSON.stringify(allData));
-      allData.coords = JSON.stringify(allData.coords);
+      // allData.coords = JSON.stringify(allData.coords);
       console.log('alldata: ' + allData.coords);
       this.coordNewArea = [];
       this.presentLoadingText("Uploading new area...");
