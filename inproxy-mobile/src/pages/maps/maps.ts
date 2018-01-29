@@ -235,7 +235,6 @@ export class MapsPage {
       let element = this.mapElement.nativeElement;
       this.map = this.googleMaps.create(element);
       this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
-        this.updateAreas();
         this.isMapLoad = true;
         console.log("this.isMapLoad = true;");
         this.map.setMyLocationEnabled(true);
@@ -244,6 +243,7 @@ export class MapsPage {
           this.moveCam(this.loc);
           this.addMarkerToMap(location);
           this.getView();
+          this.updateAreas();
           this.map.on(GoogleMapsEvent.MAP_CLICK).subscribe((latLng: any) => {
             this.addMarkerToMap(latLng);
           },err => { console.error("getClickPos err: " + err); });
