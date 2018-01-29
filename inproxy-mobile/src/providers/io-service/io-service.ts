@@ -46,6 +46,8 @@ export class IoServiceProvider {
               console.log('room_message updated');
               console.log(JSON.stringify(data));
               elem.message.push(new MessageRoomModel(data.content, data.first_name + " " + data.last_name));
+              console.log('room_message updated');
+              console.log(JSON.stringify(elem));
             }
             // else {
             //   console.log("addConversation receiveEventCallBack fail for :");

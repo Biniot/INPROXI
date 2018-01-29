@@ -82,6 +82,7 @@ export class MapsPage {
             // }
             console.log(JSON.stringify(newElem));
             this.allZones.push(newElem);
+            this.ioService.addConversation(newElem);
           });
         } else {
           this.showPopup("Error", "Problem downloading areas.");
@@ -296,6 +297,7 @@ export class MapsPage {
           if (success) {
             console.log('onDidDismiss addRoom success');
             success.coords = JSON.parse(success.coords);
+            this.ioService.addConversation(success);
             this.allZones.push(success);
             this.updateAreas();
           } else {console.log(JSON.stringify(success));
