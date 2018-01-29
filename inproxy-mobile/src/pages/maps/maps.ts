@@ -25,6 +25,7 @@ import {RoomServiceProvider} from "../../providers/room-service/room-service";
 import {Room} from "../../model/roomModel";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 import {IoServiceProvider} from "../../providers/io-service/io-service";
+import {Observable} from "rxjs/Observable";
 
 @IonicPage()
 @Component({
@@ -64,6 +65,7 @@ export class MapsPage {
     this.allZones = [];
     this.iconAddPolyg = "add";
 
+    Observable.interval(500).takeWhile(() => true).subscribe(() => this.updateAreas());
     this.roomService.getRoom().subscribe(success => {
         if (success) {
           console.log('roomService.getRoom success');
