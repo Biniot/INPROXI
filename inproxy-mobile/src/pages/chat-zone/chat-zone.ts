@@ -35,7 +35,6 @@ export class ChatZonePage {
   }
 
   updateMessage() {
-    console.log('updateMessage');
     this.currentRoom = this.ioService.getConversationRoomById(this.currentRoom.id);
     if (this.currentRoom.message.length > 0) {
       this.haveMessage = true;
