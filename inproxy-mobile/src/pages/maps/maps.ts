@@ -73,7 +73,7 @@ export class MapsPage {
             newElem.admin_id = elem.admin_id;
             newElem.name = elem.name;
             newElem.id = elem.id;
-            newElem.coords = [];
+            // newElem.coords = [];
             newElem.coords = JSON.parse(elem.coords[0]);
             // let tabCoords = elem.coords[0].split(',');
             // for (let i = 0; i < tabCoords.length; i++) {
@@ -81,7 +81,7 @@ export class MapsPage {
             //   i++;
             // }
             console.log(JSON.stringify(newElem));
-            // this.allZones.push(newElem);
+            this.allZones.push(newElem);
           });
         } else {
           this.showPopup("Error", "Problem downloading areas.");
