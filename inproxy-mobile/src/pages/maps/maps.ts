@@ -65,7 +65,6 @@ export class MapsPage {
     this.allZones = [];
     this.iconAddPolyg = "add";
 
-    Observable.interval(500).takeWhile(() => true).subscribe(() => this.updateAreas());
     this.roomService.getRoom().subscribe(success => {
         if (success) {
           console.log('roomService.getRoom success');
