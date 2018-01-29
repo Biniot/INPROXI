@@ -29,7 +29,22 @@ export class IoServiceProvider {
     sock.on('reconnect', this.sendAuth);
     this.mesasgeCallback = null;
     this.listConversationRoom = [];
-    // console.log(sock);
+    this.receiveEventCallBack('room_message', data => {
+      console.log('room_message');
+      console.log(JSON.stringify(data));
+      this.zone.run(() => {
+        this.listConversationRoom.forEach(elem => {
+          if (elem.id.localeCompare(data.room_id) == 0) {
+            console.log('room_message updated');
+            console.log(JSON.stringify(data));
+            elem.message.push(new MessageRoomModel(data.content, data.first_name + " " + data.last_name));
+            console.log('room_message updated');
+            console.log(JSON.stringify(elem));
+          }
+        });
+      });
+      console.log('room_message end');
+    });
   }
 
   public addConversation(room) {
@@ -37,26 +52,6 @@ export class IoServiceProvider {
     let isFind = false;
     // Init la callback pour les room message uniquement lors de la creation de la premiere Room
     if (this.listConversationRoom.length < 1) {
-      this.receiveEventCallBack('room_message', data => {
-        console.log('room_message');
-        console.log(JSON.stringify(data));
-        this.zone.run(() => {
-          this.listConversationRoom.forEach(elem => {
-            if (elem.id.localeCompare(data.room_id) == 0) {
-              console.log('room_message updated');
-              console.log(JSON.stringify(data));
-              elem.message.push(new MessageRoomModel(data.content, data.first_name + " " + data.last_name));
-              console.log('room_message updated');
-              console.log(JSON.stringify(elem));
-            }
-            // else {
-            //   console.log("addConversation receiveEventCallBack fail for :");
-            //   console.log(data);
-            // }
-          });
-        });
-        console.log('room_message end');
-      });
     }
     // Check si la room est deja presente avant de lajouter dans la liste des room ecouter pour les messages
     this.listConversationRoom.forEach(elem => {
@@ -91,7 +86,7 @@ export class IoServiceProvider {
   }
 
   sendMessageToConversationRoom(idRoom: string, content: string, author: string) {
-    sock.emit('room_message', {room_id: idRoom, author: author, content: content}, function(){console.log("emit room_message")});
+    sock.emit('room_message', {room_id: idRoom, author: author, content: content}, function(){console.log("emit room_message ack")});
     this.listConversationRoom.forEach(elem => {
       if (elem.id.localeCompare(idRoom) == 0) {
         console.log('sendMessageToConversationRoom updated');
