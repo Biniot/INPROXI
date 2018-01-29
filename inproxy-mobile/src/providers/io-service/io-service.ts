@@ -65,10 +65,22 @@ export class IoServiceProvider {
       }
     });
     if (!isFind) {
-      this.listConversationRoom.push(new ConversationRoomModel(room.name, tab, room.id));
+      this.listConversationRoom.push(new ConversationRoomModel(room.name, tab, room.id, true));
       this.joinRoom(room.id);
     }
   }
+
+  // public userOut(room) {
+  //   this.listConversationRoom.forEach(elem => {
+  //     if (elem.id.localeCompare(room.room_id) == 0) {
+  //       console.log('room_message updated');
+  //       console.log(JSON.stringify(data));
+  //       elem.isUserIn = false;
+  //       console.log('room_message userOut');
+  //       console.log(JSON.stringify(elem));
+  //     }
+  //   });
+  // }
 
   public getConversationRoomById(idRoom: string) {
     let result = null;

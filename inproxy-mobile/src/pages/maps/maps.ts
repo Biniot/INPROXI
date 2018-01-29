@@ -75,6 +75,8 @@ export class MapsPage {
             newElem.id = elem.id;
             // newElem.coords = [];
             newElem.coords = JSON.parse(elem.coords[0]);
+            console.log(newElem.coords);
+            console.log(newElem.coords[0]);
             // let tabCoords = elem.coords[0].split(',');
             // for (let i = 0; i < tabCoords.length; i++) {
             //   newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
@@ -82,7 +84,7 @@ export class MapsPage {
             // }
             console.log(JSON.stringify(newElem));
             this.allZones.push(newElem);
-            this.ioService.addConversation(newElem);
+            //this.ioService.addConversation(newElem);
           });
         } else {
           this.showPopup("Error", "Problem downloading areas.");
@@ -175,11 +177,13 @@ export class MapsPage {
 
   updateAreas() {
     console.log("updateAreas");
+    console.log(JSON.stringify(this.allZones));
       this.map.clear().then(res => {
+        console.log("updateAreas map.clear().then");
         this.allZones.forEach(elem => {
           console.log(JSON.stringify(elem));
           if (this.containsLocation(this.loc, elem.coords)) {
-            this.ioService.addConversation(elem);
+            //this.ioService.addConversation(elem);
             this.map.addPolygon({
               'points': elem.coords,
               'strokeColor' : '#0000FF',
@@ -297,7 +301,7 @@ export class MapsPage {
           if (success) {
             console.log('onDidDismiss addRoom success');
             success.coords = JSON.parse(success.coords);
-            this.ioService.addConversation(success);
+            //this.ioService.addConversation(success);
             this.allZones.push(success);
             this.updateAreas();
           } else {console.log(JSON.stringify(success));
