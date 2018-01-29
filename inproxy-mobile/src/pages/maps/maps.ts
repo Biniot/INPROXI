@@ -185,7 +185,7 @@ export class MapsPage {
         console.log("updateAreas map.clear().then");
         this.allZones.forEach(elem => {
           console.log(JSON.stringify(elem));
-          if (this.containsLocation(this.loc, elem.coords)) {
+          // if (this.containsLocation(this.loc, elem.coords)) {
             this.ioService.addConversation(elem);
             this.map.addPolygon({
               'points': elem.coords,
@@ -194,17 +194,17 @@ export class MapsPage {
               'fillColor': 'rgba(0,0,0,0)',
               'visible': true
             });
-          } else {
-            // TODO : removeConversation
-            this.ioService.userOut(elem);
-            this.map.addPolygon({
-              'points': elem.coords,
-              'strokeColor': '#e60000',
-              'strokeWidth': 3,
-              'fillColor': 'rgba(0,0,0,0)',
-              'visible': true
-            });
-          }
+          // } else {
+          //   // TODO : removeConversation
+          //   this.ioService.userOut(elem);
+          //   this.map.addPolygon({
+          //     'points': elem.coords,
+          //     'strokeColor': '#e60000',
+          //     'strokeWidth': 3,
+          //     'fillColor': 'rgba(0,0,0,0)',
+          //     'visible': true
+          //   });
+          // }
         });
       }, err => {
         console.error("mapClear err: " + err);
