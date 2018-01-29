@@ -293,15 +293,17 @@ export class MapsPage {
     saveZone.onDidDismiss((allData : any) => {
       console.log('saveZone.onDidDismiss');
       console.log(JSON.stringify(allData));
+      allData.coords = JSON.stringify(allData.coords);
+      console.log('alldata: ' + allData.coords);
       this.coordNewArea = [];
       this.presentLoadingText("Uploading new area...");
       this.roomService.addRoom(allData).subscribe(success => {
           if (success) {
             console.log('onDidDismiss addRoom success');
-            console.log(JSON.stringify(success));
+
             this.allZones.push(success);
             this.updateAreas();
-          } else {
+          } else {console.log(JSON.stringify(success));
             this.showPopup("Error", "Problem uploading new area.");
           }
           this.loading.dismiss();
