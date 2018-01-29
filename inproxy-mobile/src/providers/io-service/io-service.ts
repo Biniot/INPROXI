@@ -51,8 +51,9 @@ export class IoServiceProvider {
     let tab = [];
     let isFind = false;
     // Init la callback pour les room message uniquement lors de la creation de la premiere Room
-    if (this.listConversationRoom.length < 1) {
-    }
+    // if (this.listConversationRoom.length < 1) {
+    // }
+
     // Check si la room est deja presente avant de lajouter dans la liste des room ecouter pour les messages
     this.listConversationRoom.forEach(elem => {
       if (elem.id.localeCompare(room.id) == 0) {
@@ -137,6 +138,8 @@ export class IoServiceProvider {
 
   /* Room function */
   public joinRoom(idRoom: string) {
+    console.log('joinRoom');
+    console.log(idRoom);
     sock.emit('join_room', {room_id: idRoom}, function(){console.log("joinRoom success")});
   }
 

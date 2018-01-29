@@ -32,6 +32,9 @@ export class ChatZonePage {
         // console.log('HomePage getUserInfo functionError');
         // console.log(error);
       });
+    if (!this.ioService.isConnected()) {
+      this.ioService.connectSocket();
+    }
   }
 
   updateMessage() {
