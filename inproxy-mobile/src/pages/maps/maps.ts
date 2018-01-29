@@ -69,23 +69,18 @@ export class MapsPage {
           console.log('roomService.getRoom success');
           console.log(success);
           success.forEach(elem => {
-            console.log('getRoom forEach');
-            console.log(JSON.stringify(elem));
-            console.log(elem.coords[0].lat);
-            console.log(elem.coords[0].lng);
-            console.log(JSON.stringify(elem.coords[0]));
-            // TODO : voir dans le dossier model/roomModel pour remplir lobj room avant de la push dans le tableau
-            // let newElem = new Room();
-            // newElem.admin_id = elem.admin_id;
-            // newElem.name = elem.name;
-            // newElem.id = elem.id;
-            // newElem.coords = [];
+            let newElem = new Room();
+            newElem.admin_id = elem.admin_id;
+            newElem.name = elem.name;
+            newElem.id = elem.id;
+            newElem.coords = [];
+            newElem.coords = JSON.parse(elem.coords[0]);
             // let tabCoords = elem.coords[0].split(',');
             // for (let i = 0; i < tabCoords.length; i++) {
             //   newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
             //   i++;
             // }
-            // console.log(JSON.stringify(newElem));
+            console.log(JSON.stringify(newElem));
             // this.allZones.push(newElem);
           });
         } else {
@@ -293,7 +288,7 @@ export class MapsPage {
     saveZone.onDidDismiss((allData : any) => {
       console.log('saveZone.onDidDismiss');
       console.log(JSON.stringify(allData));
-      // allData.coords = JSON.stringify(allData.coords);
+      allData.coords = JSON.stringify(allData.coords);
       console.log('alldata: ' + allData.coords);
       this.coordNewArea = [];
       this.presentLoadingText("Uploading new area...");
