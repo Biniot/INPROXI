@@ -113,6 +113,8 @@ export class UserServiceProvider {
               console.log('getFriendRequests got sth');
               console.log(result);
               localStorage.setItem('friendRequests', JSON.stringify(result));
+            } else {
+              localStorage.setItem('friendRequests', null);
             }
             console.log('getFriendRequests outside');
             this.isFriendRequestLoad = true;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage} from 'ionic-angular';
+import {AlertController, IonicPage, NavController} from 'ionic-angular';
 import {FriendServiceProvider} from "../../providers/friend-service/friend-service";
 import {UserServiceProvider} from "../../providers/user-service/user-service";
 
@@ -20,7 +20,7 @@ export class AddFriendRequestPage {
   friendList: any;
   showList: boolean;
 
-  constructor(private friendRequestProvider: FriendServiceProvider, private userService: UserServiceProvider, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, private friendRequestProvider: FriendServiceProvider, private userService: UserServiceProvider, private alertCtrl: AlertController) {
     this.showList = false;
     this.userService.getUserInfo().subscribe(success => {
         if (success) {
@@ -73,6 +73,7 @@ export class AddFriendRequestPage {
       if (!isFind) {
         this.friendRequestProvider.addFriendRequest(this.friendRequestCredentials.idFriend, this.friendRequestCredentials.message).subscribe(success => {
             this.showPopup("Succes", "Succefully add request friend.");
+            this.navCtrl.pop();
           },
           error => {
             this.showPopup("Error", error);

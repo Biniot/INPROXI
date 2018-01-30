@@ -68,6 +68,7 @@ export class CheckFriendRequestPage {
     this.friendService.answerFriendRequest(isAccepted, idFriendRequest).subscribe(
       success => {
           if (success) {
+
             if (this.friendRequestList.length < 1) {
               this.navCtrl.pop();
             }
@@ -88,7 +89,7 @@ export class CheckFriendRequestPage {
       success => {
         if (success) {
           let stringRequest = localStorage.getItem('friendRequests');
-          if (stringRequest === 'undefined') {
+          if (stringRequest === 'undefined' || stringRequest === null) {
             this.loading.dismiss();
             // TODO : TIPS TA PAS DAMIS
           } else {
