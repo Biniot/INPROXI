@@ -17,6 +17,9 @@
 
 <ion-content padding>
   <ion-list >
+    <ion-list-header>
+      Privates conversations
+    </ion-list-header>
     <ion-item *ngFor="let conversation of listConversation">
       <h2 (click)="lunchChatPage(conversation.id, conversation.chatType)">{{conversation.name}} ({{conversation.members.length}})</h2>
       <p>{{conversation.last_message}}</p>
@@ -28,6 +31,9 @@
     </ion-item>
   </ion-list>
   <ion-list >
+    <ion-list-header>
+      Publics conversations
+    </ion-list-header>
     <ion-item *ngFor="let conversationRoom of listConversationRoom">
       <h2 (click)="lunchChatRoomPage(conversationRoom)">{{conversationRoom.name}}</h2>
       <!--<button ion-button clear icon-only item-end (click)="showInfoPage(conversationRoom.id)">-->

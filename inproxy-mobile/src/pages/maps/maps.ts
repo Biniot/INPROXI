@@ -56,89 +56,43 @@ export class MapsPage {
         // console.log(success);
       },
       error => {
-        // console.log('HomePage getUserInfo functionError');
-        // console.log(error);
+        console.log('MapsPage getUserInfo functionError');
+        console.error(error);
       });
     this.isMapLoad = false;
     this.isAddingArea = false;
     this.coordNewArea = [];
     this.allZones = [];
     this.iconAddPolyg = "add";
-
-    this.roomService.getRoom().subscribe(success => {
-        if (success) {
-          console.log('roomService.getRoom success');
-          console.log(success);
-          success.forEach(elem => {
-            let newElem = new Room();
-            newElem.admin_id = elem.admin_id;
-            newElem.name = elem.name;
-            newElem.id = elem.id;
-            // newElem.coords = [];
-            newElem.coords = JSON.parse(elem.coords[0]);
-            console.log(newElem.coords);
-            console.log(newElem.coords[0]);
-            // let tabCoords = elem.coords[0].split(',');
-            // for (let i = 0; i < tabCoords.length; i++) {
-            //   newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
-            //   i++;
-            // }
-            console.log(JSON.stringify(newElem));
-            this.allZones.push(newElem);
-            this.updateAreas();
-            // this.ioService.addConversation(newElem);
-          });
-        } else {
-          this.showPopup("Error", "Problem downloading areas.");
-        }
-        // this.loading.dismiss();
-      },
-      error => {
-        this.showPopup("Error", error);
-        // this.loading.dismiss();
-      });
-  }
-
-  checkCoordClean(coord: any) {
-    try {
-      coord.forEach(elem => {
-        if (elem.lat == null || elem.lng == null) {
-          return false;
-        }
-      });
-    } catch (Ex) {
-      return false;
-    }
-    return true;
   }
 
   addMarkerToMap(latLng: any) {
     this.zone.run(() => {
-      console.log("addMarkerToMap");
+      // console.log("addMarkerToMap");
       if (this.isAddingArea) {
-        console.log("this.isAddingArea");
+        // console.log("this.isAddingArea");
         this.map.clear().then(res => {
-          console.log("map.clear().then");
+          // console.log("map.clear().then");
           let lat = parseFloat(latLng.toString().split(" ")[1].split(",")[0]);
           let lng = parseFloat(latLng.toString().split(" ")[3].split("}")[0]);
           this.coordNewArea.push({lat: lat, lng: lng});
           if (this.coordNewArea.length == 1) {
-            console.log("print marker");
+            // console.log("print marker");
             this.map.addMarker({
               'position': {lat: lat, lng: lng},
               'icon': 'magenta'
             }).then((data) => {
-                console.log("addMarker success");
-                console.log(JSON.stringify(data));
+                // console.log("addMarker success");
+                // console.log(JSON.stringify(data));
               },
               (err) => {
                 console.log("addMarker err");
                 console.log(err);
               });
           } else  {
-            console.log("print area");
+            // console.log("print area");
             if (this.containsLocation(this.loc, this.coordNewArea)) {
-              console.log("print area in");
+              // console.log("print area in");
               this.map.addPolygon({
                 'points': this.coordNewArea,
                 'strokeColor' : '#0000FF',
@@ -147,7 +101,7 @@ export class MapsPage {
                 'visible': true
               });
             } else {
-              console.log("print area out");
+              // console.log("print area out");
               this.map.addPolygon({
                 'points': this.coordNewArea,
                 'strokeColor' : '#e60000',
@@ -169,7 +123,9 @@ export class MapsPage {
       this.iconAddPolyg ="add";
       // TODO : re init si lenght < 3
       if (this.coordNewArea.length < 3) {
+        this.coordNewArea = [];
         this.isAddingArea = !this.isAddingArea;
+        this.showPopup('Error', 'You must add at least 3 point to create an area.');
       } else {
         this.saveZone();
       }
@@ -178,13 +134,14 @@ export class MapsPage {
   }
 
   updateAreas() {
-    console.log("updateAreas");
-    console.log(JSON.stringify(this.allZones));
+    // console.log("updateAreas");
+    // console.log(JSON.stringify(this.allZones));
     if (this.isMapLoad) {
       this.map.clear().then(res => {
-        console.log("updateAreas map.clear().then");
+        // console.log("updateAreas map.clear().then");
         this.allZones.forEach(elem => {
           console.log(JSON.stringify(elem));
+          // TODO : add pour une fois le dev finis
           // if (this.containsLocation(this.loc, elem.coords)) {
             this.ioService.addConversation(elem);
             this.map.addPolygon({
@@ -195,7 +152,6 @@ export class MapsPage {
               'visible': true
             });
           // } else {
-          //   // TODO : removeConversation
           //   this.ioService.userOut(elem);
           //   this.map.addPolygon({
           //     'points': elem.coords,
@@ -236,7 +192,7 @@ export class MapsPage {
       this.map = this.googleMaps.create(element);
       this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
         this.isMapLoad = true;
-        console.log("this.isMapLoad = true;");
+        // console.log("this.isMapLoad = true;");
         this.map.setMyLocationEnabled(true);
         this.map.getMyLocation().then(location => {
           this.loc = location.latLng;
@@ -254,12 +210,39 @@ export class MapsPage {
       this.centerView();
     }
 
+    this.roomService.getRoom().subscribe(success => {
+        if (success) {
+          // console.log('roomService.getRoom success');
+          // console.log(JSON.stringify(success));
+          success.forEach(elem => {
+            let newElem = new Room();
+            newElem.admin_id = elem.admin_id;
+            newElem.name = elem.name;
+            newElem.id = elem.id;
+            newElem.coords = JSON.parse(elem.coords[0]);
+            // console.log(newElem.coords);
+            // console.log(newElem.coords[0]);
+            // let tabCoords = elem.coords[0].split(',');
+            // for (let i = 0; i < tabCoords.length; i++) {
+            //   newElem.coords.push(new LatLng(parseFloat(tabCoords[i]), parseFloat(tabCoords[i + 1])));
+            //   i++;
+            // }
+            // console.log(JSON.stringify(newElem));
+            this.allZones.push(newElem);
+            this.updateAreas();
+            // TODO : remove une fois le dev finis
+            this.ioService.addConversation(newElem);
+          });
+        } else {
+          this.showPopup("Error", "Problem downloading areas.");
+        }
+        // this.loading.dismiss();
+      },
+      error => {
+        this.showPopup("Error", error);
+        // this.loading.dismiss();
+      });
   }
-  // //Load the groupMap
-  // initMap(){
-  //   let element = this.mapElement.nativeElement;
-  //   this.map = this.googleMaps.create(element);
-  // }
 
   getLocation(){
     return this.geoLoc.getCurrentPosition();
@@ -300,20 +283,21 @@ export class MapsPage {
     }, err => { console.error(err) });
 
     saveZone.onDidDismiss((allData : any) => {
-      console.log('saveZone.onDidDismiss');
-      console.log(JSON.stringify(allData));
+      // console.log('saveZone.onDidDismiss');
+      // console.log(JSON.stringify(allData));
       allData.coords = JSON.stringify(allData.coords);
-      console.log('alldata: ' + allData.coords);
+      // console.log('alldata: ' + allData.coords);
       this.coordNewArea = [];
       this.presentLoadingText("Uploading new area...");
       this.roomService.addRoom(allData).subscribe(success => {
           if (success) {
-            console.log('onDidDismiss addRoom success');
+            // console.log('onDidDismiss addRoom success');
             success.coords = JSON.parse(success.coords);
             //this.ioService.addConversation(success);
             this.allZones.push(success);
             this.updateAreas();
-          } else {console.log(JSON.stringify(success));
+          } else {
+            // console.log(JSON.stringify(success));
             this.showPopup("Error", "Problem uploading new area.");
           }
           this.loading.dismiss();

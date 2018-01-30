@@ -37,7 +37,7 @@ export class IoServiceProvider {
           if (elem.id.localeCompare(data.room_id) == 0) {
             console.log('room_message updated');
             console.log(JSON.stringify(data));
-            elem.message.push(new MessageRoomModel(data.content, data.first_name + " " + data.last_name));
+            elem.message.push(new MessageRoomModel(data.content, data.author));
             console.log('room_message updated');
             console.log(JSON.stringify(elem));
           }
@@ -45,14 +45,12 @@ export class IoServiceProvider {
       });
       console.log('room_message end');
     });
+    this.connectSocket();
   }
 
   public addConversation(room) {
     let tab = [];
     let isFind = false;
-    // Init la callback pour les room message uniquement lors de la creation de la premiere Room
-    // if (this.listConversationRoom.length < 1) {
-    // }
 
     // Check si la room est deja presente avant de lajouter dans la liste des room ecouter pour les messages
     this.listConversationRoom.forEach(elem => {
@@ -70,6 +68,7 @@ export class IoServiceProvider {
     this.listConversationRoom.forEach(elem => {
       if (elem.id.localeCompare(room.room_id) == 0) {
         elem.isUserIn = false;
+        this.leaveRoom(elem.id);
         console.log('room_message userOut');
         console.log(JSON.stringify(elem));
       }
@@ -140,7 +139,6 @@ export class IoServiceProvider {
   public joinRoom(idRoom: string) {
     console.log('joinRoom');
     console.log(idRoom);
-    console.log(JSON.stringify(sock));
     sock.emit('join_room', {room_id: idRoom}, function(){console.log("joinRoom success")});
   }
 
