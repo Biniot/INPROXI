@@ -5,6 +5,7 @@ import {ChatType} from "../../model/ChatType";
 import {ConversationServiceProvider} from "../../providers/conversation-service/conversation-service";
 import {IoServiceProvider} from "../../providers/io-service/io-service";
 import {Observable} from "rxjs/Observable";
+import {isUndefined} from "util";
 
 /**
  * Generated class for the ListChatPage page.
@@ -21,12 +22,16 @@ export class ListChatPage {
   listConversation: any;
   listConversationRoom: any;
   loading: any;
+  haveConversation: boolean;
+  haveConversationRoom: boolean;
 
   constructor(private userService: UserServiceProvider, public navCtrl: NavController, public events: Events,
               public loadingCtrl: LoadingController, public conversationService: ConversationServiceProvider, private ioService : IoServiceProvider) {
     // console.log("ListChatPage constructor");
     this.listConversation = [];
     this.listConversationRoom = [];
+    this.haveConversation = false;
+    this.haveConversationRoom = false;
 
     Observable.interval(500).takeWhile(() => true).subscribe(() => this.updateListRoom());
 
@@ -59,6 +64,9 @@ export class ListChatPage {
           };
           this.listConversation.push(newConversation);
         });
+        if (this.listConversation !== null && !isUndefined(this.listConversation) && this.listConversation.length > 0) {
+          this.haveConversation = true;
+        }
         this.loading.dismiss();
       },
       error => {
@@ -70,6 +78,9 @@ export class ListChatPage {
 
   updateListRoom() {
     this.listConversationRoom = this.ioService.getList();
+    if (this.listConversationRoom !== null && !isUndefined(this.listConversationRoom) && this.listConversationRoom.length > 0) {
+      this.haveConversationRoom = true;
+    }
   }
 
   presentLoadingText(message: string) {

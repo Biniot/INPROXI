@@ -231,7 +231,7 @@ export class MapsPage {
             this.allZones.push(newElem);
             this.updateAreas();
             // TODO : remove une fois le dev finis
-            this.ioService.addConversation(newElem);
+            //this.ioService.addConversation(newElem);
           });
         } else {
           this.showPopup("Error", "Problem downloading areas.");
