@@ -70,7 +70,8 @@ export class FriendsPage {
           let stringRequest = localStorage.getItem('friendRequests');
           console.log('FriendsPage ionViewWillEnter friendRequests');
           console.log(stringRequest);
-          this.haveRequest = !(stringRequest === 'undefined' || stringRequest === null);
+
+          this.haveRequest = !(stringRequest === 'null' || stringRequest === 'undefined' || stringRequest === null);
         } else {
           this.showPopup("Error", "Problem retriving friend request.");
         }
