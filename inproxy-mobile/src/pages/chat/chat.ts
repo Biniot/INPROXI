@@ -32,13 +32,13 @@ export class ChatPage {
     this.haveMessage = false;
     let onPrivateMessage = (message: any) => {
       _ngZone.run(() => {
-        // console.log("onPrivateMessage");
-        // console.log(JSON.stringify(message));
+        console.log("onPrivateMessage");
+        console.log(JSON.stringify(message));
         if (message.author.localeCompare(localStorage.getItem('userId')) != 0) {
-          // console.log("onPrivateMessage not from myself");
+          console.log("onPrivateMessage not from myself");
           this.userService.getUserInfoById(message.author).subscribe(success => {
-              // console.log("onPrivateMessage getUserInfoById");
-              // console.log(JSON.stringify(success));
+              console.log("onPrivateMessage getUserInfoById");
+              console.log(JSON.stringify(success));
               let newMessage = {
                 createdAt: new Date().toDateString(),
                 content: message.content,
@@ -49,7 +49,7 @@ export class ChatPage {
                 },
                 id: ""
               };
-              // console.log(JSON.stringify(newMessage));
+              console.log(JSON.stringify(newMessage));
               this.messageList.push(newMessage);
               this.haveMessage = true;
             },
